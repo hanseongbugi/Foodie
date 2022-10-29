@@ -2,7 +2,7 @@ package com.kbs.foodie
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-//suyeon github branch test
+//suyeon github branch test1
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
