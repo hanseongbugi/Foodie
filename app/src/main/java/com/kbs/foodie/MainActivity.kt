@@ -2,7 +2,7 @@ package com.kbs.foodie
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
+//suyeon github branch test1
 class MainActivity : AppCompatActivity() {
     // div bae commit test2
     //dev seo github Test2
