@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="72dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="147dp"
+        android:text="FOODIE"
+        android:textAlignment="center"
+        android:textColor="#EADA4C"
+        android:textSize="96sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="72dp" />
+
+    <EditText
+        android:id="@+id/emailLogin"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:ems="10"
+        android:hint="EMAIL"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <EditText
+        android:id="@+id/passwdLogin"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:ems="10"
+        android:hint="PASSWORD"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="72dp" />
+
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SIGN UP" />
+
+    <Button
+        android:id="@+id/signInButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SIGN IN" />
+</LinearLayout>
