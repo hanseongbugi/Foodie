@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.kbs.foodie.HomeFragment"
-        android:label="Foodie">
+        android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_friendFragment"
             app:destination="@id/friendFragment" />
@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/friendFragment"
         android:name="com.kbs.foodie.FriendFragment"
-        android:label="Foodie">
+        android:label="FriendFragment" >
         <action
             android:id="@+id/action_friendFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -30,7 +30,7 @@
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.kbs.foodie.MapFragment"
-        android:label="Foodie">
+        android:label="MapFragment" >
         <action
             android:id="@+id/action_mapFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/addFragment"
         android:name="com.kbs.foodie.AddFragment"
-        android:label="Foodie">
+        android:label="AddFragment" >
         <action
             android:id="@+id/action_addFragment_to_homeFragment"
             app:destination="@id/homeFragment"

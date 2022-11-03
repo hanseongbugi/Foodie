@@ -1,27 +1,29 @@
 package com.kbs.foodie
 
 import android.Manifest
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.provider.Settings
+import android.util.Base64
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.kbs.foodie.databinding.ActivityMainBinding
-
+import java.security.MessageDigest
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -37,20 +39,13 @@ class MainActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "GPS를 켜주세요", Toast.LENGTH_SHORT).show()
         }
-
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment) as NavHostFragment
         val navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(navController.graph) // Home이 Top 목적지
         setupActionBarWithNavController(navController, appBarConfiguration)
-        val bottomNavigationView = binding.bottomNav
-        bottomNavigationView.setupWithNavController(navController)
-        val appBarConfiguration=AppBarConfiguration.Builder(
-            R.id.addFragment,R.id.mapFragment,
-            R.id.friendFragment,R.id.homeFragment
-        ).build()
-        NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration)
-
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNav)
+        bottomNavigationView?.setupWithNavController(navController)
     }
 
 
