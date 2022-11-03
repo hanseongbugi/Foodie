@@ -44,8 +44,14 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(navController.graph) // Home이 Top 목적지
         setupActionBarWithNavController(navController, appBarConfiguration)
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNav)
-        bottomNavigationView?.setupWithNavController(navController)
+        val bottomNavigationView = binding.bottomNav
+        bottomNavigationView.setupWithNavController(navController)
+        val appBarConfiguration=AppBarConfiguration.Builder(
+            R.id.mapFragment, R.id.friendFragment,R.id.homeFragment
+        ).build()
+        NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration)
+
+
     }
 
 
