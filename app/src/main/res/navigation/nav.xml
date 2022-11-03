@@ -7,42 +7,13 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.kbs.foodie.HomeFragment"
-        android:label="Foodie">
-        <action
-            android:id="@+id/action_homeFragment_to_friendFragment"
-            app:destination="@id/friendFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_addFragment"
-            app:destination="@id/addFragment" />
-    </fragment>
+        android:label="Foodie"/>
     <fragment
         android:id="@+id/friendFragment"
         android:name="com.kbs.foodie.FriendFragment"
-        android:label="Foodie">
-        <action
-            android:id="@+id/action_friendFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        android:label="Foodie"/>
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.kbs.foodie.MapFragment"
-        android:label="Foodie">
-        <action
-            android:id="@+id/action_mapFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/addFragment"
-        android:name="com.kbs.foodie.AddFragment"
-        android:label="Foodie">
-        <action
-            android:id="@+id/action_addFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        android:label="Foodie"/>
 </navigation>

@@ -1,34 +1,33 @@
 package com.kbs.foodie
 
 import android.Manifest
-import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import android.provider.Settings
-import android.util.Base64
-import android.util.Log
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.kbs.foodie.databinding.ActivityMainBinding
-import java.security.MessageDigest
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val ACCESS_FINE_LOCATION = 1000
     private lateinit var binding: ActivityMainBinding
+    lateinit var navController:NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -41,8 +40,8 @@ class MainActivity : AppCompatActivity() {
         }
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph) // Home이 Top 목적지
+        navController = navHostFragment.navController
+        appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
         val bottomNavigationView = binding.bottomNav
         bottomNavigationView.setupWithNavController(navController)
@@ -53,7 +52,14 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
+    override fun onBackPressed() {
+        val fragmentManager: FragmentManager = supportFragmentManager
+        if (fragmentManager.backStackEntryCount > 1) {
+            fragmentManager.popBackStackImmediate()
+        } else {
+            super.onBackPressed()
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.add_menu, menu)
@@ -62,8 +68,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.addFragment ->
-                item.onNavDestinationSelected(findNavController(R.id.fragment))
+            R.id.addMenu -> {
+                val intent=Intent(this,AddActivity::class.java)
+                startActivity(intent)
+            }
             else -> return super.onOptionsItemSelected(item)
         }
         return true
