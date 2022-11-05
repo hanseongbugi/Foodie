@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="back_color">#BCBBB4</color>
     <color name="login_text">#787870</color>
+    <color name="foodie_label">#888A8A</color>
+    <color name="foodie_label_color">#FBD141</color>
 </resources>

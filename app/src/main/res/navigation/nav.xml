@@ -7,13 +7,13 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.kbs.foodie.HomeFragment"
-        android:label="Foodie"/>
+        android:label=""/>
     <fragment
         android:id="@+id/friendFragment"
         android:name="com.kbs.foodie.FriendFragment"
-        android:label="Foodie"/>
+        android:label=""/>
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.kbs.foodie.MapFragment"
-        android:label="Foodie"/>
+        android:label=""/>
 </navigation>
