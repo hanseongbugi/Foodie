@@ -1,6 +1,7 @@
 package com.kbs.foodie
 
 import android.Manifest
+import android.app.ActionBar
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,8 +9,10 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
+import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +34,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        initToolBar()
+
         if (checkLocationService()) {
             permissionCheck()
         } else {
@@ -50,6 +55,13 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+    private fun initToolBar(){
+        supportActionBar?.hide()
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
     override fun onBackPressed() {
         val fragmentManager: FragmentManager = supportFragmentManager
         if (fragmentManager.backStackEntryCount > 1) {
@@ -59,21 +71,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.add_menu, menu)
-        return true
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.addMenu -> {
-                val intent=Intent(this,AddActivity::class.java)
-                startActivity(intent)
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
-        return true
-    }
     private fun permissionCheck() {
         val preference = getPreferences(MODE_PRIVATE)
         val isFirstCheck = preference.getBoolean("isFirstPermissionCheck", true)
@@ -135,3 +133,4 @@ class MainActivity : AppCompatActivity() {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 }
+
