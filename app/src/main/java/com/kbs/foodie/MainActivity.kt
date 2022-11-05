@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +17,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.kbs.foodie.databinding.ActivityMainBinding
