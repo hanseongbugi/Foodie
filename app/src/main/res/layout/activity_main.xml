@@ -31,12 +31,16 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav" />
+        app:navGraph="@navigation/nav"
+        />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/foodie_label_color"
-        app:menu="@menu/foodie_menu"/>
+        app:itemIconSize="36dp"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/foodie_menu" />
 </LinearLayout>
 
