@@ -1,7 +1,6 @@
 package com.kbs.foodie
 
 import android.Manifest
-import android.app.ActionBar
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -9,10 +8,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.text.Html
-import android.view.Menu
-import android.view.MenuItem
-import android.view.Window
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +22,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kbs.foodie.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),OnLocationSetListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val ACCESS_FINE_LOCATION = 1000
     private lateinit var binding: ActivityMainBinding
@@ -44,14 +40,14 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "GPS를 켜주세요", Toast.LENGTH_SHORT).show()
         }
         val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragment) as NavHostFragment
+            supportFragmentManager.findFragmentById(R.id.addLocation) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
         val bottomNavigationView = binding.bottomNav
         bottomNavigationView.setupWithNavController(navController)
         val appBarConfiguration=AppBarConfiguration.Builder(
-            R.id.mapFragment, R.id.friendFragment,R.id.homeFragment
+            R.id.addLocation, R.id.friendFragment,R.id.homeFragment
         ).build()
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration)
 
@@ -133,6 +129,10 @@ class MainActivity : AppCompatActivity() {
     private fun checkLocationService(): Boolean {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
+
+    override fun onLocationSet(location: String) {
+        Log.w("!!!",location)
     }
 }
 

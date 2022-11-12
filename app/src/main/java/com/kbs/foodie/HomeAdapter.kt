@@ -42,6 +42,7 @@ class HomeAdapter(private val homeViewModel:HomeViewModel) :
                 view.setImageResource(R.drawable.img)
             }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
