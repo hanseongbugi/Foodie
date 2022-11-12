@@ -18,8 +18,6 @@ class HomeAdapter:RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
             view.findViewById<TextView>(R.id.review).text="맛이 쓰고, 맛이 말고, 맛이 있다."
         }
 
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

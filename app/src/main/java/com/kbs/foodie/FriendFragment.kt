@@ -1,5 +1,6 @@
 package com.kbs.foodie
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -20,8 +21,8 @@ class FriendFragment : Fragment(R.layout.friend_fragment) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.search_menu -> {
-//                val intent= Intent(this,AddActivity::class.java)
-//                startActivity(intent)
+              //  val intent= Intent(this,AddActivity::class.java)
+               // startActivity(intent)
             }
             else -> return super.onOptionsItemSelected(item)
         }
