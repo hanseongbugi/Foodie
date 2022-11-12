@@ -46,10 +46,12 @@ class HomeFragment : Fragment() {
             adapter!!.notifyDataSetChanged() // 어댑터가 리사이클러뷰에게 알려 내용을 갱신함
         }
         contentCollectionRef.addSnapshotListener{snapshot,error->
-            for(doc in snapshot!!.documentChanges){
-                homeViewModel.addContent(Content(doc))
+            homeViewModel.deleteAll()
+            contentCollectionRef.get().addOnSuccessListener {
+                for(doc in it){
+                    homeViewModel.addContent(Content(doc))
+                }
             }
-
         }
         return rootView
     }
