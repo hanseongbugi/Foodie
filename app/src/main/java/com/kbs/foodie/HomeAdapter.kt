@@ -1,39 +1,41 @@
 package com.kbs.foodie
 
+
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.kbs.foodie.databinding.HomeFragmentBinding
 import com.kbs.foodie.databinding.HomeItemBinding
 
-class HomeAdapter:RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
-    class ViewHolder(val view: View): RecyclerView.ViewHolder(view) {
-        fun setContetns(){
-            view.findViewById<ImageView>(R.id.image).setImageResource(R.drawable.ic_baseline_person_24)
-            view.findViewById<TextView>(R.id.name).text="hello"
-            view.findViewById<TextView>(R.id.address).text="seoul"
-            view.findViewById<TextView>(R.id.star).text="별점 5"
-            view.findViewById<TextView>(R.id.review).text="맛이 쓰고, 맛이 말고, 맛이 있다."
+
+
+class HomeAdapter(private val homeViewModel:HomeViewModel) :
+    RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+    inner class ViewHolder(private val binding:HomeItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun setContents(pos:Int) {
+            with(homeViewModel.contents[pos]){
+                binding.listTvName.text=name
+                binding.listTvAddress.text=address
+                binding.listTvNumber.text=score.toString()
+            }
         }
-
-
-
     }
-
+    val storage = FirebaseStorage.getInstance()
+    val storageRef = storage.reference
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layoutInflater=LayoutInflater.from(parent.context)
-        val view=layoutInflater.inflate(R.layout.home_item,parent,false)
-        return ViewHolder(view)
-
+        val inflater = LayoutInflater.from(parent.context)
+        val binding: HomeItemBinding = HomeItemBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setContetns()
+        holder.setContents(position)
     }
 
-    override fun getItemCount(): Int {
-        return 0
-    }
+    override fun getItemCount()=homeViewModel.contents.size
+
+
 }

@@ -22,6 +22,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.kbs.foodie.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
