@@ -18,12 +18,14 @@ import com.google.firebase.ktx.Firebase
 import com.kbs.foodie.databinding.HomeFragmentBinding
 
 class HomeFragment : Fragment() {
+
     private lateinit var binding: HomeFragmentBinding
     private val db: FirebaseFirestore = Firebase.firestore
     private var adapter: HomeAdapter? = null
     private val homeViewModel by viewModels<HomeViewModel>()
     private val contentCollectionRef = db.collection("user").document("a@a.com")
         .collection("content")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)

@@ -1,14 +1,17 @@
 package com.kbs.foodie
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.kbs.foodie.databinding.MapFragmentBinding
 import net.daum.mf.map.api.CalloutBalloonAdapter
 import net.daum.mf.map.api.MapPOIItem
@@ -21,13 +24,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-
 class MapFragment : Fragment(R.layout.map_fragment)  {
     private val listItems = arrayListOf<ListLayout>()   // 리사이클러 뷰 아이템
     private val listAdapter = ListAdapter(listItems)    // 리사이클러 뷰 어댑터
     private var pageNumber = 1      // 검색 페이지 번호
     private var keyword = ""        // 검색 키워드
     private var binding: MapFragmentBinding? = null
+    lateinit var locationDataListener: OnLocationSetListener
     private lateinit var mapView : MapView              // 카카오 지도 뷰
     companion object {
         const val BASE_URL = "https://dapi.kakao.com/"
@@ -36,52 +39,82 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+        val itemsCollectionRef = db.collection("user")
+        itemsCollectionRef.get().addOnSuccessListener {
+            for(doc in it){
+                Log.w("1",doc.toString())
+            }
+        }
+
         //searchKeyword("은행")
-        Log.w("1","1")
         binding = MapFragmentBinding.inflate(inflater,container ,false)
-        Log.w("1","2")
 
         binding!!.rvList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        Log.w("1","3")
 
         binding!!.rvList.adapter = listAdapter
         // 리스트 아이템 클릭 시 해당 위치로 이동
-        Log.w("1","4")
         listAdapter.setItemClickListener(object: ListAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
                 val mapPoint = MapPoint.mapPointWithGeoCoord(listItems[position].y, listItems[position].x)
                 binding!!.mapView.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
+                locationDataListener.onLocationSet(listItems[position].address)
             }
         })
-        Log.w("1","5")
         // 검색 버튼
         binding!!.btnSearch.setOnClickListener {
             keyword = binding!!.etSearchField.text.toString()
             pageNumber = 1
             searchKeyword(keyword, pageNumber)
         }
-        Log.w("1","5")
         // 이전 페이지 버튼
         binding!!.btnPrevPage.setOnClickListener {
             pageNumber--
             binding!!.tvPageNumber.text = pageNumber.toString()
             searchKeyword(keyword, pageNumber)
         }
-        Log.w("1","5")
         // 다음 페이지 버튼
         binding!!.btnNextPage.setOnClickListener {
             pageNumber++
             binding!!.tvPageNumber.text = pageNumber.toString()
             searchKeyword(keyword, pageNumber)
         }
-        Log.w("1","5")
         mapView = binding!!.mapView   // 카카오 지도 뷰
 
         mapView.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater))  // 커스텀 말풍선 등록
         return binding!!.root
 
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.add_menu,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.addMenu -> {
+                val intent= Intent(activity,AddActivity::class.java)
+                startActivity(intent)
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        locationDataListener= context as OnLocationSetListener
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        locationDataListener.onLocationSet("광진구 군자동")
     }
 
     private fun searchKeyword(keyword: String, page: Int) {
@@ -150,6 +183,7 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
         override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
             // 마커 클릭 시 나오는 말풍선
             name.text = poiItem?.itemName   // 해당 마커의 정보 이용 가능
+
             address.text = "별점"
             return mCalloutBalloon
         }
@@ -162,3 +196,4 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
     }
 
 }
+
