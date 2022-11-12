@@ -15,11 +15,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavArgument
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.kbs.foodie.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(),OnLocationSetListener {
@@ -33,27 +33,30 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         val view = binding.root
         setContentView(view)
         initToolBar()
-
+        val bundle=Bundle()
         val user=intent.getStringExtra("user")
-
+        bundle.putString("user",user)
         if (checkLocationService()) {
             permissionCheck()
         } else {
             Toast.makeText(this, "GPS를 켜주세요", Toast.LENGTH_SHORT).show()
         }
         val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.addLocation) as NavHostFragment
+            supportFragmentManager.findFragmentById(R.id.fragmentView) as NavHostFragment
         navController = navHostFragment.navController
+        val navInflater=navController.navInflater
+        val graph=navInflater.inflate(R.navigation.nav)
+        val arg=NavArgument.Builder().setDefaultValue(user).build()
+        graph.addArgument("user",arg)
+        navController.graph=graph
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
         val bottomNavigationView = binding.bottomNav
         bottomNavigationView.setupWithNavController(navController)
         val appBarConfiguration=AppBarConfiguration.Builder(
-            R.id.addLocation, R.id.friendFragment,R.id.homeFragment
+            R.id.fragmentView, R.id.friendFragment,R.id.homeFragment
         ).build()
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration)
-
-
     }
 
     private fun initToolBar(){

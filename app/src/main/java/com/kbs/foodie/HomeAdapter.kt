@@ -29,7 +29,6 @@ class HomeAdapter(private val homeViewModel:HomeViewModel) :
                 binding.listTvAddress.text=address
                 binding.listTvNumber.text=score.toString()
                 binding.listTvReview.text=review
-                println(image)
                 val imageRef=storageRef.child("/$image")
                 loadImage(imageRef,binding.realImage)
             }

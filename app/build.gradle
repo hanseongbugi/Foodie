@@ -3,7 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     //Firebase SDK
     id 'com.google.gms.google-services'
+    id 'androidx.navigation.safeargs'
 }
+
 
 android {
     namespace 'com.kbs.foodie'

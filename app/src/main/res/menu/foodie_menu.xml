@@ -6,7 +6,7 @@
     <item android:id="@+id/homeFragment"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="home" />
-    <item android:id="@+id/addLocation"
+    <item android:id="@+id/fragmentView"
         android:icon="@drawable/ic_baseline_map_24"
         android:title="map" />
 </menu>

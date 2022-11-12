@@ -2,16 +2,10 @@ package com.kbs.foodie
 
 import android.os.Bundle
 import android.util.Log
-import android.util.Log.println
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.Navigation
 import com.kbs.foodie.databinding.ActivityAddBinding
-import com.kbs.foodie.MapFragment
-import java.sql.DriverManager.println
 
 
 class AddActivity: AppCompatActivity(), OnLocationSetListener {
@@ -37,7 +31,7 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
             //binding.editTextTextPersonName.visibility=View.INVISIBLE
 
             supportFragmentManager.beginTransaction()
-                .replace(R.id.addLocation,MapFragment())
+                .replace(R.id.fragmentView,MapFragment())
                 .addToBackStack(null)
                 .commit()
 

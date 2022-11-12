@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -19,12 +20,11 @@ import com.kbs.foodie.databinding.HomeFragmentBinding
 
 class HomeFragment : Fragment() {
 
-    private lateinit var binding: HomeFragmentBinding
     private val db: FirebaseFirestore = Firebase.firestore
     private var adapter: HomeAdapter? = null
     private val homeViewModel by viewModels<HomeViewModel>()
-    private val contentCollectionRef = db.collection("user").document("a@a.com")
-        .collection("content")
+    private lateinit var contentCollectionRef:CollectionReference
+    private var user:String?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,9 +37,13 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val rootView = inflater.inflate(R.layout.home_fragment,container,false) as ViewGroup
         val recyclerView=rootView.findViewById<RecyclerView>(R.id.recyclerview)
+        user=arguments?.getString("user")
+        contentCollectionRef=db.collection("user").document(user!!)
+            .collection("content")
+
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager=LinearLayoutManager(activity)
         adapter= HomeAdapter(homeViewModel)
@@ -69,6 +73,7 @@ class HomeFragment : Fragment() {
         when (item.itemId) {
             R.id.addMenu -> {
                 val intent= Intent(activity,AddActivity::class.java)
+                    .putExtra("user",user)
                 startActivity(intent)
             }
             else -> return super.onOptionsItemSelected(item)
