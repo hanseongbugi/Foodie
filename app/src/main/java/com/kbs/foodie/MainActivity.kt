@@ -38,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
         initToolBar()
 
+        val user=intent.getStringExtra("user")
+
         if (checkLocationService()) {
             permissionCheck()
         } else {

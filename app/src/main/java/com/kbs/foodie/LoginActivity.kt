@@ -31,8 +31,9 @@ class LoginActivity : AppCompatActivity() {
         Firebase.auth.signInWithEmailAndPassword(userEmail, password)
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
-                    startActivity(
-                        Intent(this, MainActivity::class.java))
+                    val intent=Intent(this,MainActivity::class.java)
+                    intent.putExtra("user",userEmail)
+                    startActivity(intent)
                     finish()
                 } else {
                     Log.w("LoginActivity", "signInWithEmail", it.exception)

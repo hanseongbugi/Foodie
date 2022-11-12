@@ -31,10 +31,9 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
     private fun loginUserId(email:String, password: String){
-        Firebase.auth?.createUserWithEmailAndPassword(email, password)
-            ?.addOnCompleteListener(this){
+        Firebase.auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this){
                 if(it.isSuccessful){
-
                     Log.d(ContentValues.TAG, "사용자 이메일 등록 완료");
                     startActivity(
                         Intent(this, LoginActivity::class.java)
