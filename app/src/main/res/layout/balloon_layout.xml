@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:text="주소"
             android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/ball_tv_name"
             app:layout_constraintTop_toBottomOf="@+id/ball_tv_name" />
 

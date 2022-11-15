@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -31,12 +32,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MapFragment : Fragment(R.layout.map_fragment)  {
     private val listItems = arrayListOf<ListLayout>()   // 리사이클러 뷰 아이템
+    //private val markedList = arrayListOf<ListLayout>()
     private val listAdapter = ListAdapter(listItems)    // 리사이클러 뷰 어댑터
+    //private val markedListAdapter = ListAdapter(markedList)
     private var pageNumber = 1      // 검색 페이지 번호
     private var keyword = ""        // 검색 키워드
     private var binding: MapFragmentBinding? = null
     lateinit var locationDataListener: OnLocationSetListener
     private lateinit var mapView : MapView              // 카카오 지도 뷰
+
 
     val db: FirebaseFirestore = Firebase.firestore
     private val contentCollectionRef = db.collection("user").document("a@a.com")
@@ -79,42 +83,7 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
                 locationDataListener.onLocationSet(listItems[position].address, listItems[position].name, listItems[position].y, listItems[position].x)
             }
         })
-        val point = MapPOIItem()
-        CoroutineScope(Dispatchers.IO).launch {
-// 서울시청에 마커 추가
 
-
-//                itemName = "서울시청"   // 마커 이름
-//                mapPoint = MapPoint.mapPointWithGeoCoord(37.5666805, 126.9784147)   // 좌표
-//                markerType = MapPOIItem.MarkerType.RedPin          // 마커 모양 (커스텀)
-//                //customImageResourceId = R.drawable.이미지               // 커스텀 마커 이미지
-//                //selectedMarkerType = MapPOIItem.MarkerType.CustomImage  // 클릭 시 마커 모양 (커스텀)
-//                //customSelectedImageResourceId = R.drawable.이미지       // 클릭 시 커스텀 마커 이미지
-//                isCustomImageAutoscale = false      // 커스텀 마커 이미지 크기 자동 조정
-//                setCustomImageAnchor(0.5f, 1.0f)    // 마커 이미지 기준점
-//            }
-//            mapView.addPOIItem(marker)
-            point.apply {
-                contentCollectionRef.get()
-                    .addOnSuccessListener { // it: DocumentSnapshot
-                        for (doc in it) {
-                            if (doc["y"] != null) {
-                                itemName = doc["name"].toString()
-                                val y=doc["y"].toString().toDouble()
-                                val x=doc["x"].toString().toDouble()
-                                mapPoint = MapPoint.mapPointWithGeoCoord(
-                                    y,
-                                    x
-                                )
-                                markerType = MapPOIItem.MarkerType.RedPin
-                                setCustomImageAnchor(0.5f, 1.0f)
-                            }
-                        }
-                    }.addOnFailureListener {
-                    }
-                mapView.addPOIItem(point)
-            }
-        }
         // 검색 버튼
         binding!!.btnSearch.setOnClickListener {
             keyword = binding!!.etSearchField.text.toString()
@@ -134,6 +103,43 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
             searchKeyword(keyword, pageNumber)
         }
         mapView = binding!!.mapView   // 카카오 지도 뷰
+
+
+
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+            contentCollectionRef.get()
+                    .addOnSuccessListener { // it: DocumentSnapshot
+                        for (doc in it) {
+                            val point = MapPOIItem()
+                            var i=0;
+                            point.apply {
+                                if (doc["y"] != null) {
+                                    itemName = doc["name"].toString()
+                                    //Log.w("in MapFragment",itemName)
+                                    val y = doc["y"].toString().toDouble()
+                                    //Log.w("in MapFragment","${y}")
+                                    val x = doc["x"].toString().toDouble()
+                                    mapPoint = MapPoint.mapPointWithGeoCoord(
+                                        y,
+                                        x
+                                    )
+                                    markerType = MapPOIItem.MarkerType.RedPin
+                                    isCustomImageAutoscale = false
+                                    setCustomImageAnchor(0.5f, 1.0f)
+
+                                }
+                                binding?.mapView?.addPOIItem(point)
+                            }
+                        }
+                    }
+                .addOnFailureListener {
+                    }
+
+            }
+
 
         mapView.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater))  // 커스텀 말풍선 등록
         return binding!!.root
@@ -211,12 +217,13 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
                 }
                 binding?.mapView?.addPOIItem(point)
 
-                //binding?.mapView?.addPOIItem(point)
+
             }
             listAdapter.notifyDataSetChanged()
 
             binding?.btnNextPage?.isEnabled ?:  !searchResult.meta.is_end // 페이지가 더 있을 경우 다음 버튼 활성화
-            binding?.btnPrevPage?.isEnabled ?:   pageNumber != 1             // 1페이지가 아닐 경우 이전 버튼 활성화
+            (binding?.btnPrevPage?.isEnabled
+                ?: pageNumber) != 1             // 1페이지가 아닐 경우 이전 버튼 활성화
 
         } else {
             // 검색 결과 없음
@@ -228,9 +235,9 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
 
     // 커스텀 말풍선 클래스
     class CustomBalloonAdapter(inflater: LayoutInflater): CalloutBalloonAdapter {
-        val mCalloutBalloon: View = inflater.inflate(R.layout.balloon_layout, null)
+        private val mCalloutBalloon: View = inflater.inflate(R.layout.balloon_layout, null)
         val name: TextView = mCalloutBalloon.findViewById(R.id.ball_tv_name)
-        val address: TextView = mCalloutBalloon.findViewById(R.id.ball_tv_address)
+        private val address: TextView = mCalloutBalloon.findViewById(R.id.ball_tv_address)
 
         override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
             // 마커 클릭 시 나오는 말풍선
