@@ -9,10 +9,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.kbs.foodie.databinding.MapFragmentBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import net.daum.mf.map.api.CalloutBalloonAdapter
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -32,6 +37,11 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
     private var binding: MapFragmentBinding? = null
     lateinit var locationDataListener: OnLocationSetListener
     private lateinit var mapView : MapView              // 카카오 지도 뷰
+
+    val db: FirebaseFirestore = Firebase.firestore
+    private val contentCollectionRef = db.collection("user").document("a@a.com")
+        .collection("content")
+
     companion object {
         const val BASE_URL = "https://dapi.kakao.com/"
         const val API_KEY = "KakaoAK b4186fe9f3dc84011569230d000fc096"  // REST API 키
@@ -64,10 +74,47 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
         listAdapter.setItemClickListener(object: ListAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
                 val mapPoint = MapPoint.mapPointWithGeoCoord(listItems[position].y, listItems[position].x)
+
                 binding!!.mapView.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
-                locationDataListener.onLocationSet(listItems[position].address)
+                locationDataListener.onLocationSet(listItems[position].address, listItems[position].name, listItems[position].y, listItems[position].x)
             }
         })
+        val point = MapPOIItem()
+        CoroutineScope(Dispatchers.IO).launch {
+// 서울시청에 마커 추가
+
+
+//                itemName = "서울시청"   // 마커 이름
+//                mapPoint = MapPoint.mapPointWithGeoCoord(37.5666805, 126.9784147)   // 좌표
+//                markerType = MapPOIItem.MarkerType.RedPin          // 마커 모양 (커스텀)
+//                //customImageResourceId = R.drawable.이미지               // 커스텀 마커 이미지
+//                //selectedMarkerType = MapPOIItem.MarkerType.CustomImage  // 클릭 시 마커 모양 (커스텀)
+//                //customSelectedImageResourceId = R.drawable.이미지       // 클릭 시 커스텀 마커 이미지
+//                isCustomImageAutoscale = false      // 커스텀 마커 이미지 크기 자동 조정
+//                setCustomImageAnchor(0.5f, 1.0f)    // 마커 이미지 기준점
+//            }
+//            mapView.addPOIItem(marker)
+            point.apply {
+                contentCollectionRef.get()
+                    .addOnSuccessListener { // it: DocumentSnapshot
+                        for (doc in it) {
+                            if (doc["y"] != null) {
+                                itemName = doc["name"].toString()
+                                val y=doc["y"].toString().toDouble()
+                                val x=doc["x"].toString().toDouble()
+                                mapPoint = MapPoint.mapPointWithGeoCoord(
+                                    y,
+                                    x
+                                )
+                                markerType = MapPOIItem.MarkerType.RedPin
+                                setCustomImageAnchor(0.5f, 1.0f)
+                            }
+                        }
+                    }.addOnFailureListener {
+                    }
+                mapView.addPOIItem(point)
+            }
+        }
         // 검색 버튼
         binding!!.btnSearch.setOnClickListener {
             keyword = binding!!.etSearchField.text.toString()
@@ -114,7 +161,7 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        locationDataListener.onLocationSet("광진구 군자동")
+        //locationDataListener.onLocationSet("광진구 군자동")
     }
 
     private fun searchKeyword(keyword: String, page: Int) {
@@ -163,6 +210,8 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
                     selectedMarkerType = MapPOIItem.MarkerType.RedPin
                 }
                 binding?.mapView?.addPOIItem(point)
+
+                //binding?.mapView?.addPOIItem(point)
             }
             listAdapter.notifyDataSetChanged()
 
@@ -174,6 +223,9 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
             Toast.makeText(context, "검색 결과가 없습니다", Toast.LENGTH_SHORT).show()
         }
     }
+    private fun queryItem(itemID: String) {
+            }
+
     // 커스텀 말풍선 클래스
     class CustomBalloonAdapter(inflater: LayoutInflater): CalloutBalloonAdapter {
         val mCalloutBalloon: View = inflater.inflate(R.layout.balloon_layout, null)
@@ -196,4 +248,6 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
     }
 
 }
+
+
 

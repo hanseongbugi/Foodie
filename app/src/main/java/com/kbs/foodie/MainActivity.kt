@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
-    override fun onLocationSet(location: String) {
+    override fun onLocationSet(location: String, name: String, y: Double, x: Double) {
         Log.w("!!!",location)
     }
 }
