@@ -10,14 +10,21 @@
         android:label="">
     </fragment>
     <fragment
-        android:id="@+id/friendFragment"
+        android:id="@+id/friendAddFragment"
+        android:name="com.kbs.foodie.FriendAddFragment"
+        android:label="" />
+    <fragment
+        android:id="@+id/myInfoFragment"
         android:name="com.kbs.foodie.MyInfoFragment"
         android:label="">
-
+        <action
+            android:id="@+id/action_myInfoFragment_to_friendAddFragment"
+            app:destination="@id/friendAddFragment"
+            app:popUpTo="@id/myInfoFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
-        android:id="@+id/fragmentView"
+        android:id="@+id/mapFragment"
         android:name="com.kbs.foodie.MapFragment"
-        android:label="">
-    </fragment>
+        android:label="" />
 </navigation>

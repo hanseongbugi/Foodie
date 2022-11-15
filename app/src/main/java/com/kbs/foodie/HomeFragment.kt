@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val main= activity as MainActivity
-        main.showAddMenu()
+        main.showHomeMenu()
         val rootView = inflater.inflate(R.layout.home_fragment,container,false) as ViewGroup
         val recyclerView=rootView.findViewById<RecyclerView>(R.id.recyclerview)
         user=arguments?.getString("user")

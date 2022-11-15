@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
     private lateinit var binding: ActivityMainBinding
     lateinit var navController:NavController
     lateinit var user:String
-    private var flag=true
+    private var toolBarkey=ToolBarKey.Home
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -54,35 +54,52 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         graph.addArgument("user",arg)
         navController.graph=graph
         appBarConfiguration = AppBarConfiguration(navController.graph)
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         val bottomNavigationView = binding.bottomNav
         bottomNavigationView.setupWithNavController(navController)
-        val appBarConfiguration=AppBarConfiguration.Builder(
-            R.id.fragmentView, R.id.friendFragment,R.id.homeFragment
+        val appBarConfig=AppBarConfiguration.Builder(
+            R.id.homeFragment, R.id.mapFragment,R.id.myInfoFragment
         ).build()
-        NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration)
+        NavigationUI.setupActionBarWithNavController(this,navController,appBarConfig)
 
     }
-    fun showAddMenu(){
-        println("showAdd")
-        flag=true
+    fun showHomeMenu(){
+        toolBarkey=ToolBarKey.Home
         invalidateOptionsMenu()
     }
     fun showSearchMenu(){
-        flag=false
+        toolBarkey=ToolBarKey.Search
         invalidateOptionsMenu()
+    }
+    fun hiddenMenu(){
+        toolBarkey=ToolBarKey.Hidden
+        invalidateOptionsMenu()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController=findNavController(R.id.fragmentView)
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
 
-        if(flag) {
-            menu?.findItem(R.id.addMenu)?.isVisible = true
-            menu?.findItem(R.id.search_menu)?.isVisible=false
+        when(toolBarkey) {
+            ToolBarKey.Home-> {
+                menu?.findItem(R.id.addMenu)?.isVisible = true
+                menu?.findItem(R.id.search_menu)?.isVisible = false
+            }
+            ToolBarKey.Search->{
+                menu?.findItem(R.id.addMenu)?.isVisible = false
+                menu?.findItem(R.id.search_menu)?.isVisible = true
+            }
+            else -> {
+                menu?.findItem(R.id.addMenu)?.isVisible = false
+                menu?.findItem(R.id.search_menu)?.isVisible = false
+            }
         }
-        else{
-            menu?.findItem(R.id.addMenu)?.isVisible = false
-            menu?.findItem(R.id.search_menu)?.isVisible=true
-        }
+
 
         return true
     }
@@ -100,9 +117,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
                 startActivity(intent)
             }
             R.id.search_menu->{
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentView,FriendAddFragment())
-                    .commit()
+                navController.navigate(R.id.action_myInfoFragment_to_friendAddFragment)
             }
             else -> {
                 return super.onOptionsItemSelected(item)
@@ -190,6 +205,10 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
 
     override fun onLocationSet(location: String, name: String, y: Double, x: Double) {
         Log.w("!!!",location)
+    }
+
+    enum class ToolBarKey{
+        Home,Search,Hidden
     }
 }
 
