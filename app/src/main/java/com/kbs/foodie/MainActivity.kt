@@ -9,6 +9,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +29,8 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
     private val ACCESS_FINE_LOCATION = 1000
     private lateinit var binding: ActivityMainBinding
     lateinit var navController:NavController
+    lateinit var user:String
+    private var flag=true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -34,7 +38,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         setContentView(view)
         initToolBar()
         val bundle=Bundle()
-        val user=intent.getStringExtra("user")
+        user=intent.getStringExtra("user")?:""
         bundle.putString("user",user)
         if (checkLocationService()) {
             permissionCheck()
@@ -58,6 +62,53 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         ).build()
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration)
 
+    }
+    fun showAddMenu(){
+        println("showAdd")
+        flag=true
+        invalidateOptionsMenu()
+    }
+    fun showSearchMenu(){
+        flag=false
+        invalidateOptionsMenu()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+
+        if(flag) {
+            menu?.findItem(R.id.addMenu)?.isVisible = true
+            menu?.findItem(R.id.search_menu)?.isVisible=false
+        }
+        else{
+            menu?.findItem(R.id.addMenu)?.isVisible = false
+            menu?.findItem(R.id.search_menu)?.isVisible=true
+        }
+
+        return true
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.icon_menu,menu)
+        return true
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.addMenu -> {
+                val intent= Intent(this, AddActivity::class.java)
+                    .putExtra("user",user)
+                startActivity(intent)
+            }
+            R.id.search_menu->{
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentView,FriendAddFragment())
+                    .commit()
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
+        return true
     }
 
     private fun initToolBar(){

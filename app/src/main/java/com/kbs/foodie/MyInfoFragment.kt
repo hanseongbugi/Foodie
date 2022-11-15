@@ -2,10 +2,7 @@ package com.kbs.foodie
 
 import android.os.Bundle
 import android.text.TextUtils.replace
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.fragment.app.Fragment
 
 class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
@@ -14,9 +11,17 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val main= activity as MainActivity
+        main.showSearchMenu()
+
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
+
 
 
 }
