@@ -12,9 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/userImage1"
         app:srcCompat="@drawable/img_1" />
 
     <ImageView
@@ -23,7 +23,7 @@
         android:layout_marginStart="90dp"
         android:layout_marginTop="9dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameText"
+        app:layout_constraintTop_toBottomOf="@+id/userNameEditText"
         app:srcCompat="@drawable/img_1" />
 
     <EditText
@@ -37,7 +37,7 @@
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
         app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/nameText"
+        app:layout_constraintTop_toBottomOf="@+id/userNameEditText"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
@@ -100,18 +100,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/img" />
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="204dp"
-        android:layout_height="191dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <EditText
-        android:id="@+id/nameText"
+        android:id="@+id/userNameEditText"
         android:layout_width="332dp"
         android:layout_height="53dp"
         android:layout_marginStart="7dp"
@@ -128,13 +118,13 @@
         android:layout_width="78dp"
         android:layout_height="48dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="100dp"
         android:text="NAME"
         android:textColor="#81807A"
         android:textSize="20sp"
         android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintTop_toBottomOf="@+id/userImage1" />
 
     <TextView
         android:id="@+id/textView4"
@@ -160,5 +150,14 @@
         android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <ImageView
+        android:id="@+id/userImage1"
+        android:layout_width="153dp"
+        android:layout_height="151dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:srcCompat="@android:drawable/ic_menu_report_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

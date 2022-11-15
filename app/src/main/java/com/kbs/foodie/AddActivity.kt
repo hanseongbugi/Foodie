@@ -16,7 +16,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kbs.foodie.databinding.ActivityAddBinding
-import kotlin.math.log
 import com.google.firebase.storage.ktx.storage
 import com.kbs.foodie.AddActivity.Companion.UPLOAD_FOLDER
 
