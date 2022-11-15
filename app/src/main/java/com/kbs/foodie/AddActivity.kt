@@ -5,12 +5,12 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-
 import com.kbs.foodie.databinding.ActivityAddBinding
+import kotlin.math.log
 
 
 class AddActivity: AppCompatActivity(), OnLocationSetListener {
@@ -25,8 +25,7 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
     lateinit var markedY:String
     lateinit var markedX:String
     val db: FirebaseFirestore = Firebase.firestore
-    private val contentCollectionRef = db.collection("user").document("a@a.com")
-        .collection("content")
+    private lateinit var contentCollectionRef:CollectionReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +33,11 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
         setContentView(binding.root)
         binding.addLocation.visibility= View.INVISIBLE
         initToolBar()
+        val login_id=intent.getStringExtra("user")
+        if (login_id != null) {
+            Log.w("login id in AddActivity :", login_id)
+            contentCollectionRef = db.collection("user").document(login_id).collection("content");
+        }
 //        supportActionBar?.displayOptions = androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM
 //        supportActionBar?.setCustomView(R.layout.custom_action_bar)
         binding.locationSearchButton.setOnClickListener{
@@ -48,7 +52,7 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
             binding.scoreEditText.visibility=View.INVISIBLE
             binding.saveAndBackButton.visibility=View.INVISIBLE
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentView,MapFragment())
+                .replace(R.id.addLocation,MapFragment())
                 .addToBackStack(null)
                 .commit()
         }
@@ -60,7 +64,7 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
 
         binding.saveAndBackButton.setOnClickListener(){
             addItem()
-            
+            finish()
         }
     }
     private fun addItem(){

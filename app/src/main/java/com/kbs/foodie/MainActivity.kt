@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
             R.id.fragmentView, R.id.friendFragment,R.id.homeFragment
         ).build()
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration)
+
     }
 
     private fun initToolBar(){
