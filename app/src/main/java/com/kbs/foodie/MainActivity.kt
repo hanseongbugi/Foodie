@@ -58,12 +58,24 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         setupActionBarWithNavController(navController, appBarConfiguration)
         val bottomNavigationView = binding.bottomNav
         bottomNavigationView.setupWithNavController(navController)
+
+        //bottom navigation의 fragment를 루트 최상위로
+        //bottom navigation 변환에도 업 버튼이 출력되지 않기 위해 사용
         val appBarConfig=AppBarConfiguration.Builder(
             R.id.homeFragment, R.id.mapFragment,R.id.myInfoFragment
         ).build()
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfig)
 
     }
+
+    // 업 버튼이 눌릴 때 호출 된다. -> SearchFragment에서 MyInfoFragment로의 이동을 위해 사용
+    override fun onSupportNavigateUp(): Boolean {
+        val navController=findNavController(R.id.fragmentView)
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
+    }
+
+    //이 메소드를 각 fragment에서 호출하여 app bar를 관리한다
     fun showHomeMenu(){
         toolBarkey=ToolBarKey.Home
         invalidateOptionsMenu()
@@ -77,14 +89,9 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         invalidateOptionsMenu()
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController=findNavController(R.id.fragmentView)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
-    }
-
+    //invaiidateOptionsMenu가 호출되고 호출되는 메소드
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-
+        // frag에 따라 다르게 app bar를 수정한다
         when(toolBarkey) {
             ToolBarKey.Home-> {
                 menu?.findItem(R.id.addMenu)?.isVisible = true
@@ -103,19 +110,24 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
 
         return true
     }
+
+    // 초기에 app bar를 생성
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.icon_menu,menu)
         return true
 
     }
 
+    // item이 눌렸을 때
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            // + 버튼이 눌리면 addActivity를 intent를 이용해 전환
             R.id.addMenu -> {
                 val intent= Intent(this, AddActivity::class.java)
                     .putExtra("user",user)
                 startActivity(intent)
             }
+            // 돋보기 아이콘이 눌르면 friendaddFragment로 전환
             R.id.search_menu->{
                 navController.navigate(R.id.action_myInfoFragment_to_friendAddFragment)
             }
@@ -126,8 +138,11 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         return true
     }
 
+
     private fun initToolBar(){
+        // 기존의 툴바를 제거
         supportActionBar?.hide()
+        // layout에서 만든 toolbar를 사용한다.
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -140,7 +155,6 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
             super.onBackPressed()
         }
     }
-
 
     private fun permissionCheck() {
         val preference = getPreferences(MODE_PRIVATE)
