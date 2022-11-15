@@ -1,9 +1,15 @@
 package com.kbs.foodie
 
+import android.content.Intent
+import android.icu.text.SimpleDateFormat
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -11,8 +17,12 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kbs.foodie.databinding.ActivityAddBinding
 import kotlin.math.log
+import com.google.firebase.storage.ktx.storage
+import com.kbs.foodie.AddActivity.Companion.UPLOAD_FOLDER
 
+import java.util.*
 
+@Suppress("DEPRECATION")
 class AddActivity: AppCompatActivity(), OnLocationSetListener {
     lateinit var binding:ActivityAddBinding
     //리뷰작성 항목은 이름, 장소, 점수, 리뷰내용
@@ -24,8 +34,18 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
     lateinit var mReview:String
     lateinit var markedY:String
     lateinit var markedX:String
+    lateinit var mFoodImage:String
+
     val db: FirebaseFirestore = Firebase.firestore
     private lateinit var contentCollectionRef:CollectionReference
+
+    var foodPhoto : Uri? = null
+    var foodFileName : String? = null
+    val storage = Firebase.storage
+    companion object {
+        const val REQ_GALLERY = 1
+        const val UPLOAD_FOLDER = "contentImage/"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,15 +79,19 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
 
 
 
+
+        //갤러리 이미지 연동
+        binding.imageView6.setOnClickListener(){
+            openGallery()
+        }
         //addItem()
-
-
         binding.saveAndBackButton.setOnClickListener(){
             addItem()
             finish()
         }
     }
     private fun addItem(){
+        uploadFile()
         mName = if(binding.nameEditText.text.toString()==null){
             ""
         }else {
@@ -77,19 +101,21 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
         mScore = binding.scoreEditText.text.toString()
         mLocation = binding.locationEditText.text.toString()
         mReview = binding.reviewEditText.text.toString()
+        mFoodImage = foodFileName.toString()
 
         val itemMap = hashMapOf(
             "name" to mName,
             "address" to mLocation,
             "score" to mScore,
             "review" to mReview,
-            "image" to "contentImage/pngwing.com.png",
+            "image" to "contentImage/$mFoodImage",
             "y" to markedY,
             "x" to markedX,
 
         )
         contentCollectionRef.add(itemMap)
             .addOnSuccessListener { //updateList()
+                Toast.makeText(this, "데이터가 추가되었습니다", Toast.LENGTH_SHORT).show()
              }.addOnFailureListener {  }
     }
     /*
@@ -164,7 +190,37 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
         binding.nameEditText.setText(mName)
         Log.w("2",location)
     }
+    fun openGallery(){
+        val intent= Intent(Intent.ACTION_PICK)
+        intent.type= MediaStore.Images.Media.CONTENT_TYPE
+        startActivityForResult(intent, REQ_GALLERY)
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == RESULT_OK){
+            when(requestCode){
+                REQ_GALLERY -> {
+                    foodPhoto =data?.data
+                    binding.imageView6.setImageURI(foodPhoto)
+                }
+            }
+        }
+    }
+    private fun uploadFile() {
+        val timestamp = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        } else {
+        }
+        foodFileName = "IMAGE_$timestamp.png"
+        val imageRef = storage.reference.child("${AddActivity.UPLOAD_FOLDER}${foodFileName}")
+
+        imageRef.putFile(foodPhoto!!).addOnCompleteListener {
+            Toast.makeText(this, "Upload completed", Toast.LENGTH_SHORT).show()
+
+        }
+
+    }
 
 }
 
