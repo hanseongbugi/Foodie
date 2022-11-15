@@ -11,7 +11,7 @@
     </fragment>
     <fragment
         android:id="@+id/friendFragment"
-        android:name="com.kbs.foodie.FriendFragment"
+        android:name="com.kbs.foodie.MyInfoFragment"
         android:label="">
 
     </fragment>
