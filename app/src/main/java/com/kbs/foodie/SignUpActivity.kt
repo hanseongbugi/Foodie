@@ -29,10 +29,10 @@ class SignUpActivity : AppCompatActivity() {
     private val db: FirebaseFirestore = Firebase.firestore
     private val userItemRef = db.collection("user")
     var userPhoto : Uri? = null
-    var fileName : String? = null
+    var UserFileName : String? = null
     val storage = Firebase.storage
     companion object {
-        const val REQ_GALLERY = 2
+        const val REQ_GALLERY = 1
         const val UPLOAD_FOLDER = "userImage/"
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,17 +52,17 @@ class SignUpActivity : AppCompatActivity() {
             openGallery()
         }
         binding.saveButton.setOnClickListener {
-            
+            uploadFile()
             muserEmail = binding.emailSignUpText.text.toString()
             muserPassword = binding.passwdSignUpText.text.toString()
             muserName = binding.userNameEditText.text.toString()
-            muserImage = fileName.toString()
+            muserImage = "${UPLOAD_FOLDER}${UserFileName}"
             loginUserId(muserEmail, muserPassword, muserName, muserImage)
 
 
         }
     }
-    private fun loginUserId(email:String, password: String, name: String, imagename: String){
+    private fun loginUserId(email:String, password: String, name: String, userimage: String){
         
         Firebase.auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this){
@@ -79,13 +79,11 @@ class SignUpActivity : AppCompatActivity() {
             }
     }
     private fun addItem(){
-        uploadFile()
         
         val itemMap = hashMapOf(
             "username" to muserName,
-            "imagename" to muserImage,
-            "useremail" to muserEmail,
-            "password" to muserPassword
+            "userimage" to muserImage,
+            "useremail" to muserEmail
         )
         userItemRef.document(muserEmail).set(itemMap)
             .addOnSuccessListener { //updateList()
@@ -114,8 +112,8 @@ class SignUpActivity : AppCompatActivity() {
             SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         } else {
         }
-        fileName = "IMAGE_$timestamp.png"
-        val imageRef = storage.reference.child("${SignUpActivity.UPLOAD_FOLDER}${fileName}")
+        UserFileName = "User_$timestamp.png"
+        val imageRef = storage.reference.child("${SignUpActivity.UPLOAD_FOLDER}${UserFileName}")
 
         imageRef.putFile(userPhoto!!).addOnCompleteListener {
             Toast.makeText(this, "Upload completed", Toast.LENGTH_SHORT).show()
