@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/back_color">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -30,9 +31,12 @@
 
     <Button
         android:id="@+id/saveAndBackButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/login_button_border"
         android:text="Save and Back"
+        android:textColor="#F9CF42"
+        android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,40 +48,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="80dp"
         android:text="LOCATION"
+        android:textColor="#878989"
+        android:textSize="16sp"
+        android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
 
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="330dp"
+        android:layout_height="206dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@drawable/img_8" />
+
     <TextView
         android:id="@+id/reviewTextView"
-        android:layout_width="56dp"
-        android:layout_height="14dp"
+        android:layout_width="60dp"
+        android:layout_height="20dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:text="REVIEW"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="#878989"
+        android:textSize="16sp"
+        android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scoreTextView"
-        app:layout_constraintVertical_bias="0.16" />
+        app:layout_constraintTop_toBottomOf="@+id/scoreTextView" />
 
     <TextView
         android:id="@+id/nameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="272dp"
         android:text="NAME"
+        android:textColor="#878989"
+        android:textSize="16sp"
+        android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
         android:id="@+id/scoreTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="33dp"
         android:text="SCORE"
+        android:textColor="#878989"
+        android:textSize="16sp"
+        android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/locationTextView" />
 
@@ -85,7 +109,7 @@
         android:id="@+id/imageView6"
         android:layout_width="259dp"
         android:layout_height="184dp"
-        app:layout_constraintBottom_toTopOf="@+id/nameTextView"
+        android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
@@ -93,76 +117,70 @@
 
     <EditText
         android:id="@+id/nameEditText"
-        android:layout_width="234dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="44dp"
-        android:background="@drawable/img_1"
+        android:layout_width="265dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="13dp"
+        android:background="@drawable/login_input_border"
         android:ems="10"
         android:inputType="textPersonName"
+        android:paddingStart="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/nameTextView"
         app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
     <EditText
         android:id="@+id/reviewEditText"
-        android:layout_width="249dp"
-        android:layout_height="84dp"
-        android:background="@drawable/img_1"
+        android:layout_width="265dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/login_input_border"
         android:ems="10"
         android:inputType="textPersonName"
+        android:paddingStart="10dp"
         app:layout_constraintBottom_toTopOf="@+id/saveAndBackButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.337"
-        app:layout_constraintStart_toEndOf="@+id/reviewTextView"
-        app:layout_constraintTop_toBottomOf="@+id/scoreEditText"
-        app:layout_constraintVertical_bias="0.689" />
+        app:layout_constraintTop_toBottomOf="@+id/scoreEditText" />
 
     <EditText
         android:id="@+id/scoreEditText"
-        android:layout_width="234dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/img_1"
+        android:layout_width="265dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="13dp"
+        android:background="@drawable/login_input_border"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/scoreTextView"
+        android:paddingStart="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.366"
-        app:layout_constraintStart_toEndOf="@+id/scoreTextView"
-        app:layout_constraintTop_toBottomOf="@+id/nameEditText"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/locationEditText" />
 
     <EditText
         android:id="@+id/locationEditText"
-        android:layout_width="224dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="40dp"
-        android:background="@drawable/img_1"
+        android:layout_width="265dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="13dp"
+        android:background="@drawable/login_input_border"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/scoreTextView"
-        app:layout_constraintEnd_toStartOf="@+id/locationSearchButton"
-        app:layout_constraintHorizontal_bias="0.069"
-        app:layout_constraintStart_toEndOf="@+id/locationTextView"
-        app:layout_constraintTop_toBottomOf="@+id/nameEditText"
-        app:layout_constraintVertical_bias="0.0" />
+        android:paddingStart="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationSearchButton" />
 
     <Button
         android:id="@+id/locationSearchButton"
-        android:layout_width="66dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="265dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="13dp"
+        android:background="@drawable/login_button_border"
         android:text="search"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="#FAD042"
+        android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.714"
-        app:layout_constraintStart_toEndOf="@+id/nameEditText"
-        app:layout_constraintTop_toTopOf="@+id/nameEditText"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
 
     <FrameLayout
         android:id="@+id/addLocation"
@@ -170,9 +188,11 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.0"/>
+        app:layout_constraintVertical_bias="0.0">
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,61 +8,72 @@
     >
 
     <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="40dp"
+        android:id="@+id/imageView10"
+        android:layout_width="225dp"
+        android:layout_height="199dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userImage1"
-        app:srcCompat="@drawable/img_1" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:srcCompat="@drawable/img_4" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="9dp"
+        android:id="@+id/imageView12"
+        android:layout_width="411dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="26dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userNameEditText"
-        app:srcCompat="@drawable/img_1" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView10"
+        app:srcCompat="@drawable/img_5" />
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="411dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="33dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:srcCompat="@drawable/img_5" />
+
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="411dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="29dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailSignUpText"
+        app:srcCompat="@drawable/img_5" />
 
     <EditText
         android:id="@+id/emailSignUpText"
         android:layout_width="372dp"
         android:layout_height="53dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/login_input_border"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
+        android:paddingStart="20dp"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/userNameEditText"
         tools:ignore="SpeakableTextPresentCheck" />
-
-    <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="2dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailSignUpText"
-        app:srcCompat="@drawable/img_1" />
 
     <EditText
         android:id="@+id/passwdSignUpText"
         android:layout_width="314dp"
         android:layout_height="53dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/login_input_border"
         android:ems="10"
-        android:hint="More than 6 chars"
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:paddingStart="20dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/emailSignUpText"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -70,7 +81,8 @@
         android:id="@+id/saveButton"
         android:layout_width="195dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="18dp"
+        android:background="@drawable/login_button_border"
         android:text="SAVE"
         android:textColor="#FAD042"
         android:textSize="24sp"
@@ -82,7 +94,8 @@
         android:id="@+id/backButton"
         android:layout_width="195dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="18dp"
+        android:background="@drawable/login_button_border"
         android:text="BACK"
         android:textColor="#FAD042"
         android:textSize="24sp"
@@ -105,11 +118,12 @@
         android:id="@+id/userNameEditText"
         android:layout_width="332dp"
         android:layout_height="53dp"
-        android:layout_marginStart="7dp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="240dp"
         android:background="@drawable/login_input_border"
         android:ems="10"
         android:inputType="textPersonName"
+        android:paddingStart="20dp"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -129,9 +143,10 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="105dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="54dp"
+        android:layout_width="121dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="49dp"
         android:text="PASSWORD"
         android:textColor="@color/login_text"
         android:textSize="20sp"
@@ -141,10 +156,10 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="63dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="76dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="53dp"
         android:text="EMAIL"
         android:textColor="#81807A"
         android:textSize="20sp"
@@ -153,13 +168,14 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="197dp"
-        android:layout_height="182dp"
+        android:id="@+id/imageView5"
+        android:layout_width="192dp"
+        android:layout_height="175dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:srcCompat="@drawable/login_input_border" />
+        app:srcCompat="@drawable/img_3" />
 
     <ImageView
         android:id="@+id/userImage1"

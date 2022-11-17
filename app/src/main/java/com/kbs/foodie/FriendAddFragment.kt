@@ -52,7 +52,7 @@ class FriendAddFragment:Fragment(R.layout.friend_add_fragment) {
         adapter = FriendAddAdapter(friendAddViewModel)
 
         userRecyclerView.adapter = adapter
-        friendAddViewModel.userInfoData.observe(viewLifecycleOwner) { // 데이터에 변화가 있을 때 어댑터에게 변경을 알림
+        friendAddViewModel.userInfoData.observe(viewLifecycleOwner) {
             adapter!!.notifyDataSetChanged()
         }
 

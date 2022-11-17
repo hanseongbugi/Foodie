@@ -67,7 +67,7 @@ class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel) : Rec
             dbFriendEmail.document(mfriendemail).set(itemMap)
                 .addOnSuccessListener {
                     println("친구추가 성공")
-                    //boolean = 0
+
                 }.addOnFailureListener {  }
         }
         private fun loadImage(imageRef: StorageReference, view: ImageView) {
@@ -92,7 +92,7 @@ class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel) : Rec
         holder.setContents(position)
 
         holder.addFriendbutton.setOnClickListener{
-            //친구 email 보내기 DB 추가
+            //친구 추가 DB
             holder.addFriendItem(position)
 
         }

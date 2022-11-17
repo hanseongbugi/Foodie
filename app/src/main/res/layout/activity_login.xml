@@ -15,7 +15,7 @@
         android:layout_marginTop="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@drawable/img_1" />
+        app:srcCompat="@drawable/img_5" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -25,7 +25,7 @@
         android:layout_marginTop="35dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailLogin"
-        app:srcCompat="@drawable/img_1" />
+        app:srcCompat="@drawable/img_5" />
 
     <EditText
         android:id="@+id/emailLogin"
