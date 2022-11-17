@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -39,7 +40,9 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        val signUpEmailText = binding.emailSignUpText.text
+        val signUpNameText = binding.userNameEditText.text
+        val signUpPassWord = binding.passwdSignUpText.text
         binding.backButton.setOnClickListener {
             Firebase.auth.signOut()
             startActivity(
@@ -52,16 +55,28 @@ class SignUpActivity : AppCompatActivity() {
             openGallery()
         }
         binding.saveButton.setOnClickListener {
-            uploadFile()
-            muserEmail = binding.emailSignUpText.text.toString()
-            muserPassword = binding.passwdSignUpText.text.toString()
-            muserName = binding.userNameEditText.text.toString()
-            muserImage = "${UPLOAD_FOLDER}${UserFileName}"
-            loginUserId(muserEmail, muserPassword, muserName, muserImage)
 
+            muserEmail = signUpEmailText.toString()
+            muserPassword = signUpPassWord.toString()
+            muserName = signUpNameText.toString()
+            muserImage = "${UPLOAD_FOLDER}${UserFileName}"?:"userImage/userDefaultImage.png"
+            if(checkEmail(muserEmail) && muserPassword.length >=6) {
+                uploadFile()
+                loginUserId(muserEmail, muserPassword, muserName, muserImage)
+            }else{
+                if(!checkEmail(muserEmail)){
+                Toast.makeText(this, "Email error: 이메일 형식으로 입력해주세요", Toast.LENGTH_SHORT).show();
+                }
+                else if(muserPassword.length <6){
+                    Toast.makeText(this, "Password error: 6글자 이상 입력해주세요", Toast.LENGTH_SHORT).show();
+                }
 
-        }
+                }
+            }
+
     }
+
+    fun checkEmail(email: String): Boolean = email.contains("@")
     private fun loginUserId(email:String, password: String, name: String, userimage: String){
         
         Firebase.auth.createUserWithEmailAndPassword(email, password)
@@ -122,3 +137,4 @@ class SignUpActivity : AppCompatActivity() {
 
     }
 }
+

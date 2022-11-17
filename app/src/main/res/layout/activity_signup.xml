@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userImage1"
         app:srcCompat="@drawable/img_1" />
@@ -61,6 +61,7 @@
         android:hint="More than 6 chars"
         android:inputType="textPassword"
         android:minHeight="48dp"
+        android:paddingStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailSignUpText"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -71,7 +72,7 @@
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
         android:text="SAVE"
-        android:textColor="#81807A"
+        android:textColor="#FAD042"
         android:textSize="24sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -83,7 +84,7 @@
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
         android:text="BACK"
-        android:textColor="#81807A"
+        android:textColor="#FAD042"
         android:textSize="24sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -91,8 +92,8 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="377dp"
-        android:layout_height="135dp"
+        android:layout_width="316dp"
+        android:layout_height="126dp"
         android:layout_marginStart="9dp"
         android:layout_marginEnd="9dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -118,7 +119,7 @@
         android:layout_width="78dp"
         android:layout_height="48dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:text="NAME"
         android:textColor="#81807A"
         android:textSize="20sp"
@@ -152,9 +153,19 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="197dp"
+        android:layout_height="182dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:srcCompat="@drawable/login_input_border" />
+
+    <ImageView
         android:id="@+id/userImage1"
         android:layout_width="153dp"
         android:layout_height="151dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"

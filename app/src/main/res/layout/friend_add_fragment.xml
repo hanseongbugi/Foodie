@@ -13,12 +13,6 @@
         android:inputType="textEmailAddress"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <Button
-        android:id="@+id/search_friend_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_recyclerview"
         android:layout_width="match_parent"

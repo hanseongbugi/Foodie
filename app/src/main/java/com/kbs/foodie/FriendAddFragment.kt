@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,7 +27,7 @@ class FriendAddFragment:Fragment(R.layout.friend_add_fragment) {
     private var adapter: FriendAddAdapter? = null
     private val friendAddViewModel by viewModels<FriendAddViewModel>()
     private lateinit var friendContentCollectionRef: CollectionReference
-    private var user: String? = null
+    val currentUser = Firebase.auth.currentUser?.email
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +44,6 @@ class FriendAddFragment:Fragment(R.layout.friend_add_fragment) {
         main.hiddenMenu()
         val rootView = inflater.inflate(R.layout.friend_add_fragment, container, false) as ViewGroup
         val userRecyclerView = rootView.findViewById<RecyclerView>(R.id.search_recyclerview)
-        val searchFriendButton = rootView.findViewById<Button>(R.id.search_friend_button)
         val searchFriendText = rootView.findViewById<EditText>(R.id.search_friend_edittext)
         friendContentCollectionRef = db.collection("user")
 
@@ -60,27 +60,36 @@ class FriendAddFragment:Fragment(R.layout.friend_add_fragment) {
             friendAddViewModel.deleteAll()
             friendContentCollectionRef.get().addOnSuccessListener {
                 for (doc in it) {
-                    if (!doc.id.equals(user)) {
+                    if (!doc.id.equals(currentUser)) {
                         friendAddViewModel.addUserInfo(UserInfo(doc))
                     }
                 }
             }
         }
-        searchFriendButton.setOnClickListener {
 
-                val searchText = searchFriendText.text.toString()
+        searchFriendText.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(searchText: Editable?) {
+                println("${searchText}")
 
                 friendContentCollectionRef.get().addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         friendAddViewModel.deleteAll()
                         for (doc in task.result!!) {
-                            if (doc.id.equals(searchText)) {
+                            val friendEmail = doc.id
+                            val friendName = doc.get("username").toString()
+                            if (friendEmail.contains(searchText?:"") || friendName.contains(searchText?:"")) {
                                 friendAddViewModel.addUserInfo(UserInfo(doc))
                             }
                         }
                     }
                 }
             }
+
+        })
 
             return rootView
         }

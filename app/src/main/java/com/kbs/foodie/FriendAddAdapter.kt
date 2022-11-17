@@ -88,20 +88,13 @@ class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel) : Rec
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(friendAddViewModel.userInfos.get(position).email.equals(currentUser)){
-            userPosition = position
-        }else{
-            holder.setContents(position)
-        }
+
+        holder.setContents(position)
+
         holder.addFriendbutton.setOnClickListener{
             //친구 email 보내기 DB 추가
             holder.addFriendItem(position)
-            if(!friendAddViewModel.userInfos.get(position).email.equals(currentUser)) {
-                holder.addFriendbutton.text = "Friend"
-                holder.addFriendbutton.isEnabled = false
-            }else{
-                println("Current User")
-            }
+
         }
 
     }
