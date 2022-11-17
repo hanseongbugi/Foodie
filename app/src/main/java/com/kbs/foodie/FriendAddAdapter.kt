@@ -19,6 +19,7 @@ import com.kbs.foodie.databinding.FriendAddItemBinding
 class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel) : RecyclerView.Adapter<FriendAddAdapter.ViewHolder>() {
 
     val currentUser = Firebase.auth.currentUser?.email
+    var userPosition: Int = 0
     inner class ViewHolder(private val binding: FriendAddItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -77,18 +78,6 @@ class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel) : Rec
                 view.setImageResource(R.drawable.img)
             }
         }
-        fun friendFilter(pos: Int){
-            val friendItems = friendAddViewModel.userInfos[pos]
-            dbFriendEmail.get().addOnCompleteListener{
-                    task -> if(task.isSuccessful){
-                for(document in task.result!!){
-                    if(document.id.equals(friendItems.email)){
-                        //이것만 띄우기
-                    }
-                }
-            }
-            }
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -100,13 +89,19 @@ class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel) : Rec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(friendAddViewModel.userInfos.get(position).email.equals(currentUser)){
-            println("현재 사용자:${friendAddViewModel.userInfos.get(position).email}")
+            userPosition = position
         }else{
             holder.setContents(position)
         }
         holder.addFriendbutton.setOnClickListener{
             //친구 email 보내기 DB 추가
             holder.addFriendItem(position)
+            if(!friendAddViewModel.userInfos.get(position).email.equals(currentUser)) {
+                holder.addFriendbutton.text = "Friend"
+                holder.addFriendbutton.isEnabled = false
+            }else{
+                println("Current User")
+            }
         }
 
     }

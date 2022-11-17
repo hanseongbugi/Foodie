@@ -137,7 +137,7 @@
     <EditText
         android:id="@+id/locationEditText"
         android:layout_width="224dp"
-        android:layout_height="37dp"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="40dp"
@@ -154,7 +154,7 @@
     <Button
         android:id="@+id/locationSearchButton"
         android:layout_width="66dp"
-        android:layout_height="32dp"
+        android:layout_height="48dp"
         android:layout_marginEnd="8dp"
         android:text="search"
         app:layout_constraintBottom_toBottomOf="parent"
