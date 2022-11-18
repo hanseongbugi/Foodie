@@ -37,7 +37,7 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
 
     val db: FirebaseFirestore = Firebase.firestore
     private lateinit var contentCollectionRef:CollectionReference
-
+    lateinit var user:String
     var foodPhoto : Uri? = null
     var foodFileName : String? = null
     val storage = Firebase.storage
@@ -52,10 +52,10 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
         setContentView(binding.root)
         binding.addLocation.visibility= View.INVISIBLE
         initToolBar()
-        val login_id=intent.getStringExtra("user")
-        if (login_id != null) {
-            Log.w("login id in AddActivity :", login_id)
-            contentCollectionRef = db.collection("user").document(login_id).collection("content");
+        user=intent.getStringExtra("user")?:""
+        if(user!="") {
+            Log.w("login id in AddActivity :", user)
+            contentCollectionRef = db.collection("user").document(user).collection("content");
         }
 //        supportActionBar?.displayOptions = androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM
 //        supportActionBar?.setCustomView(R.layout.custom_action_bar)
@@ -80,11 +80,11 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
 
 
         //갤러리 이미지 연동
-        binding.imageView6.setOnClickListener(){
+        binding.imageView6.setOnClickListener{
             openGallery()
         }
         //addItem()
-        binding.saveAndBackButton.setOnClickListener(){
+        binding.saveAndBackButton.setOnClickListener{
             addItem()
             finish()
         }

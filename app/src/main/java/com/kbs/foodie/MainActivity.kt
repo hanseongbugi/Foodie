@@ -48,11 +48,6 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentView) as NavHostFragment
         navController = navHostFragment.navController
-        val navInflater=navController.navInflater
-        val graph=navInflater.inflate(R.navigation.nav)
-        val arg=NavArgument.Builder().setDefaultValue(user).build()
-        graph.addArgument("user",arg)
-        navController.graph=graph
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -91,7 +86,6 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
 
     //invaiidateOptionsMenu가 호출되고 호출되는 메소드
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        // frag에 따라 다르게 app bar를 수정한다
         when(toolBarkey) {
             ToolBarKey.Home-> {
                 menu?.findItem(R.id.addMenu)?.isVisible = true
@@ -101,21 +95,20 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
                 menu?.findItem(R.id.addMenu)?.isVisible = false
                 menu?.findItem(R.id.search_menu)?.isVisible = true
             }
-            else -> {
-                menu?.findItem(R.id.addMenu)?.isVisible = false
-                menu?.findItem(R.id.search_menu)?.isVisible = false
+            ToolBarKey.Hidden -> {
+                menu?.clear()
             }
+
         }
-
-
+        println(menu?.findItem(R.id.addMenu)?.isVisible.toString()+menu?.findItem(R.id.search_menu)?.isVisible.toString())
         return true
     }
+
 
     // 초기에 app bar를 생성
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.icon_menu,menu)
         return true
-
     }
 
     // item이 눌렸을 때

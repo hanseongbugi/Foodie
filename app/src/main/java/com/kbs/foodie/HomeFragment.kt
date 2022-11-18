@@ -19,7 +19,7 @@ class HomeFragment : Fragment() {
     private var adapter: HomeAdapter? = null
     private val homeViewModel by viewModels<HomeViewModel>()
     private lateinit var contentCollectionRef:CollectionReference
-    private var user:String?=null
+    private lateinit var user:String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +37,8 @@ class HomeFragment : Fragment() {
         main.showHomeMenu()
         val rootView = inflater.inflate(R.layout.home_fragment,container,false) as ViewGroup
         val recyclerView=rootView.findViewById<RecyclerView>(R.id.recyclerview)
-        user=arguments?.getString("user")
-        contentCollectionRef=db.collection("user").document(user!!)
+        user=main.user
+        contentCollectionRef=db.collection("user").document(user)
             .collection("content")
 
         recyclerView.setHasFixedSize(true)

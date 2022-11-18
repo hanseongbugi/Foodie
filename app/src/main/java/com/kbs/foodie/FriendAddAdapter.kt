@@ -16,19 +16,16 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.kbs.foodie.databinding.FriendAddItemBinding
 
-class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel) : RecyclerView.Adapter<FriendAddAdapter.ViewHolder>() {
+class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel,val currentUser:String) : RecyclerView.Adapter<FriendAddAdapter.ViewHolder>() {
 
-    val currentUser = Firebase.auth.currentUser?.email
-    var userPosition: Int = 0
     inner class ViewHolder(private val binding: FriendAddItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         val db: FirebaseFirestore = Firebase.firestore
-        private lateinit var adddFriendContentCollectionRef: CollectionReference
         val storage = Firebase.storage
         val storageRef = storage.reference
         val addFriendbutton = binding.friendAddButton
-        val dbFriendEmail = db.collection("user").document(currentUser!!).collection("friend")
+        val dbFriendEmail = db.collection("user").document(currentUser).collection("friend")
 
         fun setContents(pos: Int) {
             with(friendAddViewModel.userInfos[pos]) {

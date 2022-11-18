@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.QueryDocumentSnapshot
 
-data class Content(val id: String, val name: String, val score: Int, val address: String, val review:String ,val image: String) {
+data class Content(val id: String, val name: String, val score: Float?, val address: String, val review:String ,val image: String) {
     constructor(doc: QueryDocumentSnapshot) :
-            this(doc.id, doc["name"].toString(), doc["score"].toString().toIntOrNull() ?: 0,
+            this(doc.id, doc["name"].toString(), doc["score"].toString().toFloatOrNull(),
                 doc["address"].toString(), doc["review"].toString(), doc["image"].toString())
 }
 class HomeViewModel : ViewModel() {

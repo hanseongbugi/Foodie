@@ -27,13 +27,8 @@ class FriendAddFragment:Fragment(R.layout.friend_add_fragment) {
     private var adapter: FriendAddAdapter? = null
     private val friendAddViewModel by viewModels<FriendAddViewModel>()
     private lateinit var friendContentCollectionRef: CollectionReference
-    val currentUser = Firebase.auth.currentUser?.email
+    lateinit var currentUser:String
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,10 +41,10 @@ class FriendAddFragment:Fragment(R.layout.friend_add_fragment) {
         val userRecyclerView = rootView.findViewById<RecyclerView>(R.id.search_recyclerview)
         val searchFriendText = rootView.findViewById<EditText>(R.id.search_friend_edittext)
         friendContentCollectionRef = db.collection("user")
-
+        currentUser=main.user
         userRecyclerView.setHasFixedSize(true)
         userRecyclerView.layoutManager = LinearLayoutManager(activity)
-        adapter = FriendAddAdapter(friendAddViewModel)
+        adapter = FriendAddAdapter(friendAddViewModel,currentUser)
 
         userRecyclerView.adapter = adapter
         friendAddViewModel.userInfoData.observe(viewLifecycleOwner) {
@@ -59,11 +54,10 @@ class FriendAddFragment:Fragment(R.layout.friend_add_fragment) {
             friendContentCollectionRef.get().addOnSuccessListener {
                 friendAddViewModel.deleteAll()
                 for (doc in it) {
-                    if (!doc.id.equals(currentUser)) {
+                    if (doc.id != currentUser) {
                         friendAddViewModel.addUserInfo(UserInfo(doc))
                     }
                 }
-                friendAddViewModel.updateUserInfo()
             }
         }
 
@@ -73,7 +67,6 @@ class FriendAddFragment:Fragment(R.layout.friend_add_fragment) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(searchText: Editable?) {
-                println("${searchText}")
 
                 friendContentCollectionRef.get().addOnCompleteListener { task ->
                     if (task.isSuccessful) {

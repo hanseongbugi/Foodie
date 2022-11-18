@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -38,12 +39,10 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
     private var binding: MapFragmentBinding? = null
     lateinit var locationDataListener: OnLocationSetListener
     private lateinit var mapView : MapView              // 카카오 지도 뷰
-
+    private lateinit var user:String
 
     val db: FirebaseFirestore = Firebase.firestore
-    private val contentCollectionRef = db.collection("user").document("a@a.com")
-        .collection("content")
-
+    private lateinit var contentCollectionRef: CollectionReference
     companion object {
         const val BASE_URL = "https://dapi.kakao.com/"
         const val API_KEY = "KakaoAK b4186fe9f3dc84011569230d000fc096"  // REST API 키
@@ -57,6 +56,15 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
+        user = if(activity is MainActivity) {
+            val main = activity as MainActivity
+            main.hiddenMenu()
+            main.user
+        } else{
+            val add = activity as AddActivity
+            add.user
+        }
+
         val firebaseAuth = FirebaseAuth.getInstance()
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
         val itemsCollectionRef = db.collection("user")
@@ -65,6 +73,8 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
                 Log.w("1",doc.toString())
             }
         }
+        contentCollectionRef= db.collection("user").document(user)
+            .collection("content")
 
         //searchKeyword("은행")
         binding = MapFragmentBinding.inflate(inflater,container ,false)
@@ -143,20 +153,7 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
         return binding!!.root
 
     }
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.icon_menu,menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.addMenu -> {
-                val intent= Intent(activity,AddActivity::class.java)
-                startActivity(intent)
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
-        return true
-    }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
