@@ -21,7 +21,7 @@ import com.kbs.foodie.AddActivity.Companion.UPLOAD_FOLDER
 
 import java.util.*
 
-@Suppress("DEPRECATION")
+
 class AddActivity: AppCompatActivity(), OnLocationSetListener {
     lateinit var binding:ActivityAddBinding
     //리뷰작성 항목은 이름, 장소, 점수, 리뷰내용

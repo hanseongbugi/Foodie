@@ -55,15 +55,15 @@ class FriendAddFragment:Fragment(R.layout.friend_add_fragment) {
         friendAddViewModel.userInfoData.observe(viewLifecycleOwner) {
             adapter!!.notifyDataSetChanged()
         }
-
         friendContentCollectionRef.addSnapshotListener { snapshot, error ->
-            friendAddViewModel.deleteAll()
             friendContentCollectionRef.get().addOnSuccessListener {
+                friendAddViewModel.deleteAll()
                 for (doc in it) {
                     if (!doc.id.equals(currentUser)) {
                         friendAddViewModel.addUserInfo(UserInfo(doc))
                     }
                 }
+                friendAddViewModel.updateUserInfo()
             }
         }
 

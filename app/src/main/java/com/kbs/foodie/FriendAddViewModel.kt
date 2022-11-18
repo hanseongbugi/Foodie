@@ -15,6 +15,8 @@ class FriendAddViewModel :ViewModel(){
     val userInfos = ArrayList<UserInfo>()
     fun addUserInfo(userInfo:UserInfo) {
         userInfos.add(userInfo)
+    }
+    fun updateUserInfo(){
         userInfoData.value = userInfos // let the observer know the livedata changed
     }
     fun updateContent(pos: Int, userInfo:UserInfo) {
@@ -26,6 +28,8 @@ class FriendAddViewModel :ViewModel(){
         userInfoData.value = userInfos
     }
     fun deleteAll(){
+        for (d in userInfos)
+            println(d)
         userInfos.clear()
         userInfoData.value = userInfos // let the observer know the livedata changed
     }

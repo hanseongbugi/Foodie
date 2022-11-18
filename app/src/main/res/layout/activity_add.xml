@@ -56,16 +56,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
 
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="330dp"
-        android:layout_height="206dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:srcCompat="@drawable/img_8" />
-
     <TextView
         android:id="@+id/reviewTextView"
         android:layout_width="60dp"
