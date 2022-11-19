@@ -22,9 +22,15 @@
             app:destination="@id/friendAddFragment"
             app:popUpTo="@id/myInfoFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_myInfoFragment_to_profileEditFragment"
+            app:destination="@id/profileEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.kbs.foodie.MapFragment"
         android:label="" />
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="com.kbs.foodie.ProfileEditFragment" />
 </navigation>
