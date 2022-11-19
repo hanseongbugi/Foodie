@@ -39,14 +39,18 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
     private var binding: MapFragmentBinding? = null
     lateinit var locationDataListener: OnLocationSetListener
     private lateinit var mapView : MapView              // 카카오 지도 뷰
-    private lateinit var user:String
-//    private val eventListener = context?.let { MarkerEventListener(it) }
+    private lateinit var user:String //나
+    private var users = ArrayList<String>(); //친구들
+
+
+    //    private val eventListener = context?.let { MarkerEventListener(it) }
     private var pointListReview = ArrayList<String>();
     private var pointListIndex = ArrayList<MapPoint>();
     private var pointListSocre = ArrayList<String>();
     private lateinit var eventListener:MarkerEventListener // 마커 클릭 이벤트 리스너
     val db: FirebaseFirestore = Firebase.firestore
     private lateinit var contentCollectionRef: CollectionReference
+    private lateinit var FriendCollectionRef : CollectionReference
     companion object {
         const val BASE_URL = "https://dapi.kakao.com/"
         const val API_KEY = "KakaoAK b4186fe9f3dc84011569230d000fc096"  // REST API 키
@@ -71,14 +75,118 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
 
         val firebaseAuth = FirebaseAuth.getInstance()
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-        val itemsCollectionRef = db.collection("user")
-        itemsCollectionRef.get().addOnSuccessListener {
+        val friendCollectionRef = db.collection("user").document(user).collection("friend")
+
+
+        friendCollectionRef.get().addOnSuccessListener { it ->
             for(doc in it){
-                Log.w("1",doc.toString())
+                val friend = doc["friendEmail"].toString()
+                contentCollectionRef= db.collection("user").document(friend)
+                    .collection("content")
+                contentCollectionRef.get()
+                    .addOnSuccessListener { // it: DocumentSnapshot
+                        for (doc in it) {
+                            val point = MapPOIItem()
+                            var checkOnly = true
+                            point.apply {
+                                if (doc["y"] != null) {
+                                    var review = doc["review"].toString()
+                                    var score = doc["score"].toString()
+                                    itemName = doc["name"].toString()
+                                    //Log.w("in MapFragment",itemName)
+                                    val y = doc["y"].toString().toDouble()
+                                    //Log.w("in MapFragment","${y}")
+                                    val x = doc["x"].toString().toDouble()
+                                    mapPoint = MapPoint.mapPointWithGeoCoord(
+                                        y,
+                                        x
+                                    )
+                                    markerType = MapPOIItem.MarkerType.RedPin
+                                    isCustomImageAutoscale = false
+                                    setCustomImageAnchor(0.5f, 1.0f)
+                                    pointListReview.add("Review :$review");
+                                    pointListIndex.add(mapPoint)
+                                    pointListSocre.add("$score")
+                                    //Log.w("in MapFragment", pointListReview.get(0))
+
+                                    //이미 마커가 찍힌경우 => 하나만 찍히도록
+                                    var points = binding?.mapView?.poiItems
+                                    if (points != null) {
+                                        for(pt in points)
+                                            if(pt.itemName ==  doc["name"].toString()){
+                                                checkOnly =false
+                                                Log.w("5", "겹침")
+                                            }
+
+                                    }
+
+                                }
+
+                                if(checkOnly)
+                                    binding?.mapView?.addPOIItem(point)
+
+                            }
+                        }
+                    }
+                    .addOnFailureListener {
+                    }
+
             }
         }
-        contentCollectionRef= db.collection("user").document(user)
-            .collection("content")
+
+        CoroutineScope(Dispatchers.IO).launch {
+            contentCollectionRef= db.collection("user").document(user)
+                .collection("content")
+            contentCollectionRef.get()
+                .addOnSuccessListener { // it: DocumentSnapshot
+                    for (doc in it) {
+                        val point = MapPOIItem()
+                        var checkOnly = true
+                        point.apply {
+                            if (doc["y"] != null) {
+                                var review = doc["review"].toString()
+                                var score = doc["score"].toString()
+                                itemName = doc["name"].toString()
+                                //Log.w("in MapFragment",itemName)
+                                val y = doc["y"].toString().toDouble()
+                                //Log.w("in MapFragment","${y}")
+                                val x = doc["x"].toString().toDouble()
+                                mapPoint = MapPoint.mapPointWithGeoCoord(
+                                    y,
+                                    x
+                                )
+                                markerType = MapPOIItem.MarkerType.RedPin
+                                isCustomImageAutoscale = false
+                                setCustomImageAnchor(0.5f, 1.0f)
+                                pointListReview.add("Review :$review");
+                                pointListIndex.add(mapPoint)
+                                pointListSocre.add(score)
+                                var points = binding?.mapView?.poiItems
+
+                                //이미 마커가 찍힌경우 => 하나만 찍히도록
+                                if (points != null) {
+                                    for(pt in points)
+                                        if(pt.itemName ==  doc["name"].toString()){
+                                            checkOnly =false
+                                            Log.w("5", "겹침")
+                                        }
+
+                                }
+
+                            }
+
+                            if(checkOnly)
+                                binding?.mapView?.addPOIItem(point)
+
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                }
+
+        }
+
+
 
         //searchKeyword("은행")
         binding = MapFragmentBinding.inflate(inflater,container ,false)
@@ -118,45 +226,6 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
 
 
 
-
-
-        CoroutineScope(Dispatchers.IO).launch {
-
-            contentCollectionRef.get()
-                    .addOnSuccessListener { // it: DocumentSnapshot
-                        for (doc in it) {
-                            val point = MapPOIItem()
-                            var i=0;
-                            point.apply {
-                                if (doc["y"] != null) {
-                                    var review = doc["review"].toString()
-                                    var score = doc["score"].toString()
-                                    itemName = doc["name"].toString()
-                                    //Log.w("in MapFragment",itemName)
-                                    val y = doc["y"].toString().toDouble()
-                                    //Log.w("in MapFragment","${y}")
-                                    val x = doc["x"].toString().toDouble()
-                                    mapPoint = MapPoint.mapPointWithGeoCoord(
-                                        y,
-                                        x
-                                    )
-                                    markerType = MapPOIItem.MarkerType.RedPin
-                                    isCustomImageAutoscale = false
-                                    setCustomImageAnchor(0.5f, 1.0f)
-                                    pointListReview.add("Review :$review");
-                                    pointListIndex.add(mapPoint)
-                                    pointListSocre.add("별점 : $score/5")
-                                    //Log.w("in MapFragment", pointListReview.get(0))
-
-                                }
-                                binding?.mapView?.addPOIItem(point)
-                            }
-                        }
-                    }
-                .addOnFailureListener {
-                    }
-
-            }
 
 
         mapView.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater))  // 커스텀 말풍선 등록
@@ -244,18 +313,28 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
         private val mCalloutBalloon: View = inflater.inflate(R.layout.balloon_layout, null)
         val name: TextView = mCalloutBalloon.findViewById(R.id.ball_tv_name)
         private val address: TextView = mCalloutBalloon.findViewById(R.id.ball_tv_address)
+
+
         override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
             // 마커 클릭 시 나오는 말풍선
+
+
             name.text = poiItem?.itemName   // 해당 마커의 정보 이용 가능
             var i=0;
+            var sum =0.0;
+            var count =0;
             for(p in pointListIndex ){
-
-                if(poiItem?.mapPoint == p)
-                    address.text = pointListSocre.get(i).toString();
+                if(poiItem?.mapPoint == p){
+                    sum += pointListSocre[i].toDouble();
+                    count++;
+                }
                 i+=1;
             }
-            //address.text = poiItem?.itemName
+            Log.w("in CustomBulloons ", "$sum")
+            if(count!=0)
+                 address.text = "별점 : "+(sum/count)+"/5.0"
             return mCalloutBalloon
+
         }
 
         override fun getPressedCalloutBalloon(poiItem: MapPOIItem?): View {
