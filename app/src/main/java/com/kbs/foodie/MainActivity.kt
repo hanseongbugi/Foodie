@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
     // 업 버튼이 눌릴 때 호출 된다. -> SearchFragment에서 MyInfoFragment로의 이동을 위해 사용
     override fun onSupportNavigateUp(): Boolean {
         val navController=findNavController(R.id.fragmentView)
+        binding.bottomNav.isVisible=true
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
@@ -117,6 +119,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
             // 돋보기 아이콘이 눌르면 friendaddFragment로 전환
             R.id.search_menu->{
                 navController.navigate(R.id.action_myInfoFragment_to_friendAddFragment)
+                binding.bottomNav.isVisible=false
             }
             else -> {
                 return super.onOptionsItemSelected(item)

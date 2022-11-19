@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
@@ -91,7 +92,8 @@ class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel,val cu
         holder.addFriendbutton.setOnClickListener{
             //친구 추가 DB
             holder.addFriendItem(position)
-
+            holder.addFriendbutton.text = "Friend"
+            holder.addFriendbutton.isEnabled= false
         }
 
     }
