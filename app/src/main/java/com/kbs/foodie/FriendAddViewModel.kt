@@ -13,10 +13,12 @@ class FriendAddViewModel :ViewModel(){
 
     val userInfoData = MutableLiveData<ArrayList<UserInfo>>()
     val userInfos = ArrayList<UserInfo>()
+
     fun addUserInfo(userInfo:UserInfo) {
         userInfos.add(userInfo)
         userInfoData.value = userInfos
     }
+
     fun updateContent(pos: Int, userInfo:UserInfo) {
         userInfos[pos] = userInfo
         userInfoData.value = userInfos // 옵저버에게 라이브데이터가 변경된 것을 알리기 위해
@@ -27,6 +29,5 @@ class FriendAddViewModel :ViewModel(){
     }
     fun deleteAll(){
         userInfos.clear()
-        userInfoData.value = userInfos // let the observer know the livedata changed
     }
 }

@@ -19,6 +19,7 @@ class HomeFragment : Fragment() {
     private var adapter: HomeAdapter? = null
     private val homeViewModel by viewModels<HomeViewModel>()
     private lateinit var contentCollectionRef:CollectionReference
+    private lateinit var friendCollectionRef:CollectionReference
     private lateinit var user:String
 
 
@@ -40,6 +41,8 @@ class HomeFragment : Fragment() {
         user=main.user
         contentCollectionRef=db.collection("user").document(user)
             .collection("content")
+        friendCollectionRef=db.collection("user").document(user)
+            .collection("friend")
 
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager=LinearLayoutManager(activity)
@@ -48,14 +51,39 @@ class HomeFragment : Fragment() {
         homeViewModel.contentData.observe(viewLifecycleOwner) { // 데이터에 변화가 있을 때 어댑터에게 변경을 알림
             adapter!!.notifyDataSetChanged() // 어댑터가 리사이클러뷰에게 알려 내용을 갱신함
         }
-        contentCollectionRef.addSnapshotListener{snapshot,error->
-            homeViewModel.deleteAll()
+        homeViewModel.emailData.observe(viewLifecycleOwner){
+            homeViewModel.deleteContentAll()
+            for(email in it){
+                db.collection("user").document(email).
+                collection("content").get().addOnSuccessListener {
+                    for(doc in it){
+                        homeViewModel.addContent(Content(doc))
+                    }
+                }
+            }
             contentCollectionRef.get().addOnSuccessListener {
                 for(doc in it){
                     homeViewModel.addContent(Content(doc))
                 }
             }
         }
+
+        contentCollectionRef.addSnapshotListener{snapshot,error->
+            for(doc in snapshot!!.documentChanges){
+                homeViewModel.addContent(Content(doc))
+            }
+
+        }
+        friendCollectionRef.addSnapshotListener{snapshot,error->
+            homeViewModel.deleteEmailAll()
+            friendCollectionRef.get().addOnSuccessListener {
+                for(doc in it){
+                    homeViewModel.addFriendEmail(doc["friendEmail"].toString())
+                }
+            }
+        }
+
+
         return rootView
     }
 

@@ -42,17 +42,15 @@
 
         <TextView
             android:id="@+id/list_tv_number"
-            android:layout_width="83dp"
-            android:layout_height="28dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:drawablePadding="15dp"
             android:paddingStart="13dp"
             android:text="score"
             android:textSize="20sp"
             android:textStyle="bold|italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="@+id/textView2" />
 
         <ImageView
             android:id="@+id/real_image"

@@ -210,8 +210,10 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
         val timestamp = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         } else {
+
         }
-        foodFileName = "food_$timestamp.png"
+        foodFileName = if(timestamp==null) "food_${R.drawable.img}"
+        else "food_$timestamp.png"
         val imageRef = storage.reference.child("${AddActivity.UPLOAD_FOLDER}${foodFileName}")
 
         imageRef.putFile(foodPhoto!!).addOnCompleteListener {

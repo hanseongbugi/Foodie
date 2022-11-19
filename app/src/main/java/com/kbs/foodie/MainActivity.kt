@@ -37,14 +37,12 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         val view = binding.root
         setContentView(view)
         initToolBar()
-        val bundle=Bundle()
         user=intent.getStringExtra("user")?:""
-        bundle.putString("user",user)
-        if (checkLocationService()) {
-            permissionCheck()
-        } else {
-            Toast.makeText(this, "GPS를 켜주세요", Toast.LENGTH_SHORT).show()
-        }
+//        if (checkLocationService()) {
+//            permissionCheck()
+//        } else {
+//            Toast.makeText(this, "GPS를 켜주세요", Toast.LENGTH_SHORT).show()
+//        }
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentView) as NavHostFragment
         navController = navHostFragment.navController
