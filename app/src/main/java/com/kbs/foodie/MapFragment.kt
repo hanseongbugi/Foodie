@@ -14,6 +14,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.protobuf.LazyStringArrayList
 import com.kbs.foodie.databinding.MapFragmentBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,11 +43,10 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
     private lateinit var user:String //나
     private var users = ArrayList<String>(); //친구들
 
-
+    data class ContentData(val review:String, val index:MapPoint, val score : Float)
     //    private val eventListener = context?.let { MarkerEventListener(it) }
-    private var pointListReview = ArrayList<String>();
-    private var pointListIndex = ArrayList<MapPoint>();
-    private var pointListSocre = ArrayList<String>();
+    private var pointList=ArrayList<ContentData>()
+
     private lateinit var eventListener:MarkerEventListener // 마커 클릭 이벤트 리스너
     val db: FirebaseFirestore = Firebase.firestore
     private lateinit var contentCollectionRef: CollectionReference
@@ -88,6 +88,8 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
                         for (doc in it) {
                             val point = MapPOIItem()
                             var checkOnly = true
+                            var points = binding?.mapView?.poiItems
+
                             point.apply {
                                 if (doc["y"] != null) {
                                     var review = doc["review"].toString()
@@ -104,21 +106,17 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
                                     markerType = MapPOIItem.MarkerType.RedPin
                                     isCustomImageAutoscale = false
                                     setCustomImageAnchor(0.5f, 1.0f)
-                                    pointListReview.add("Review :$review");
-                                    pointListIndex.add(mapPoint)
-                                    pointListSocre.add("$score")
+
+                                    for(pt in pointList){
+                                        if(pt.index.mapPointGeoCoord.latitude == mapPoint.mapPointGeoCoord.latitude &&
+                                            pt.index.mapPointGeoCoord.longitude == mapPoint.mapPointGeoCoord.longitude    )
+                                            checkOnly =false
+                                    }
                                     //Log.w("in MapFragment", pointListReview.get(0))
 
                                     //이미 마커가 찍힌경우 => 하나만 찍히도록
-                                    var points = binding?.mapView?.poiItems
-                                    if (points != null) {
-                                        for(pt in points)
-                                            if(pt.itemName ==  doc["name"].toString()){
-                                                checkOnly =false
-                                                Log.w("5", "겹침")
-                                            }
 
-                                    }
+                                    pointList.add(ContentData("$review \n",mapPoint, score.toFloat()))
 
                                 }
 
@@ -141,6 +139,8 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
                 .addOnSuccessListener { // it: DocumentSnapshot
                     for (doc in it) {
                         val point = MapPOIItem()
+                        var points = binding?.mapView?.poiItems
+
                         var checkOnly = true
                         point.apply {
                             if (doc["y"] != null) {
@@ -158,20 +158,17 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
                                 markerType = MapPOIItem.MarkerType.RedPin
                                 isCustomImageAutoscale = false
                                 setCustomImageAnchor(0.5f, 1.0f)
-                                pointListReview.add("Review :$review");
-                                pointListIndex.add(mapPoint)
-                                pointListSocre.add(score)
-                                var points = binding?.mapView?.poiItems
+
+                                for(pt in pointList){
+                                    if(pt.index.mapPointGeoCoord.latitude == mapPoint.mapPointGeoCoord.latitude &&
+                                        pt.index.mapPointGeoCoord.longitude == mapPoint.mapPointGeoCoord.longitude    )
+                                        checkOnly =false
+                                }
+                                //Log.w("in MapFragment", pointListReview.get(0))
 
                                 //이미 마커가 찍힌경우 => 하나만 찍히도록
-                                if (points != null) {
-                                    for(pt in points)
-                                        if(pt.itemName ==  doc["name"].toString()){
-                                            checkOnly =false
-                                            Log.w("5", "겹침")
-                                        }
 
-                                }
+                                pointList.add(ContentData("$review \n",mapPoint, score.toFloat()))
 
                             }
 
@@ -323,16 +320,16 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
             var i=0;
             var sum =0.0;
             var count =0;
-            for(p in pointListIndex ){
-                if(poiItem?.mapPoint == p){
-                    sum += pointListSocre[i].toDouble();
+            for(p in pointList){
+                if(p.index.mapPointGeoCoord.latitude==poiItem?.mapPoint?.mapPointGeoCoord?.latitude&&
+                    p.index.mapPointGeoCoord.longitude==poiItem?.mapPoint?.mapPointGeoCoord?.longitude){
+                    sum += p.score;
                     count++;
+
                 }
-                i+=1;
             }
-            Log.w("in CustomBulloons ", "$sum")
-            if(count!=0)
-                 address.text = "별점 : "+(sum/count)+"/5.0"
+            Log.w("sum", "$sum")
+            address.text = (sum/count).toString();
             return mCalloutBalloon
 
         }
@@ -340,12 +337,32 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
         override fun getPressedCalloutBalloon(poiItem: MapPOIItem?): View {
             // 말풍선 클릭 시
             var i=0;
-            for(p in pointListIndex ){
+//            lateinit var review:String
 
-                if(poiItem?.mapPoint == p)
-                    address.text =pointListReview.get(i);
-                i+=1;
+            var sum =0.0;
+            var reviews = mutableListOf<String>();
+            for(p in pointList){
+                if(p.index.mapPointGeoCoord.latitude==poiItem?.mapPoint?.mapPointGeoCoord?.latitude&&
+                    p.index.mapPointGeoCoord.longitude==poiItem?.mapPoint?.mapPointGeoCoord?.longitude){
+
+                    reviews.add(p.review)
+
+
+
+                }
             }
+
+//            var k=0;
+            var unireviews = reviews.distinct().toMutableList()
+            var TEXT:String =""
+            for(review in unireviews)
+                TEXT += review
+
+            for (i in unireviews) {
+                Log.w("review", i)
+            }
+            address.text=TEXT
+
 
             return mCalloutBalloon
         }
