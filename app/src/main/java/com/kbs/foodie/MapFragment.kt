@@ -1,12 +1,12 @@
 package com.kbs.foodie
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -40,7 +40,11 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
     lateinit var locationDataListener: OnLocationSetListener
     private lateinit var mapView : MapView              // 카카오 지도 뷰
     private lateinit var user:String
-
+//    private val eventListener = context?.let { MarkerEventListener(it) }
+    private var pointListReview = ArrayList<String>();
+    private var pointListIndex = ArrayList<MapPoint>();
+    private var pointListSocre = ArrayList<String>();
+    private lateinit var eventListener:MarkerEventListener // 마커 클릭 이벤트 리스너
     val db: FirebaseFirestore = Firebase.firestore
     private lateinit var contentCollectionRef: CollectionReference
     companion object {
@@ -80,7 +84,7 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
         binding = MapFragmentBinding.inflate(inflater,container ,false)
 
         binding!!.rvList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
+        eventListener = context?.let { MarkerEventListener(it) }!!;
         binding!!.rvList.adapter = listAdapter
         // 리스트 아이템 클릭 시 해당 위치로 이동
         listAdapter.setItemClickListener(object: ListAdapter.OnItemClickListener {
@@ -125,6 +129,8 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
                             var i=0;
                             point.apply {
                                 if (doc["y"] != null) {
+                                    var review = doc["review"].toString()
+                                    var score = doc["score"].toString()
                                     itemName = doc["name"].toString()
                                     //Log.w("in MapFragment",itemName)
                                     val y = doc["y"].toString().toDouble()
@@ -137,6 +143,10 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
                                     markerType = MapPOIItem.MarkerType.RedPin
                                     isCustomImageAutoscale = false
                                     setCustomImageAnchor(0.5f, 1.0f)
+                                    pointListReview.add("Review :$review");
+                                    pointListIndex.add(mapPoint)
+                                    pointListSocre.add("별점 : $score/5")
+                                    //Log.w("in MapFragment", pointListReview.get(0))
 
                                 }
                                 binding?.mapView?.addPOIItem(point)
@@ -150,6 +160,7 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
 
 
         mapView.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater))  // 커스텀 말풍선 등록
+        mapView.setPOIItemEventListener(eventListener)
         return binding!!.root
 
     }
@@ -229,27 +240,72 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
             }
 
     // 커스텀 말풍선 클래스
-    class CustomBalloonAdapter(inflater: LayoutInflater): CalloutBalloonAdapter {
+    inner class CustomBalloonAdapter(inflater: LayoutInflater): CalloutBalloonAdapter {
         private val mCalloutBalloon: View = inflater.inflate(R.layout.balloon_layout, null)
         val name: TextView = mCalloutBalloon.findViewById(R.id.ball_tv_name)
         private val address: TextView = mCalloutBalloon.findViewById(R.id.ball_tv_address)
-
         override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
             // 마커 클릭 시 나오는 말풍선
             name.text = poiItem?.itemName   // 해당 마커의 정보 이용 가능
+            var i=0;
+            for(p in pointListIndex ){
 
-            address.text = "별점"
+                if(poiItem?.mapPoint == p)
+                    address.text = pointListSocre.get(i).toString();
+                i+=1;
+            }
+            //address.text = poiItem?.itemName
             return mCalloutBalloon
         }
 
         override fun getPressedCalloutBalloon(poiItem: MapPOIItem?): View {
             // 말풍선 클릭 시
-            address.text = "맛없어요 줠뒈 가지뫄쉐용"
+            var i=0;
+            for(p in pointListIndex ){
+
+                if(poiItem?.mapPoint == p)
+                    address.text =pointListReview.get(i);
+                i+=1;
+            }
+
             return mCalloutBalloon
         }
-    }
 
+    }
+    inner class MarkerEventListener(val context: Context): MapView.POIItemEventListener {
+        override fun onPOIItemSelected(mapView: MapView?, poiItem: MapPOIItem?) {
+            // 마커 클릭 시
+        }
+
+        @Deprecated("Deprecated in Java")
+        override fun onCalloutBalloonOfPOIItemTouched(mapView: MapView?, poiItem: MapPOIItem?) {
+
+        }
+
+        override fun onCalloutBalloonOfPOIItemTouched(mapView: MapView?, poiItem: MapPOIItem?, buttonType: MapPOIItem.CalloutBalloonButtonType?) {
+            // 말풍선 클릭 시
+            val builder = AlertDialog.Builder(context)
+            val itemList = arrayOf("마커 삭제", "취소")
+            builder.setTitle("${poiItem?.itemName}")
+            builder.setItems(itemList) { dialog, which ->
+                when(which) {
+//                    0 -> Toast.makeText(context, "토스트", Toast.LENGTH_SHORT).show()  // 토스트
+                    0 -> mapView?.removePOIItem(poiItem)    // 마커 삭제
+                    1 -> dialog.dismiss()   // 대화상자 닫기
+                }
+            }
+            builder.show()
+        }
+
+        override fun onDraggablePOIItemMoved(mapView: MapView?, poiItem: MapPOIItem?, mapPoint: MapPoint?) {
+            // 마커의 속성 중 isDraggable = true 일 때 마커를 이동시켰을 경우
+        }
+    }
 }
+
+
+
+
 
 
 

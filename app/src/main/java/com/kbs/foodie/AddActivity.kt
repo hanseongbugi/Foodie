@@ -70,6 +70,7 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
             binding.imageView6.visibility=View.INVISIBLE
             binding.scoreEditText.visibility=View.INVISIBLE
             binding.saveAndBackButton.visibility=View.INVISIBLE
+            binding.locationTextView.visibility=View.INVISIBLE
             supportFragmentManager.beginTransaction()
                 .replace(R.id.addLocation,MapFragment())
                 .addToBackStack(null)
@@ -174,6 +175,8 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
                 binding.imageView6.visibility=View.VISIBLE
                 binding.scoreEditText.visibility=View.VISIBLE
                 binding.saveAndBackButton.visibility=View.VISIBLE
+                binding.locationTextView.visibility=View.VISIBLE
+
                 return true
             }
         }
@@ -187,7 +190,7 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
         markedX= x.toString()
         binding.locationEditText.setText(mLocation)
         binding.nameEditText.setText(mName)
-        Log.w("2",location)
+       // Log.w("2",location)
     }
     fun openGallery(){
         val intent= Intent(Intent.ACTION_PICK)
