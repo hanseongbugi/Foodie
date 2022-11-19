@@ -38,11 +38,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         setContentView(view)
         initToolBar()
         user=intent.getStringExtra("user")?:""
-//        if (checkLocationService()) {
-//            permissionCheck()
-//        } else {
-//            Toast.makeText(this, "GPS를 켜주세요", Toast.LENGTH_SHORT).show()
-//        }
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentView) as NavHostFragment
         navController = navHostFragment.navController
