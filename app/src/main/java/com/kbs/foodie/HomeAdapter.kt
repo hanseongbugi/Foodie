@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
@@ -23,8 +25,15 @@ class HomeAdapter(private val homeViewModel:HomeViewModel) :
     inner class ViewHolder(private val binding:HomeItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val storage = Firebase.storage
         val storageRef = storage.reference
+        val db= Firebase.firestore
         fun setContents(pos:Int) {
             with(homeViewModel.contents[pos]){
+                db.runTransaction{
+                    val docRef=db.collection("user").document(email)
+                    val snapshot=it.get(docRef)
+                    val userName=snapshot.getString("username")?:""
+                    binding.userName.text=userName
+                }
                 binding.listTvName.text=name
                 binding.listTvAddress.text=address
                 binding.listTvNumber.text=score.toString()

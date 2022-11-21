@@ -57,20 +57,20 @@ class HomeFragment : Fragment() {
                 db.collection("user").document(email).
                 collection("content").get().addOnSuccessListener {
                     for(doc in it){
-                        homeViewModel.addContent(Content(doc))
+                        homeViewModel.addContent(Content(email,doc))
                     }
                 }
             }
             contentCollectionRef.get().addOnSuccessListener {
                 for(doc in it){
-                    homeViewModel.addContent(Content(doc))
+                    homeViewModel.addContent(Content(user,doc))
                 }
             }
         }
 
         contentCollectionRef.addSnapshotListener{snapshot,error->
             for(doc in snapshot!!.documentChanges){
-                homeViewModel.addContent(Content(doc))
+                homeViewModel.addContent(Content(user,doc))
             }
 
         }

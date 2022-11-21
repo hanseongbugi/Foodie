@@ -22,30 +22,37 @@
             app:circularflow_radiusInDP="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
 
 
             <TextView
                 android:id="@+id/list_tv_name"
-                android:layout_width="208dp"
-                android:layout_height="33dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:includeFontPadding="false"
                 android:paddingStart="10dp"
                 android:text="StoreName"
                 android:textSize="24sp"
                 android:textStyle="bold|italic"
+                app:layout_constraintEnd_toStartOf="@+id/list_tv_number"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/list_tv_number" />
 
             <TextView
                 android:id="@+id/list_tv_address"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:drawableStart="@drawable/img_6"
                 android:drawablePadding="10dp"
-                android:paddingStart="14dp"
+                android:includeFontPadding="false"
+                android:paddingStart="10dp"
                 android:text="location"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -56,10 +63,10 @@
 
             <TextView
                 android:id="@+id/list_tv_number"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:drawablePadding="15dp"
-                android:paddingStart="13dp"
+                android:includeFontPadding="false"
                 android:text="score"
                 android:textSize="20sp"
                 android:textStyle="bold|italic"
@@ -70,7 +77,7 @@
                 android:id="@+id/real_image"
                 android:layout_width="344dp"
                 android:layout_height="217dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.491"
                 app:layout_constraintStart_toStartOf="parent"
@@ -79,27 +86,55 @@
 
             <TextView
                 android:id="@+id/list_tv_review"
-                android:layout_width="390dp"
-                android:layout_height="49dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:includeFontPadding="false"
                 android:text="Review"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/real_image" />
+                app:layout_constraintStart_toStartOf="@+id/real_image"
+                app:layout_constraintTop_toBottomOf="@+id/real_image"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="35dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:includeFontPadding="false"
                 android:text="/5.0"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userName" />
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="user name"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView7"
+                app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:paddingStart="10dp"
+                android:text="Writer : "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
