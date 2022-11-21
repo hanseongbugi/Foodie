@@ -118,42 +118,6 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
                 Toast.makeText(this, "데이터가 추가되었습니다", Toast.LENGTH_SHORT).show()
              }.addOnFailureListener {  }
     }
-    /*
-    private fun updateList() {
-        contentCollectionRef.get().addOnSuccessListener {
-            val items = mutableListOf<ClipData.Item>()
-            for (doc in it) {
-                items.add(ClipData.Item(doc))
-            }
-            //adapter?.updateList(items)
-        }
-    }
-
-    private fun addItem() {
-        val name = binding.editItemName.text.toString()
-        if (name.isEmpty()) {
-            Snackbar.make(binding.root, "Input name!", Snackbar.LENGTH_SHORT).show()
-            return
-        }
-        val price = binding.editPrice.text.toString().toInt()
-        val autoID = binding.checkAutoID.isChecked
-        val itemID = binding.editID.text.toString()
-        if (!autoID and itemID.isEmpty()) {
-            Snackbar.make(binding.root, "Input ID or check Auto-generate ID!", Snackbar.LENGTH_SHORT).show()
-            return
-        }
-        val itemMap = hashMapOf(
-            "name" to name,
-            "price" to price
-        )
-        if (autoID) {
-            itemsCollectionRef.add(itemMap)
-                .addOnSuccessListener { updateList() }.addOnFailureListener {  }
-        } else {
-            itemsCollectionRef.document(itemID).set(itemMap)
-                .addOnSuccessListener { updateList() }.addOnFailureListener {  }
-        }
-    }*/
     private fun initToolBar(){
         supportActionBar?.hide()
         setSupportActionBar(binding.toolbar)
