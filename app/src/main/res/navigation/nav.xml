@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_myInfoFragment_to_profileEditFragment"
             app:destination="@id/profileEditFragment" />
+        <action
+            android:id="@+id/action_myInfoFragment_to_foodEditFragment"
+            app:destination="@id/foodEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
@@ -33,4 +36,7 @@
     <fragment
         android:id="@+id/profileEditFragment"
         android:name="com.kbs.foodie.ProfileEditFragment" />
+    <fragment
+        android:id="@+id/foodEditFragment"
+        android:name="com.kbs.foodie.FoodEditFragment" />
 </navigation>

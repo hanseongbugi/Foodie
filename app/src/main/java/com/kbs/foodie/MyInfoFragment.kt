@@ -19,6 +19,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import com.kbs.foodie.databinding.FoodEditFragmentBinding
 
 
 class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
@@ -31,11 +32,7 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
     lateinit var profileUser: String
     val storage = Firebase.storage
     val profileStorageRef = storage.reference
-    lateinit var profileUserNameText: String
-    lateinit var profileUserEmailText: String
-    lateinit var profilePostNum: String
-    lateinit var profileFriendNum: String
-
+    lateinit var main:MainActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
@@ -47,7 +44,7 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val main = activity as MainActivity
+        main = activity as MainActivity
         main.showSearchMenu()
         val rootView = inflater.inflate(R.layout.my_info_fragment, container, false) as ViewGroup
         val profileUserRecyclerView = rootView.findViewById<RecyclerView>(R.id.profileRecyclerView)
@@ -65,11 +62,17 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
             db.collection("user").document(profileUser).collection("friend")
 
         profileUserRecyclerView.setHasFixedSize(true)
-        val gridLayoutManager = GridLayoutManager(rootView.context, 3)
         profileUserRecyclerView.layoutManager = GridLayoutManager(activity, 3)
         adapter = MyInfoAdapter(profileViewModel, profileUser)
-
         profileUserRecyclerView.adapter = adapter
+        adapter!!.setOnItemclickListner(object: MyInfoAdapter.OnItemClickListner{
+            override fun onItemClick(position: Int) {
+               // val foodPosition = profileViewModel.myFoods[position].id
+                main.rememberContent(position)
+                main.removeBottomNavigation()
+                findNavController().navigate(R.id.action_myInfoFragment_to_foodEditFragment)
+            }
+        })
         profileViewModel.myFoodData.observe(viewLifecycleOwner) {
             adapter!!.notifyDataSetChanged()
         }
@@ -89,7 +92,7 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
             .addOnSuccessListener {
                 profileUserNameText.text = it["username"].toString()
                 profileUserEmailText.text = it["useremail"].toString()
-                val profileImageRef = profileStorageRef.child("/${it["userimage"].toString()}")
+                val profileImageRef = profileStorageRef.child("/${it["userimage"]}")
                 loadImage(profileImageRef, profileImage)
             }.addOnFailureListener {}
 
@@ -100,6 +103,7 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
             }.addOnFailureListener {}
 
         profileButton.setOnClickListener {
+            main.removeBottomNavigation()
             findNavController().navigate(R.id.action_myInfoFragment_to_profileEditFragment)
         }
         return rootView

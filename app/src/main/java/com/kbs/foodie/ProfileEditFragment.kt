@@ -1,6 +1,7 @@
 package com.kbs.foodie
 
 import android.content.ClipData
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.icu.text.SimpleDateFormat
@@ -14,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ComplexColorCompat.inflate
 import androidx.fragment.app.Fragment
@@ -32,11 +34,12 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
     private val db: FirebaseFirestore = Firebase.firestore
     private lateinit var profileContentCollectionRef: CollectionReference
     private lateinit var contentCollectionRef: CollectionReference
+    private val profileEditViewModel by viewModels<FriendAddViewModel>()
     val storage = Firebase.storage
     val editProfileStorageRef = storage.reference
     private val eidtProfileViewModel by viewModels<MyInfoViewModel>()
     lateinit var profileUser: String
-
+    lateinit var profileUserImage: String
     var userPhoto : Uri? = null
     var UserFileName : String? = null
     lateinit var meditName:String
@@ -61,21 +64,91 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
         val editProfileNameText = rootView.findViewById<TextView>(R.id.editProfileNameEditText)
         val editProfileInfomationText = rootView.findViewById<TextView>(R.id.editProfileEmailEditText)
         val editProfileUpdateButton = rootView.findViewById<Button>(R.id.editProfileUpdateButton)
+        val editProfileDeleteButton = rootView.findViewById<Button>(R.id.editProfileDeleteButton)
         val editProfileUpdateImage = rootView.findViewById<ImageView>(R.id.editProfileUserImage)
 
         profileContentCollectionRef.document(profileUser).get()
             .addOnSuccessListener {
                 editProfileNameText.text = it["username"].toString()
-                editProfileInfomationText.text = "이 페이지는 공사 중"
-                val profileImageRef = editProfileStorageRef.child("/${it["userimage"].toString()}")
+                editProfileInfomationText.text = "이 페이지는 공사 중, 여기 자기소개?"
+                val profileImageRef = editProfileStorageRef.child("/${it["userimage"]}")
+                profileUserImage = it["userImage"].toString()
                 loadImage(profileImageRef, editProfileUpdateImage)
             }.addOnFailureListener {}
 
         editProfileUpdateImage.setOnClickListener{
-            //이미지 UPDATE
+            //이미지 UPDATE -> activity로 넘어가서 값 받아오기??
         }
         editProfileUpdateButton.setOnClickListener {
             //DB UPDATE
+
+            val mName = editProfileNameText.text.toString()
+            val map = hashMapOf<String, Any>()
+            map["username"] = mName
+
+            profileContentCollectionRef.document(profileUser).update(map)
+                .addOnCompleteListener {
+                    if(it.isSuccessful){
+                        Toast.makeText(requireContext(),"UPDATE USER COMPLETE", Toast.LENGTH_SHORT).show()
+
+                    }
+                }
+
+        }
+        editProfileDeleteButton.setOnClickListener{
+            val builder= AlertDialog.Builder(requireActivity())
+            builder.setTitle("${profileUser}를 삭제하시겠습니까?")
+                .setMessage("삭제하면 끝!")
+                .setPositiveButton("확인",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        editProfileStorageRef.child("${profileUserImage}").delete()
+                            .addOnSuccessListener {
+                                Toast.makeText(requireContext(),"DELETE USER COMPLETE", Toast.LENGTH_SHORT).show()
+                            }
+                        profileContentCollectionRef.document(profileUser)
+                            .collection("friend").get().addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    for (doc in task.result) {
+                                        profileContentCollectionRef.document(profileUser)
+                                            .collection("friend").document("$doc").delete()
+                                            .addOnCompleteListener {
+                                            }.addOnFailureListener {}
+                                        println(doc)
+                                    }
+                                }
+                            }
+                        profileContentCollectionRef.document(profileUser)
+                            .collection("content").get().addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    for (doc in task.result) {
+                                        profileContentCollectionRef.document(profileUser)
+                                            .collection("content").document("$doc").delete()
+                                            .addOnCompleteListener {
+                                            }.addOnFailureListener {}
+                                        println(doc)
+                                    }
+                                }
+                            }
+                        profileContentCollectionRef.document(profileUser).delete()
+                            .addOnCompleteListener {
+                                if (it.isSuccessful) {
+
+                                    activity?.let {
+                                        val intent =
+                                            Intent(context, LoginActivity::class.java)
+                                        startActivity(intent)
+                                    }
+                                }
+                            }.addOnFailureListener {}
+
+                    })
+                .setNegativeButton("취소",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        Toast.makeText(requireContext(),"CANCEL", Toast.LENGTH_SHORT).show()
+
+                    })
+            // 다이얼로그를 띄워주기
+            builder.show()
 
         }
 
