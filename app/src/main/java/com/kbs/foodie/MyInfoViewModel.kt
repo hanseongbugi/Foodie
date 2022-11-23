@@ -10,7 +10,6 @@ data class foodContent(val id: String, val name: String, val score: Float?, val 
                 doc["address"].toString(), doc["review"].toString(), doc["image"].toString())
 }
 class MyInfoViewModel :ViewModel(){
-
     val myFoodData = MutableLiveData<ArrayList<foodContent>>()
     val myFoods = ArrayList<foodContent>()
     fun addUserInfo(userInfo:foodContent) {
@@ -25,6 +24,7 @@ class MyInfoViewModel :ViewModel(){
         myFoods.removeAt(pos)
         myFoodData.value = myFoods
     }
+
     fun deleteAll(){
         myFoods.clear()
         myFoodData.value = myFoods // let the observer know the livedata changed

@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
     lateinit var navController:NavController
     lateinit var user:String
     private var toolBarkey=ToolBarKey.Home
+    var myInfoPos=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -119,7 +120,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
             // 돋보기 아이콘이 눌르면 friendaddFragment로 전환
             R.id.search_menu->{
                 navController.navigate(R.id.action_myInfoFragment_to_friendAddFragment)
-                binding.bottomNav.isVisible=false
+                removeBottomNavigation()
             }
             else -> {
                 return super.onOptionsItemSelected(item)
@@ -128,6 +129,9 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         return true
     }
 
+    fun removeBottomNavigation(){
+        binding.bottomNav.isVisible=false
+    }
 
     private fun initToolBar(){
         // 기존의 툴바를 제거
@@ -145,7 +149,18 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
             super.onBackPressed()
         }
     }
+    //MyInfoFragment fragment 이동시 예비
+    fun onFragmentChange(index:Int) {
+        if(index==1) {
+            navController.navigate(R.id.action_myInfoFragment_to_foodEditFragment)
+        }
+        else if(index==2){
+            navController.navigate(R.id.action_myInfoFragment_to_profileEditFragment)
+        }
+        else if (index==3){
+        }
 
+    }
     private fun permissionCheck() {
         val preference = getPreferences(MODE_PRIVATE)
         val isFirstCheck = preference.getBoolean("isFirstPermissionCheck", true)
@@ -210,7 +225,9 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
     override fun onLocationSet(location: String, name: String, y: Double, x: Double) {
         Log.w("!!!",location)
     }
-
+    fun rememberContent(pos:Int){
+        myInfoPos = pos
+    }
     enum class ToolBarKey{
         Home,Search,Hidden
     }

@@ -2,10 +2,12 @@ package com.kbs.foodie
 
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
@@ -19,6 +21,19 @@ import com.kbs.foodie.databinding.MyInfoItemBinding
 
 class MyInfoAdapter (private val myInfoViewModel: MyInfoViewModel,val profileUser:String) : RecyclerView.Adapter<MyInfoAdapter.ViewHolder>() {
 
+    private var activity: MainActivity? = null
+    interface OnItemClickListner{
+        fun onItemClick(position: Int)
+    }
+
+    //전달된 객체를 저장할 변수 정의
+    private lateinit var itemClickListner: OnItemClickListner
+
+    fun setOnItemclickListner(onItemClickListner: OnItemClickListner){
+        itemClickListner = onItemClickListner
+    }
+
+
     inner class ViewHolder(private val binding: MyInfoItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -26,6 +41,12 @@ class MyInfoAdapter (private val myInfoViewModel: MyInfoViewModel,val profileUse
         val storage = Firebase.storage
         val storageRef = storage.reference
 
+        fun setClickItem(pos: Int) {
+            itemView.setOnClickListener {
+               itemClickListner.onItemClick(pos)
+
+            }
+        }
         fun setContents(pos: Int) {
             with(myInfoViewModel.myFoods[pos]) {
                 val userimageRef = storageRef.child("/${image}")
@@ -55,7 +76,7 @@ class MyInfoAdapter (private val myInfoViewModel: MyInfoViewModel,val profileUse
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.setContents(position)
-
+        holder.setClickItem(position)
     }
 
 
