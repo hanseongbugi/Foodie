@@ -30,7 +30,7 @@ class SignUpActivity : AppCompatActivity() {
     private val db: FirebaseFirestore = Firebase.firestore
     private val userItemRef = db.collection("user")
     var userPhoto : Uri? = null
-    var UserFileName : String? = null
+    private lateinit var userFileName : String
     val storage = Firebase.storage
     companion object {
         const val REQ_GALLERY = 1
@@ -55,14 +55,23 @@ class SignUpActivity : AppCompatActivity() {
             openGallery()
         }
         binding.saveButton.setOnClickListener {
-
+            Log.w("aaa","1")
             muserEmail = signUpEmailText.toString()
             muserPassword = signUpPassWord.toString()
             muserName = signUpNameText.toString()
-            muserImage = "${UPLOAD_FOLDER}${UserFileName}"?:"userImage/userDefaultImage.png"
             if(checkEmail(muserEmail) && muserPassword.length >=6) {
+                Log.w("aaa","2")
+
                 uploadFile()
+                Log.w("aaa","3")
+
+                muserImage = "${UPLOAD_FOLDER}${userFileName}"
+                if (userFileName==null)muserImage = "${UPLOAD_FOLDER}userDefaultUser.png"
+                Log.w("aaa","4")
+
                 loginUserId(muserEmail, muserPassword, muserName, muserImage)
+                Log.w("aaa","5")
+
             }else{
                 if(!checkEmail(muserEmail)){
                 Toast.makeText(this, "Email error: 이메일 형식으로 입력해주세요", Toast.LENGTH_SHORT).show();
@@ -77,7 +86,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     fun checkEmail(email: String): Boolean = email.contains("@")
-    private fun loginUserId(email:String, password: String, name: String, userimage: String){
+    private fun loginUserId(email:String, password: String, name: String, image: String){
         
         Firebase.auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this){
@@ -127,8 +136,8 @@ class SignUpActivity : AppCompatActivity() {
             SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         } else {
         }
-        UserFileName = "User_$timestamp.png"
-        val imageRef = storage.reference.child("${SignUpActivity.UPLOAD_FOLDER}${UserFileName}")
+        userFileName = "User_$timestamp.png"
+        val imageRef = storage.reference.child("${UPLOAD_FOLDER}${userFileName}")
 
         imageRef.putFile(userPhoto!!).addOnCompleteListener {
             Toast.makeText(this, "Upload completed", Toast.LENGTH_SHORT).show()
