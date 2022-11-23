@@ -32,7 +32,10 @@ class HomeAdapter(private val homeViewModel:HomeViewModel) :
                     val docRef=db.collection("user").document(email)
                     val snapshot=it.get(docRef)
                     val userName=snapshot.getString("username")?:""
+                    val userImage=snapshot.getString("userimage")?:""
                     binding.userName.text=userName
+                    val userImageRef=storageRef.child(userImage)
+                    loadImage(userImageRef,binding.userImage)
                 }
                 binding.listTvName.text=name
                 binding.listTvAddress.text=address

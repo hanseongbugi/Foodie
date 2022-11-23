@@ -62,15 +62,7 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
         binding.locationSearchButton.setOnClickListener{
             binding.addLocation.visibility=View.VISIBLE
 
-            binding.locationSearchButton.visibility=View.INVISIBLE
-            binding.nameEditText.visibility=View.INVISIBLE
-            //binding.editTextTextPersonName2.visibility=View.INVISIBLE
-            binding.locationEditText.visibility=View.INVISIBLE
-            binding.reviewEditText.visibility=View.INVISIBLE
-            binding.imageView6.visibility=View.INVISIBLE
-            binding.scoreEditText.visibility=View.INVISIBLE
-            binding.saveAndBackButton.visibility=View.INVISIBLE
-            binding.locationTextView.visibility=View.INVISIBLE
+            binding.constraintLayout2.visibility=View.INVISIBLE
             supportFragmentManager.beginTransaction()
                 .replace(R.id.addLocation,MapFragment())
                 .addToBackStack(null)
@@ -131,15 +123,7 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
                 onBackPressed()
                 binding.addLocation.visibility=View.INVISIBLE
 
-                binding.locationSearchButton.visibility=View.VISIBLE
-                binding.nameEditText.visibility=View.VISIBLE
-                //binding.editTextTextPersonName2.visibility=View.INVISIBLE
-                binding.locationEditText.visibility=View.VISIBLE
-                binding.reviewEditText.visibility=View.VISIBLE
-                binding.imageView6.visibility=View.VISIBLE
-                binding.scoreEditText.visibility=View.VISIBLE
-                binding.saveAndBackButton.visibility=View.VISIBLE
-                binding.locationTextView.visibility=View.VISIBLE
+                binding.constraintLayout2.visibility=View.VISIBLE
 
                 return true
             }
