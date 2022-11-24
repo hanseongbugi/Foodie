@@ -149,18 +149,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
             super.onBackPressed()
         }
     }
-    //MyInfoFragment fragment 이동시 예비
-    fun onFragmentChange(index:Int) {
-        if(index==1) {
-            navController.navigate(R.id.action_myInfoFragment_to_foodEditFragment)
-        }
-        else if(index==2){
-            navController.navigate(R.id.action_myInfoFragment_to_profileEditFragment)
-        }
-        else if (index==3){
-        }
 
-    }
     private fun permissionCheck() {
         val preference = getPreferences(MODE_PRIVATE)
         val isFirstCheck = preference.getBoolean("isFirstPermissionCheck", true)

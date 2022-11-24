@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav"
     app:startDestination="@id/homeFragment">
 
@@ -35,8 +36,16 @@
         android:label="" />
     <fragment
         android:id="@+id/profileEditFragment"
-        android:name="com.kbs.foodie.ProfileEditFragment" />
+        android:name="com.kbs.foodie.ProfileEditFragment" >
+        <action
+            android:id="@+id/action_profileEditFragment_to_myInfoFragment"
+            app:destination="@id/myInfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/foodEditFragment"
-        android:name="com.kbs.foodie.FoodEditFragment" />
+        android:name="com.kbs.foodie.FoodEditFragment" >
+        <action
+            android:id="@+id/action_foodEditFragment_to_myInfoFragment"
+            app:destination="@id/myInfoFragment" />
+    </fragment>
 </navigation>

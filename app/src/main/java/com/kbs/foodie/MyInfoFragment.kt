@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +26,7 @@ import com.kbs.foodie.databinding.FoodEditFragmentBinding
 class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
     private val db: FirebaseFirestore = Firebase.firestore
     private var adapter: MyInfoAdapter? = null
-    private val profileViewModel by viewModels<MyInfoViewModel>()
+    private lateinit var profileViewModel:MyInfoViewModel
     private lateinit var profileContentCollectionRef: CollectionReference
     private lateinit var contentCollectionRef: CollectionReference
     private lateinit var friendNumcontentCollectionRef: CollectionReference
@@ -33,7 +34,6 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
     val storage = Firebase.storage
     val profileStorageRef = storage.reference
     lateinit var main:MainActivity
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,7 +56,7 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
         contentCollectionRef = db.collection("user").document(profileUser).collection("content")
         friendNumcontentCollectionRef =
             db.collection("user").document(profileUser).collection("friend")
-
+        profileViewModel= ViewModelProvider(requireActivity())[MyInfoViewModel::class.java]
         profileUserRecyclerView.setHasFixedSize(true)
         profileUserRecyclerView.layoutManager = GridLayoutManager(activity, 3)
         adapter = MyInfoAdapter(profileViewModel, profileUser)
@@ -72,7 +72,7 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
         profileViewModel.myFoodData.observe(viewLifecycleOwner) {
             adapter!!.notifyDataSetChanged()
         }
-
+        println(profileViewModel)
         contentCollectionRef.get().addOnSuccessListener {
             profileViewModel.deleteAll()
             for (doc in it) {

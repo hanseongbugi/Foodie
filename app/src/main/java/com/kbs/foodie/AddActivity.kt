@@ -73,7 +73,7 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
 
 
         //갤러리 이미지 연동
-        binding.imageView6.setOnClickListener{
+        binding.editFoodImage.setOnClickListener{
             openGallery()
         }
         //addItem()
@@ -152,7 +152,7 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
             when(requestCode){
                 REQ_GALLERY -> {
                     foodPhoto =data?.data
-                    binding.imageView6.setImageURI(foodPhoto)
+                    binding.editFoodImage.setImageURI(foodPhoto)
                 }
             }
         }
