@@ -33,11 +33,7 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
     val storage = Firebase.storage
     val profileStorageRef = storage.reference
     lateinit var main:MainActivity
-    override fun onCreate(savedInstanceState: Bundle?) {
-        setHasOptionsMenu(true)
-        super.onCreate(savedInstanceState)
 
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

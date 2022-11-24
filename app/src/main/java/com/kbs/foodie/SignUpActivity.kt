@@ -30,7 +30,7 @@ class SignUpActivity : AppCompatActivity() {
     private val db: FirebaseFirestore = Firebase.firestore
     private val userItemRef = db.collection("user")
     var userPhoto : Uri? = null
-    private lateinit var userFileName : String
+    private var userFileName : String?=null
     val storage = Firebase.storage
     companion object {
         const val REQ_GALLERY = 1
@@ -60,17 +60,10 @@ class SignUpActivity : AppCompatActivity() {
             muserPassword = signUpPassWord.toString()
             muserName = signUpNameText.toString()
             if(checkEmail(muserEmail) && muserPassword.length >=6) {
-                Log.w("aaa","2")
-
                 uploadFile()
-                Log.w("aaa","3")
-
                 muserImage = "${UPLOAD_FOLDER}${userFileName}"
-                if (userFileName==null)muserImage = "${UPLOAD_FOLDER}userDefaultUser.png"
-                Log.w("aaa","4")
 
-                loginUserId(muserEmail, muserPassword, muserName, muserImage)
-                Log.w("aaa","5")
+                loginUserId(muserEmail, muserPassword)
 
             }else{
                 if(!checkEmail(muserEmail)){
@@ -86,19 +79,19 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     fun checkEmail(email: String): Boolean = email.contains("@")
-    private fun loginUserId(email:String, password: String, name: String, image: String){
+    private fun loginUserId(email:String, password: String){
         
         Firebase.auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this){
                 if(it.isSuccessful){
-                    Log.d(ContentValues.TAG, "사용자 이메일 등록 완료");
+                    Log.d(ContentValues.TAG, "사용자 이메일 등록 완료")
                     addItem()
                     startActivity(
                         Intent(this, LoginActivity::class.java)
                     )
                     finish()
                 }else{
-                    Log.d(ContentValues.TAG, "사용자 이메일 등록 실패");
+                    Log.d(ContentValues.TAG, "이미 등록된 계정 입니다.")
                 }
             }
     }
@@ -135,15 +128,22 @@ class SignUpActivity : AppCompatActivity() {
         val timestamp = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         } else {
+            Log.d(ContentValues.TAG, "version's low")
         }
-        userFileName = "User_$timestamp.png"
-        val imageRef = storage.reference.child("${UPLOAD_FOLDER}${userFileName}")
 
-        imageRef.putFile(userPhoto!!).addOnCompleteListener {
+        if(userPhoto!=null) {
+            userFileName = "User_$timestamp.png"
+            val imageRef = storage.reference.child("${UPLOAD_FOLDER}${userFileName}")
+            imageRef.putFile(userPhoto!!).addOnCompleteListener {
+                Toast.makeText(this, "Upload completed", Toast.LENGTH_SHORT).show()
+            }
+        }
+        else{
+            userFileName="userDefaultImage.png"
             Toast.makeText(this, "Upload completed", Toast.LENGTH_SHORT).show()
-
         }
 
     }
+
 }
 

@@ -22,12 +22,6 @@ class HomeFragment : Fragment() {
     private lateinit var friendCollectionRef:CollectionReference
     private lateinit var user:String
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        setHasOptionsMenu(true)
-        super.onCreate(savedInstanceState)
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater,
