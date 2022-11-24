@@ -16,6 +16,9 @@ class MyInfoViewModel :ViewModel(){
         myFoods.add(userInfo)
         myFoodData.value = myFoods
     }
+    fun getContent(pos: Int):foodContent?{
+        return myFoodData.value?.get(pos)
+    }
     fun updateContent(pos: Int, userInfo:foodContent) {
         myFoods[pos] = userInfo
         myFoodData.value = myFoods // 옵저버에게 라이브데이터가 변경된 것을 알리기 위해

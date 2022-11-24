@@ -114,7 +114,7 @@
             app:layout_constraintTop_toTopOf="@+id/scoreEditText" />
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/editFoodImage"
             android:layout_width="259dp"
             android:layout_height="184dp"
             android:layout_marginTop="30dp"
@@ -134,7 +134,7 @@
             android:inputType="textPersonName"
             android:paddingStart="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+            app:layout_constraintTop_toBottomOf="@+id/editFoodImage" />
 
         <EditText
             android:id="@+id/reviewEditText"

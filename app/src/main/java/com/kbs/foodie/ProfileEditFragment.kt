@@ -1,34 +1,24 @@
 package com.kbs.foodie
 
-import android.content.ClipData
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.icu.text.SimpleDateFormat
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ComplexColorCompat.inflate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import java.util.*
 
 class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
     private val db: FirebaseFirestore = Firebase.firestore
@@ -63,8 +53,8 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
 
         val editProfileNameText = rootView.findViewById<TextView>(R.id.editProfileNameEditText)
         val editProfileInfomationText = rootView.findViewById<TextView>(R.id.editProfileEmailEditText)
-        val editProfileUpdateButton = rootView.findViewById<Button>(R.id.editProfileUpdateButton)
-        val editProfileDeleteButton = rootView.findViewById<Button>(R.id.editProfileDeleteButton)
+        val editProfileUpdateButton = rootView.findViewById<Button>(R.id.editFoodUpdateButton)
+        val editProfileDeleteButton = rootView.findViewById<Button>(R.id.editFoodDeleteButton)
         val editProfileUpdateImage = rootView.findViewById<ImageView>(R.id.editProfileUserImage)
 
         profileContentCollectionRef.document(profileUser).get()
@@ -90,6 +80,7 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
                 .addOnCompleteListener {
                     if(it.isSuccessful){
                         Toast.makeText(requireContext(),"UPDATE USER COMPLETE", Toast.LENGTH_SHORT).show()
+                        main.onBackPressed()
 
                     }
                 }
@@ -101,10 +92,12 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
                 .setMessage("삭제하면 끝!")
                 .setPositiveButton("확인",
                     DialogInterface.OnClickListener { dialog, id ->
-                        editProfileStorageRef.child("${profileUserImage}").delete()
+                        //사진삭제
+                        /*editProfileStorageRef.child("${profileUserImage}").delete()
                             .addOnSuccessListener {
                                 Toast.makeText(requireContext(),"DELETE USER COMPLETE", Toast.LENGTH_SHORT).show()
                             }
+                        //하위 content 삭제
                         profileContentCollectionRef.document(profileUser)
                             .collection("friend").get().addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
@@ -132,7 +125,7 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
                         profileContentCollectionRef.document(profileUser).delete()
                             .addOnCompleteListener {
                                 if (it.isSuccessful) {
-
+                                    deleteId()
                                     activity?.let {
                                         val intent =
                                             Intent(context, LoginActivity::class.java)
@@ -140,6 +133,8 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
                                     }
                                 }
                             }.addOnFailureListener {}
+*/
+
 
                     })
                 .setNegativeButton("취소",
@@ -162,6 +157,18 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
             view.setImageResource(R.drawable.img)
         }
     }
+    fun deleteId(){
+        FirebaseAuth.getInstance().currentUser!!.delete().addOnCompleteListener { task ->
+            if(task.isSuccessful){
+                Toast.makeText(requireContext(), "아이디 삭제", Toast.LENGTH_LONG).show()
+
+                //로그아웃처리
+                FirebaseAuth.getInstance().signOut()
+            }else{
+            }
+        }
+    }
+
 
 }
 

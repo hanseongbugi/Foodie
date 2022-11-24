@@ -63,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <Button
-        android:id="@+id/editProfileUpdateButton"
+        android:id="@+id/editFoodUpdateButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -78,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editProfileEmailEditText" />
 
     <Button
-        android:id="@+id/editProfileDeleteButton"
+        android:id="@+id/editFoodDeleteButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="88dp"
