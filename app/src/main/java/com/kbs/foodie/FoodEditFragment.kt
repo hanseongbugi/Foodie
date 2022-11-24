@@ -95,7 +95,7 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
                                     "UPDATE FOOD CONTENT COMPLETE!",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                findNavController().navigate(R.id.action_foodEditFragment_to_myInfoFragment)
+                                findNavController().navigate(R.id.action_foodEditFragment_to_foodShowFragment)
                             }
                         }
 
@@ -124,7 +124,7 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
 
                         //navigation 이동
 
-                        findNavController().navigate(R.id.action_foodEditFragment_to_myInfoFragment)
+                            findNavController().navigate(R.id.action_foodEditFragment_to_foodShowFragment)
                         }.addOnFailureListener {}
 
                     })

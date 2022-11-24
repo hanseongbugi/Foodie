@@ -61,12 +61,13 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
         profileUserRecyclerView.layoutManager = GridLayoutManager(activity, 3)
         adapter = MyInfoAdapter(profileViewModel, profileUser)
         profileUserRecyclerView.adapter = adapter
+        //길게누르면 변경
         adapter!!.setOnItemclickListner(object: MyInfoAdapter.OnItemClickListner{
             override fun onItemClick(position: Int) {
                // val foodPosition = profileViewModel.myFoods[position].id
                 main.rememberContent(position)
                 main.removeBottomNavigation()
-                findNavController().navigate(R.id.action_myInfoFragment_to_foodEditFragment)
+                findNavController().navigate(R.id.action_myInfoFragment_to_foodShowFragment)
             }
         })
         profileViewModel.myFoodData.observe(viewLifecycleOwner) {

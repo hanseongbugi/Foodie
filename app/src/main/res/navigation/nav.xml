@@ -27,8 +27,8 @@
             android:id="@+id/action_myInfoFragment_to_profileEditFragment"
             app:destination="@id/profileEditFragment" />
         <action
-            android:id="@+id/action_myInfoFragment_to_foodEditFragment"
-            app:destination="@id/foodEditFragment" />
+            android:id="@+id/action_myInfoFragment_to_foodShowFragment"
+            app:destination="@id/foodShowFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
@@ -45,7 +45,14 @@
         android:id="@+id/foodEditFragment"
         android:name="com.kbs.foodie.FoodEditFragment" >
         <action
-            android:id="@+id/action_foodEditFragment_to_myInfoFragment"
-            app:destination="@id/myInfoFragment" />
+            android:id="@+id/action_foodEditFragment_to_foodShowFragment"
+            app:destination="@id/foodShowFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/foodShowFragment"
+        android:name="com.kbs.foodie.FoodShowFragment">
+        <action
+            android:id="@+id/action_foodShowFragment_to_foodEditFragment"
+            app:destination="@id/foodEditFragment" />
     </fragment>
 </navigation>
