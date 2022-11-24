@@ -44,7 +44,7 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
         main.hiddenMenu()
         val rootView = inflater.inflate(R.layout.food_edit_fragment, container, false) as ViewGroup
         user=main.user
-        println("content 번호:${main.myInfoPos}")
+
         val foodPos = main.myInfoPos
         val editFoodNameText = rootView.findViewById<EditText>(R.id.nameEditText)
         val editFoodLocationText = rootView.findViewById<EditText>(R.id.locationEditText)
@@ -58,7 +58,8 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
         foodContentCollectionRef=db.collection("user").document(user)
             .collection("content")
         println(foodEditViewModel)
-        //화면 정보 SHOW
+
+        //기존 foodContent SHOW
         foodContentCollectionRef.get().addOnCompleteListener { task ->
             val getPositionFood = foodEditViewModel.getContent(foodPos)
             if (task.isSuccessful) {
@@ -94,7 +95,7 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
                                     "UPDATE FOOD CONTENT COMPLETE!",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                main.onBackPressed()
+                                findNavController().navigate(R.id.action_foodEditFragment_to_myInfoFragment)
                             }
                         }
 
@@ -114,16 +115,16 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
                             val getPositionId = SpannableStringBuilder(getPositionFood?.id)
                             if (task.isSuccessful) {
                                 foodContentCollectionRef.document(getPositionId.toString()).delete().addOnSuccessListener {
-                                    Toast.makeText(requireContext(),"DELETE FOOD CONTENT COMPLETE", Toast.LENGTH_SHORT).show()
+
                                 }
                                 FoodStorageRef.child(getPositionFood?.image.toString()).delete()
                                     .addOnSuccessListener {
-                                        Toast.makeText(requireContext(),"DELETE FOOD PHOTO COMPLETE", Toast.LENGTH_SHORT).show()
-                                    }
+                                         }
                             }
 
                         //navigation 이동
-                        main.onBackPressed()
+
+                        findNavController().navigate(R.id.action_foodEditFragment_to_myInfoFragment)
                         }.addOnFailureListener {}
 
                     })

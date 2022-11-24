@@ -93,48 +93,28 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
                 .setPositiveButton("확인",
                     DialogInterface.OnClickListener { dialog, id ->
                         //사진삭제
-                        /*editProfileStorageRef.child("${profileUserImage}").delete()
+                        editProfileStorageRef.child("${profileUserImage}").delete()
                             .addOnSuccessListener {
                                 Toast.makeText(requireContext(),"DELETE USER COMPLETE", Toast.LENGTH_SHORT).show()
                             }
-                        //하위 content 삭제
-                        profileContentCollectionRef.document(profileUser)
-                            .collection("friend").get().addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    for (doc in task.result) {
-                                        profileContentCollectionRef.document(profileUser)
-                                            .collection("friend").document("$doc").delete()
-                                            .addOnCompleteListener {
-                                            }.addOnFailureListener {}
-                                        println(doc)
-                                    }
-                                }
-                            }
-                        profileContentCollectionRef.document(profileUser)
-                            .collection("content").get().addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    for (doc in task.result) {
-                                        profileContentCollectionRef.document(profileUser)
-                                            .collection("content").document("$doc").delete()
-                                            .addOnCompleteListener {
-                                            }.addOnFailureListener {}
-                                        println(doc)
-                                    }
-                                }
-                            }
+                        //음식사진 삭제
+                        //유저삭제
+                        deleteId()
+                        //DB삭제-하위 컬렉션
+                        deleteUnderCollection("friend")
+                        deleteUnderCollection("content")
+                        //DB삭제 -상위 컬렉션
                         profileContentCollectionRef.document(profileUser).delete()
                             .addOnCompleteListener {
                                 if (it.isSuccessful) {
-                                    deleteId()
+
                                     activity?.let {
                                         val intent =
-                                            Intent(context, LoginActivity::class.java)
+                                            Intent(it, LoginActivity::class.java)
                                         startActivity(intent)
                                     }
                                 }
                             }.addOnFailureListener {}
-*/
-
 
                     })
                 .setNegativeButton("취소",
@@ -164,9 +144,28 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
 
                 //로그아웃처리
                 FirebaseAuth.getInstance().signOut()
+
             }else{
             }
         }
+    }
+    fun deleteUnderCollection(underCollection: String){
+        profileContentCollectionRef.document(profileUser)
+            .collection(underCollection).get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (doc in task.result) {
+                        //사진 삭제
+                        editProfileStorageRef.child("${doc.get("image").toString()}").delete()
+                            .addOnSuccessListener {
+                                println("음식사진 삭제 완료 ${doc.get("image")}")}
+                        profileContentCollectionRef.document(profileUser)
+                            .collection(underCollection).document(doc.id).delete()
+                            .addOnCompleteListener {
+                            }.addOnFailureListener {}
+                        println(doc.id)
+                    }
+                }
+            }
     }
 
 
