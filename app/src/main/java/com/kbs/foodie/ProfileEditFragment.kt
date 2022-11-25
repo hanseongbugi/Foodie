@@ -1,17 +1,26 @@
 package com.kbs.foodie
 
+import android.content.ContentValues
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.icu.text.SimpleDateFormat
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -19,6 +28,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import java.util.*
 
 class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
     private val db: FirebaseFirestore = Firebase.firestore
@@ -30,12 +40,12 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
     private val eidtProfileViewModel by viewModels<MyInfoViewModel>()
     lateinit var profileUser: String
     lateinit var profileUserImage: String
-    var userPhoto : Uri? = null
-    var UserFileName : String? = null
+    var userPhoto: Uri? = null
+    var userFileName : String? = null
     lateinit var meditName:String
     lateinit var meditImage : String
     companion object {
-        const val REQ_GALLERY = 1
+        var PICK_PROFILE_FROM_ALBUM = 10
         const val UPLOAD_FOLDER = "userImage/"
     }
 
@@ -56,31 +66,55 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
         val editProfileUpdateButton = rootView.findViewById<Button>(R.id.editFoodUpdateButton)
         val editProfileDeleteButton = rootView.findViewById<Button>(R.id.editFoodDeleteButton)
         val editProfileUpdateImage = rootView.findViewById<ImageView>(R.id.editProfileUserImage)
+        if(main.ImageTrueFalse) {
+            profileContentCollectionRef.document(profileUser)
+                .get().addOnSuccessListener{
+                        val userImageRef = editProfileStorageRef.child("/${it["userimage"].toString()}")
+                        loadImage(userImageRef, editProfileUpdateImage)
 
-        profileContentCollectionRef.document(profileUser).get()
-            .addOnSuccessListener {
-                editProfileNameText.text = it["username"].toString()
-                editProfileInfomationText.text = "이 페이지는 공사 중, 여기 자기소개?"
-                val profileImageRef = editProfileStorageRef.child("/${it["userimage"]}")
-                profileUserImage = it["userImage"].toString()
-                loadImage(profileImageRef, editProfileUpdateImage)
-            }.addOnFailureListener {}
+                }
 
+        }
+        main.ImageTrueFalse = false
+        db.runTransaction {
+            val docRef = db.collection("user").document(profileUser)
+            val snapshot = it.get(docRef)
+            val userName = snapshot.getString("username") ?: ""
+            editProfileNameText.text = userName
+        }
         editProfileUpdateImage.setOnClickListener{
             //이미지 UPDATE -> activity로 넘어가서 값 받아오기??
+            val intent= Intent(Intent.ACTION_PICK)
+            intent.type= MediaStore.Images.Media.CONTENT_TYPE
+            main.startActivityForResult(intent, PICK_PROFILE_FROM_ALBUM)
+
+
+            }
+            //이미지 띄우기
+            //editProfileUpdateImage.setImageURI()
+
+        println("왔어? !?@#?#@?$!@#$?!#@?$?!!!!!")
+        setFragmentResultListener("requestKey1") { requestKey, bundle ->
+            //결과 값을 받는곳입니다.
+            val userPP = bundle.getString("bundleKey")
+            userPhoto = Uri.parse(userPP)
+            editProfileUpdateImage.setImageURI(userPhoto)
         }
         editProfileUpdateButton.setOnClickListener {
             //DB UPDATE
 
+            uploadFile()
+            val mImage = "${UPLOAD_FOLDER}${userFileName.toString()}"
             val mName = editProfileNameText.text.toString()
             val map = hashMapOf<String, Any>()
             map["username"] = mName
+            map["userimage"] = mImage
 
             profileContentCollectionRef.document(profileUser).update(map)
                 .addOnCompleteListener {
                     if(it.isSuccessful){
                         Toast.makeText(requireContext(),"UPDATE USER COMPLETE", Toast.LENGTH_SHORT).show()
-                        main.onBackPressed()
+
 
                     }
                 }
@@ -137,13 +171,12 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
             view.setImageResource(R.drawable.img)
         }
     }
+
     fun deleteId(){
         FirebaseAuth.getInstance().currentUser!!.delete().addOnCompleteListener { task ->
             if(task.isSuccessful){
                 Toast.makeText(requireContext(), "아이디 삭제", Toast.LENGTH_LONG).show()
 
-                //로그아웃처리
-                FirebaseAuth.getInstance().signOut()
 
             }else{
             }
@@ -167,7 +200,24 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
                 }
             }
     }
+    private fun uploadFile() {
+        val timestamp = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        } else {
+            Log.d(ContentValues.TAG, "version's low")
+        }
 
+        if(userPhoto!=null) {
+            userFileName = "User_$timestamp.png"
+            val imageRef = storage.reference.child("${UPLOAD_FOLDER}${userFileName}")
+            imageRef.putFile(userPhoto!!).addOnCompleteListener {
+            }
+        }
+        else{
+            userFileName="userDefaultImage.png"
+        }
+
+    }
 
 }
 

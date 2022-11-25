@@ -1,12 +1,18 @@
 package com.kbs.foodie
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.icu.text.SimpleDateFormat
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Spannable
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +22,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.CollectionReference
@@ -24,6 +31,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import java.util.*
 
 class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
 
@@ -31,9 +39,17 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
     private lateinit var foodEditViewModel:MyInfoViewModel
     private lateinit var foodContentCollectionRef: CollectionReference
     private lateinit var user:String
+
+    var userPhoto: Uri? = null
+    var foodFileName : String? = null
+
     val storage = Firebase.storage
     val FoodStorageRef = storage.reference
 
+    companion object {
+        var PICK_PROFILE_FROM_ALBUM = 11
+        const val UPLOAD_FOLDER = "contentImage/"
+    }
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +59,7 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
         val main = activity as MainActivity
         main.hiddenMenu()
         val rootView = inflater.inflate(R.layout.food_edit_fragment, container, false) as ViewGroup
-        user=main.user
+        user = main.user
 
         val foodPos = main.myInfoPos
         val editFoodNameText = rootView.findViewById<EditText>(R.id.nameEditText)
@@ -54,16 +70,27 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
         val editFoodUpdateButton = rootView.findViewById<Button>(R.id.saveAndBackButton)
         val editFoodDeleteButton = rootView.findViewById<Button>(R.id.editFoodDeleteButton)
 
-        foodEditViewModel= ViewModelProvider(requireActivity())[MyInfoViewModel::class.java]
-        foodContentCollectionRef=db.collection("user").document(user)
+        foodEditViewModel = ViewModelProvider(requireActivity())[MyInfoViewModel::class.java]
+        foodContentCollectionRef = db.collection("user").document(user)
             .collection("content")
         println(foodEditViewModel)
 
         //기존 foodContent SHOW
+        if (main.FoodImageTrueFalse) {
+            foodContentCollectionRef.get().addOnCompleteListener { task ->
+                val getPositionFood = foodEditViewModel.getContent(foodPos)
+                if (task.isSuccessful) {
+                    val profileImageRef = FoodStorageRef.child("/${getPositionFood?.image}")
+                    loadImage(profileImageRef, editFoodImage)
+                }
+            }
+        }
+        main.FoodImageTrueFalse = false
+
         foodContentCollectionRef.get().addOnCompleteListener { task ->
             val getPositionFood = foodEditViewModel.getContent(foodPos)
             if (task.isSuccessful) {
-                editFoodNameText.text=
+                editFoodNameText.text =
                     SpannableStringBuilder(getPositionFood?.name)
                 editFoodLocationText.text =
                     SpannableStringBuilder(getPositionFood?.address)
@@ -71,18 +98,32 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
                     SpannableStringBuilder(getPositionFood?.score.toString())
                 editFoodReviewEditText.text =
                     SpannableStringBuilder(getPositionFood?.review)
-                val profileImageRef = FoodStorageRef.child("/${getPositionFood?.image}")
-                loadImage(profileImageRef, editFoodImage)
             }
+        }
+        editFoodImage.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+            main.startActivityForResult(intent, FoodEditFragment.PICK_PROFILE_FROM_ALBUM)
+
+            //이미지 띄우기
+        }
+        setFragmentResultListener("requestKey2") { requestKey, bundle ->
+            //결과 값을 받는곳입니다.
+            val userPP = bundle.getString("bundleKey")
+            userPhoto = Uri.parse(userPP)
+            editFoodImage.setImageURI(userPhoto)
         }
 
         //food Content Update
         editFoodUpdateButton.setOnClickListener {
+            uploadFile()
             val mScore = editFoodScoreEditText.text.toString()
             val mReview = editFoodReviewEditText.text.toString()
+            val mImage = "${UPLOAD_FOLDER}${foodFileName}"
             val map = hashMapOf<String, Any>()
             map["score"] = mScore
             map["review"] = mReview
+            map["image"] = mImage
             foodContentCollectionRef.get().addOnCompleteListener { task ->
                 val getPositionFood = foodEditViewModel.getContent(foodPos)
                 val getPositionId = SpannableStringBuilder(getPositionFood?.id)
@@ -95,7 +136,8 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
                                     "UPDATE FOOD CONTENT COMPLETE!",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                findNavController().navigate(R.id.action_foodEditFragment_to_foodShowFragment)
+                                val foodShowFragment = FoodShowFragment()
+                                main.onChangeFragment(foodShowFragment)
                             }
                         }
 
@@ -119,12 +161,14 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
                                 }
                                 FoodStorageRef.child(getPositionFood?.image.toString()).delete()
                                     .addOnSuccessListener {
+
+                                        val MyInfoFragment = MyInfoFragment()
+                                        main.onChangeFragment(MyInfoFragment)
                                          }
                             }
 
                         //navigation 이동
-
-                            findNavController().navigate(R.id.action_foodEditFragment_to_foodShowFragment)
+                            //findNavController().navigate(R.id.action_foodEditFragment_to_foodShowFragment)
                         }.addOnFailureListener {}
 
                     })
@@ -146,6 +190,25 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
         }.addOnFailureListener {
             view.setImageResource(R.drawable.img)
         }
+    }
+    private fun uploadFile() {
+        val timestamp = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        } else {
+            Log.d(ContentValues.TAG, "version's low")
+        }
+
+        if(userPhoto!=null) {
+            foodFileName = "Content_$timestamp.png"
+            val imageRef = storage.reference.child("${ProfileEditFragment.UPLOAD_FOLDER}${foodFileName}")
+            imageRef.putFile(userPhoto!!).addOnCompleteListener {
+                println(foodFileName.toString())
+            }
+        }
+        else{
+            foodFileName="userDefaultImage.png"
+        }
+
     }
 
 }

@@ -36,18 +36,10 @@
         android:label="" />
     <fragment
         android:id="@+id/profileEditFragment"
-        android:name="com.kbs.foodie.ProfileEditFragment" >
-        <action
-            android:id="@+id/action_profileEditFragment_to_myInfoFragment"
-            app:destination="@id/myInfoFragment" />
-    </fragment>
+        android:name="com.kbs.foodie.ProfileEditFragment" />
     <fragment
         android:id="@+id/foodEditFragment"
-        android:name="com.kbs.foodie.FoodEditFragment" >
-        <action
-            android:id="@+id/action_foodEditFragment_to_foodShowFragment"
-            app:destination="@id/foodShowFragment" />
-    </fragment>
+        android:name="com.kbs.foodie.FoodEditFragment" />
     <fragment
         android:id="@+id/foodShowFragment"
         android:name="com.kbs.foodie.FoodShowFragment">

@@ -52,6 +52,8 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
         val profileImage = rootView.findViewById<ImageView>(R.id.profileUserImage)
 
         profileUser = main.user
+        main.ImageTrueFalse = true
+        main.FoodImageTrueFalse = true
         profileContentCollectionRef = db.collection("user")
         contentCollectionRef = db.collection("user").document(profileUser).collection("content")
         friendNumcontentCollectionRef =
@@ -67,7 +69,8 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
                // val foodPosition = profileViewModel.myFoods[position].id
                 main.rememberContent(position)
                 main.removeBottomNavigation()
-                findNavController().navigate(R.id.action_myInfoFragment_to_foodShowFragment)
+                val FoodShowFragment = FoodShowFragment()
+                main.onChangeFragment(FoodShowFragment)
             }
         })
         profileViewModel.myFoodData.observe(viewLifecycleOwner) {
@@ -101,7 +104,8 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
 
         profileButton.setOnClickListener {
             main.removeBottomNavigation()
-            findNavController().navigate(R.id.action_myInfoFragment_to_profileEditFragment)
+            val ProfileEditFragment = ProfileEditFragment()
+            main.onChangeFragment(ProfileEditFragment)
         }
         return rootView
     }

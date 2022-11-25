@@ -1,6 +1,7 @@
 package com.kbs.foodie
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -16,14 +17,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kbs.foodie.databinding.ActivityMainBinding
+import java.util.*
 
 class MainActivity : AppCompatActivity(),OnLocationSetListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -33,6 +38,14 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
     lateinit var user:String
     private var toolBarkey=ToolBarKey.Home
     var myInfoPos=0
+    var ImageTrueFalse :Boolean = true
+    var FoodImageTrueFalse :Boolean = true
+    //이미지 관련
+    var userPhoto : Uri? = null
+    private var userFileName : String?=null
+    val storage = Firebase.storage
+    lateinit var resultImage: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -40,7 +53,6 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         setContentView(view)
         initToolBar()
         user=intent.getStringExtra("user")?:""
-
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentView) as NavHostFragment
         navController = navHostFragment.navController
@@ -149,6 +161,42 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
             super.onBackPressed()
         }
     }
+    //이미지 띄우기
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // 앨범에서 Profile Image 사진 선택시 호출 되는 부분
+        if (requestCode == ProfileEditFragment.PICK_PROFILE_FROM_ALBUM && resultCode == RESULT_OK) {
+
+            userPhoto = data?.data
+            println(userPhoto)
+            val fragment1 = ProfileEditFragment()
+
+            supportFragmentManager
+                .setFragmentResult("requestKey1", bundleOf("bundleKey" to userPhoto.toString()))
+            onChangeFragment(fragment1)
+        }
+        else if (requestCode == FoodEditFragment.PICK_PROFILE_FROM_ALBUM && resultCode == RESULT_OK) {
+
+            userPhoto = data?.data
+            println(userPhoto)
+            val fragment2 = FoodEditFragment()
+
+            supportFragmentManager
+                .setFragmentResult("requestKey2", bundleOf("bundleKey" to userPhoto.toString()))
+            onChangeFragment(fragment2)
+        }
+    }
+
+
+    fun onChangeFragment(fragment: Fragment){
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragmentView,fragment)
+            .commit()
+    }
+
 
     private fun permissionCheck() {
         val preference = getPreferences(MODE_PRIVATE)

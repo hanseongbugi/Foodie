@@ -2,12 +2,12 @@ package com.kbs.foodie
 
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
-import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,6 +22,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import org.w3c.dom.Text
 
 
 @Suppress("DEPRECATION")
@@ -29,6 +30,7 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
     private val db: FirebaseFirestore = Firebase.firestore
     private lateinit var foodEditViewModel:MyInfoViewModel
     private lateinit var foodContentCollectionRef: CollectionReference
+    private lateinit var UserContentCollectionRef: CollectionReference
     private lateinit var user:String
     val storage = Firebase.storage
     val FoodStorageRef = storage.reference
@@ -57,45 +59,27 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
         foodEditViewModel= ViewModelProvider(requireActivity())[MyInfoViewModel::class.java]
         foodContentCollectionRef=db.collection("user").document(user)
             .collection("content")
+        UserContentCollectionRef = db.collection("user")
         println(foodEditViewModel)
+        println("FOOOODODODODODO SHOWWWWWW 왔냐")
         foodEditViewModel.myFoodData.observe(viewLifecycleOwner) {
-            val ft = requireFragmentManager().beginTransaction()
-            if (Build.VERSION.SDK_INT >= 26) {
-                ft.setReorderingAllowed(false)
-            }
-            ft.detach(this).attach(this).commit()
+            main.onChangeFragment(this)
         }
         //화면 USER 정보
-        db.runTransaction{
-            val docRef=db.collection("user").document(user)
-            val snapshot=it.get(docRef)
-            val userName=snapshot.getString("username")?:""
-            val userImage=snapshot.getString("userimage")?:""
-            showUserName.text=userName
-            val userImageRef=FoodStorageRef.child(userImage)
-            loadImage(userImageRef,showUserImage)
-        }
+        UserContentCollectionRef.document(user).get()
+            .addOnSuccessListener {
+                showUserName.text = it["username"].toString()
+                val profileImageRef = FoodStorageRef.child("/${it["userimage"]}")
+                loadImage(profileImageRef, showUserImage)
+            }.addOnFailureListener {}
+
         //수정화면으로 전환
         updateFoodContentButton.setOnClickListener {
-
-            findNavController().navigate(R.id.action_foodShowFragment_to_foodEditFragment)
+            val FoodEditFragment = FoodEditFragment()
+            main.onChangeFragment(FoodEditFragment)
         }
         //화면 음식정보 SHOW
-        foodContentCollectionRef.get().addOnCompleteListener { task ->
-            val getPositionFood = foodEditViewModel.getContent(foodPos)
-            if (task.isSuccessful) {
-                showFoodNameText.text=
-                    SpannableStringBuilder(getPositionFood?.name)
-                showFoodLocationText.text =
-                    SpannableStringBuilder(getPositionFood?.address)
-                showFoodScoreEditText.text =
-                    SpannableStringBuilder(getPositionFood?.score.toString())
-                showFoodReviewEditText.text =
-                    SpannableStringBuilder(getPositionFood?.review)
-                val profileImageRef = FoodStorageRef.child("/${getPositionFood?.image}")
-                loadImage(profileImageRef, showFoodImage)
-            }
-        }
+        showFood(foodPos,showFoodNameText,showFoodLocationText,showFoodScoreEditText,showFoodReviewEditText,showFoodImage)
 
         return rootView
     }
@@ -107,9 +91,23 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
             view.setImageResource(R.drawable.img)
         }
     }
-    fun refreshFragment(fragment: Fragment, fragmentManager: FragmentManager) {
-        var ft: FragmentTransaction = fragmentManager.beginTransaction()
-        ft.detach(fragment).attach(fragment).commit()
-    }
+    fun showFood(foodPos: Int,showFoodNameText:TextView,showFoodLocationText: TextView, showFoodScoreEditText: TextView, showFoodReviewEditText: TextView, showFoodImage:ImageView) {
 
+        foodContentCollectionRef.get().addOnCompleteListener { task ->
+            val getPositionFood = foodEditViewModel.getContent(foodPos)
+            if (task.isSuccessful) {
+                showFoodNameText.text =
+                    SpannableStringBuilder(getPositionFood?.name)
+                showFoodLocationText.text =
+                    SpannableStringBuilder(getPositionFood?.address)
+                showFoodScoreEditText.text =
+                    SpannableStringBuilder(getPositionFood?.score.toString())
+                showFoodReviewEditText.text =
+                    SpannableStringBuilder(getPositionFood?.review)
+                val profileImageRef = FoodStorageRef.child("/${getPositionFood?.image}")
+                loadImage(profileImageRef, showFoodImage)
+            }
+
+        }
+    }
 }
