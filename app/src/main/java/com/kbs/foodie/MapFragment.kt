@@ -28,6 +28,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.math.round
+import kotlin.math.roundToInt
 
 
 class MapFragment : Fragment(R.layout.map_fragment)  {
@@ -322,7 +324,7 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
                 }
             }
             Log.w("sum", "$sum")
-            address.text = (sum/count).toString();
+            address.text = (round(sum/count*100)/100).toString();
             return mCalloutBalloon
 
         }
