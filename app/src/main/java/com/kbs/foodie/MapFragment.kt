@@ -44,7 +44,7 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
     private lateinit var mapView : MapView              // 카카오 지도 뷰
     private lateinit var user:String //나
     private var users = ArrayList<String>(); //친구들
-
+    private lateinit var wactivity:String
     data class ContentData(val review:String, val index:MapPoint, val score : Float)
     //    private val eventListener = context?.let { MarkerEventListener(it) }
     private var pointList=ArrayList<ContentData>()
@@ -65,13 +65,16 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        user = if(activity is MainActivity) {
+        if(activity is MainActivity) {
             val main = activity as MainActivity
             main.hiddenMenu()
-            main.user
+            user = main.user
+            wactivity = "main"
+
         } else{
             val add = activity as AddActivity
-            add.user
+            user =add.user
+            wactivity = "add"
         }
 
         val firebaseAuth = FirebaseAuth.getInstance()
@@ -203,6 +206,14 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
 
                 binding!!.mapView.setMapCenterPointAndZoomLevel(mapPoint, 1, true)
                 locationDataListener.onLocationSet(listItems[position].address, listItems[position].name, listItems[position].y, listItems[position].x)
+                if(wactivity == "main"){
+
+                }
+                else{
+
+                    activity!!.supportFragmentManager.beginTransaction().remove(this@MapFragment).commit()
+
+                }
             }
         })
 
@@ -212,7 +223,7 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
             pageNumber = 1
             searchKeyword(keyword, pageNumber)
         }
-        // 이전 페이지 버튼
+
 
         mapView = binding!!.mapView   // 카카오 지도 뷰
 
