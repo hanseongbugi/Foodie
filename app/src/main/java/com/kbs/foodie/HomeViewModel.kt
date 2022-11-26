@@ -20,10 +20,12 @@ class HomeViewModel : ViewModel() {
     val contents = ArrayList<Content>()
     val emailData=MutableLiveData<ArrayList<String>>()
     val friendEmail=ArrayList<String>()
+    val friendMap= mutableMapOf<String,String>()
 
-    fun addFriendEmail(email:String){
+    fun addFriendEmail(email:String,name:String){
         if(friendEmail.contains(email))return
         friendEmail.add(email)
+        friendMap[name] = email
         emailData.value=friendEmail
 
     }
@@ -48,5 +50,6 @@ class HomeViewModel : ViewModel() {
     }
     fun deleteEmailAll(){
         friendEmail.clear()
+
     }
 }

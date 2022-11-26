@@ -137,7 +137,7 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 val foodShowFragment = FoodShowFragment()
-                                main.onChangeFragment(foodShowFragment)
+                               // main.onChangeFragment(foodShowFragment)
                             }
                         }
 
@@ -163,7 +163,7 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
                                     .addOnSuccessListener {
 
                                         val myInfoFragment = MyInfoFragment()
-                                        main.onChangeFragment(myInfoFragment)
+                                      //  main.onChangeFragment(myInfoFragment)
                                          }
                             }
 

@@ -1,109 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/profile_edit_fragment"
+    android:background="@color/foodie_label"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/back_color"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="-30dp">
+    android:layout_height="match_parent">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/editProfileUserImage"
-        android:layout_width="242dp"
-        android:layout_height="218dp"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="89dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_edit_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/fragment_round_label"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/login_input_border"
-        tools:srcCompat="@android:drawable/ic_menu_crop" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="48dp"
-        android:text="NAME"
-        android:textColor="#565653"
-        android:textSize="20sp"
-        android:textStyle="bold|italic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfileUserImage" />
 
-    <EditText
-        android:id="@+id/editProfileEmailEditText"
-        android:layout_width="372dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/login_input_border"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:minHeight="48dp"
-        android:paddingStart="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfileNameEditText"
-        tools:ignore="SpeakableTextPresentCheck" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/editProfileUserImage"
+            android:layout_width="242dp"
+            android:layout_height="218dp"
+            android:layout_marginTop="64dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/login_input_border"
+            tools:srcCompat="@android:drawable/ic_menu_crop" />
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="84dp"
-        android:text="INFO"
-        android:textSize="20sp"
-        android:textStyle="bold|italic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="NAME"
+            android:textColor="#565653"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toStartOf="@+id/editProfileNameEditText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editProfileNameEditText" />
 
-    <Button
-        android:id="@+id/editFoodUpdateButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/login_button_border"
-        android:text="UPDATE PROFILE"
-        android:textColor="#FAD042"
-        android:textSize="16sp"
-        android:textStyle="bold|italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfileEmailEditText" />
+        <Button
+            android:id="@+id/editFoodUpdateButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/login_button_border"
+            android:text="UPDATE PROFILE"
+            android:textColor="#FAD042"
+            android:textSize="16sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintBottom_toTopOf="@+id/editFoodDeleteButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/editFoodDeleteButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:background="@drawable/login_button_border"
-        android:text="DELETE PROFILE"
-        android:textColor="#FA2121"
-        android:textSize="16sp"
-        android:textStyle="bold|italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfileEmailEditText" />
+        <Button
+            android:id="@+id/editFoodDeleteButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/login_button_border"
+            android:text="DELETE PROFILE"
+            android:textColor="#FA2121"
+            android:textSize="16sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/editProfileNameEditText"
-        android:layout_width="372dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/login_input_border"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:paddingStart="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfileUserImage"
-        tools:ignore="SpeakableTextPresentCheck" />
+        <EditText
+            android:id="@+id/editProfileNameEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/login_input_border"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/editFoodUpdateButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editProfileUserImage"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

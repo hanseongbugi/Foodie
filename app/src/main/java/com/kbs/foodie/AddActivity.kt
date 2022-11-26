@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -39,6 +40,10 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
     private lateinit var contentCollectionRef:CollectionReference
     lateinit var user:String
     var foodPhoto : Uri? = null
+    val content=registerForActivityResult(ActivityResultContracts.GetContent()){
+        foodPhoto =it
+        binding.editFoodImage.setImageURI(foodPhoto)
+    }
     var foodFileName : String? = null
     val storage = Firebase.storage
     companion object {
@@ -74,7 +79,7 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
 
         //갤러리 이미지 연동
         binding.editFoodImage.setOnClickListener{
-            openGallery()
+            content.launch("image/*")
         }
         //addItem()
         binding.saveAndBackButton.setOnClickListener{
@@ -140,23 +145,7 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
         binding.nameEditText.setText(mName)
        // Log.w("2",location)
     }
-    fun openGallery(){
-        val intent= Intent(Intent.ACTION_PICK)
-        intent.type= MediaStore.Images.Media.CONTENT_TYPE
-        startActivityForResult(intent, REQ_GALLERY)
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == RESULT_OK){
-            when(requestCode){
-                REQ_GALLERY -> {
-                    foodPhoto =data?.data
-                    binding.editFoodImage.setImageURI(foodPhoto)
-                }
-            }
-        }
-    }
     private fun uploadFile() {
         val timestamp = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())

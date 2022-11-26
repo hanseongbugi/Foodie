@@ -33,7 +33,7 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
     private lateinit var UserContentCollectionRef: CollectionReference
     private lateinit var user:String
     val storage = Firebase.storage
-    val FoodStorageRef = storage.reference
+    private val FoodStorageRef = storage.reference
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -63,7 +63,7 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
         println(foodEditViewModel)
         println("FOOOODODODODODO SHOWWWWWW 왔냐")
         foodEditViewModel.myFoodData.observe(viewLifecycleOwner) {
-            main.onChangeFragment(this)
+           // main.onChangeFragment(this)
         }
         //화면 USER 정보
         UserContentCollectionRef.document(user).get()
@@ -76,7 +76,7 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
         //수정화면으로 전환
         updateFoodContentButton.setOnClickListener {
             val FoodEditFragment = FoodEditFragment()
-            main.onChangeFragment(FoodEditFragment)
+           println("updateFood")
         }
         //화면 음식정보 SHOW
         showFood(foodPos,showFoodNameText,showFoodLocationText,showFoodScoreEditText,showFoodReviewEditText,showFoodImage)
