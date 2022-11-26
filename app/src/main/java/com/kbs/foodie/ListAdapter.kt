@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 class ListAdapter(val itemList: ArrayList<ListLayout>): RecyclerView.Adapter<ListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_layout, parent, false)
+
         return ViewHolder(view)
     }
 
@@ -24,6 +25,7 @@ class ListAdapter(val itemList: ArrayList<ListLayout>): RecyclerView.Adapter<Lis
         holder.itemView.setOnClickListener {
             itemClickListener.onClick(it, position)
         }
+
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -14,7 +15,6 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.protobuf.LazyStringArrayList
 import com.kbs.foodie.databinding.MapFragmentBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -189,8 +189,13 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
         binding = MapFragmentBinding.inflate(inflater,container ,false)
 
         binding!!.rvList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+
         eventListener = context?.let { MarkerEventListener(it) }!!;
         binding!!.rvList.adapter = listAdapter
+        val recyclerView = binding!!.rvList
+        recyclerView.setHasFixedSize(true)
+
         // 리스트 아이템 클릭 시 해당 위치로 이동
         listAdapter.setItemClickListener(object: ListAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
@@ -208,17 +213,7 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
             searchKeyword(keyword, pageNumber)
         }
         // 이전 페이지 버튼
-        binding!!.btnPrevPage.setOnClickListener {
-            pageNumber--
-            binding!!.tvPageNumber.text = pageNumber.toString()
-            searchKeyword(keyword, pageNumber)
-        }
-        // 다음 페이지 버튼
-        binding!!.btnNextPage.setOnClickListener {
-            pageNumber++
-            binding!!.tvPageNumber.text = pageNumber.toString()
-            searchKeyword(keyword, pageNumber)
-        }
+
         mapView = binding!!.mapView   // 카카오 지도 뷰
 
 
@@ -293,9 +288,7 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
             }
             listAdapter.notifyDataSetChanged()
 
-            binding?.btnNextPage?.isEnabled ?:  !searchResult.meta.is_end // 페이지가 더 있을 경우 다음 버튼 활성화
-            (binding?.btnPrevPage?.isEnabled
-                ?: pageNumber) != 1             // 1페이지가 아닐 경우 이전 버튼 활성화
+               // 1페이지가 아닐 경우 이전 버튼 활성화
 
         } else {
             // 검색 결과 없음
