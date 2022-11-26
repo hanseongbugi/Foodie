@@ -5,8 +5,11 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
@@ -18,9 +21,18 @@ import com.kbs.foodie.databinding.HomeFragmentBinding
 import com.kbs.foodie.databinding.HomeItemBinding
 
 
-
 class HomeAdapter(private val homeViewModel:HomeViewModel) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+    interface OnItemClickListener {
+        fun onClick(v: View)
+    }
+
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemClickListener = onItemClickListener
+    }
+
+    private lateinit var itemClickListener : OnItemClickListener
+
 
     inner class ViewHolder(private val binding:HomeItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val storage = Firebase.storage
@@ -43,6 +55,9 @@ class HomeAdapter(private val homeViewModel:HomeViewModel) :
                 binding.listTvReview.text=review
                 val imageRef=storageRef.child("/$image")
                 loadImage(imageRef,binding.realImage)
+                binding.userInfo.setOnClickListener{
+                    itemClickListener.onClick(it)
+                }
             }
         }
         private fun loadImage(imageRef:StorageReference,view:ImageView){

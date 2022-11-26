@@ -37,6 +37,9 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
     lateinit var navController:NavController
     lateinit var user:String
     private var toolBarkey=ToolBarKey.Home
+    var friendName:String?=null
+    var friendEmail:String?=null
+
     var myInfoPos=0
     var ImageTrueFalse :Boolean = true
     var FoodImageTrueFalse :Boolean = true
@@ -69,6 +72,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
             R.id.homeFragment, R.id.mapFragment,R.id.myInfoFragment
         ).build()
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfig)
+
 
     }
 
@@ -162,85 +166,8 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
             super.onBackPressed()
         }
     }
-    //이미지 띄우기
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        super.onActivityResult(requestCode, resultCode, data)
-
-        // 앨범에서 Profile Image 사진 선택시 호출 되는 부분
-        if (requestCode == ProfileEditFragment.PICK_PROFILE_FROM_ALBUM && resultCode == RESULT_OK) {
-
-            userPhoto = data?.data
-            println(userPhoto)
-            val fragment1 = ProfileEditFragment()
-
-            supportFragmentManager
-                .setFragmentResult("requestKey1", bundleOf("bundleKey" to userPhoto.toString()))
-            onChangeFragment(fragment1)
-        }
-        else if (requestCode == FoodEditFragment.PICK_PROFILE_FROM_ALBUM && resultCode == RESULT_OK) {
-
-            foodPhoto = data?.data
-            println(foodPhoto)
-            val fragment2 = FoodEditFragment()
-
-            supportFragmentManager
-                .setFragmentResult("requestKey2", bundleOf("bundleKey" to foodPhoto.toString()))
-            onChangeFragment(fragment2)
-        }
-    }
 
 
-    fun onChangeFragment(fragment: Fragment){
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragmentView,fragment)
-            .commit()
-    }
-
-
-    private fun permissionCheck() {
-        val preference = getPreferences(MODE_PRIVATE)
-        val isFirstCheck = preference.getBoolean("isFirstPermissionCheck", true)
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // 권한이 없는 상태
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // 권한 거절
-                val builder = AlertDialog.Builder(this)
-                builder.setMessage("현재 위치를 확인하시려면 위치 권한을 허용해주세요.")
-                builder.setPositiveButton("확인") { dialog, which ->
-                    ActivityCompat.requestPermissions(this,
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), ACCESS_FINE_LOCATION)
-                }
-                builder.setNegativeButton("취소") { dialog, which ->
-
-                }
-                builder.show()
-            } else {
-                if (isFirstCheck) {
-                    // 최초 권한 요청
-                    preference.edit().putBoolean("isFirstPermissionCheck", false).apply()
-                    ActivityCompat.requestPermissions(this,
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), ACCESS_FINE_LOCATION)
-                } else {
-                    val builder = AlertDialog.Builder(this)
-                    builder.setMessage("현재 위치를 확인하시려면 설정에서 위치 권한을 허용해주세요.")
-                    builder.setPositiveButton("설정으로 이동") { dialog, which ->
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$packageName"))
-                        startActivity(intent)
-                    }
-                    builder.setNegativeButton("취소") { dialog, which ->
-
-                    }
-                    builder.show()
-                }
-            }
-        } else {
-
-        }
-
-    }
     // 권한 요청
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -254,12 +181,6 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
             }
         }
     }
-    // GPS가 켜져있는지 확인
-    private fun checkLocationService(): Boolean {
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-    }
-
     override fun onLocationSet(location: String, name: String, y: Double, x: Double) {
         Log.w("!!!",location)
     }

@@ -9,6 +9,9 @@
         android:id="@+id/homeFragment"
         android:name="com.kbs.foodie.HomeFragment"
         android:label="">
+        <action
+            android:id="@+id/action_homeFragment_to_friendInfoFragment"
+            app:destination="@id/friendInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/friendAddFragment"
@@ -47,4 +50,7 @@
             android:id="@+id/action_foodShowFragment_to_foodEditFragment"
             app:destination="@id/foodEditFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/friendInfoFragment"
+        android:name="com.kbs.foodie.FriendInfoFragment" />
 </navigation>

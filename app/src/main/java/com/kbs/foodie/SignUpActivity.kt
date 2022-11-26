@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,7 +21,6 @@ import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-@Suppress("DEPRECATION")
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupBinding
@@ -31,6 +31,10 @@ class SignUpActivity : AppCompatActivity() {
     private val db: FirebaseFirestore = Firebase.firestore
     private val userItemRef = db.collection("user")
     var userPhoto : Uri? = null
+    val content=registerForActivityResult(ActivityResultContracts.GetContent()){
+        userPhoto =it
+        binding.userImage1.setImageURI(userPhoto)
+    }
     private var userFileName : String?=null
     val storage = Firebase.storage
     companion object {
@@ -53,7 +57,7 @@ class SignUpActivity : AppCompatActivity() {
             Toast.makeText(this, "Back Button-> No Auth", Toast.LENGTH_SHORT).show();
         }
         binding.userImage1.setOnClickListener {
-            openGallery()
+            content.launch("image/*")
         }
         //검사조건 : 비밀번호 영어+숫자 Id: xxx@xxx.com
         binding.saveButton.setOnClickListener {
@@ -120,23 +124,8 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this, "데이터가 추가되었습니다", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {  }
     }
-    fun openGallery(){
-        val intent= Intent(Intent.ACTION_PICK)
-        intent.type= MediaStore.Images.Media.CONTENT_TYPE
-        startActivityForResult(intent, REQ_GALLERY)
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == RESULT_OK){
-            when(requestCode){
-                REQ_GALLERY -> {
-                    userPhoto =data?.data
-                    binding.userImage1.setImageURI(userPhoto)
-                }
-            }
-        }
-    }
+
     private fun uploadFile() {
         val timestamp = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())

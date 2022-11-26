@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,8 +20,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 
-
-class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
+class FriendInfoFragment : Fragment(R.layout.my_info_fragment) {
     private val db: FirebaseFirestore = Firebase.firestore
     private var adapter: MyInfoAdapter? = null
     private lateinit var profileViewModel:MyInfoViewModel
@@ -33,14 +31,16 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
     val storage = Firebase.storage
     val profileStorageRef = storage.reference
     lateinit var main:MainActivity
+    var userName:String?=null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         main = activity as MainActivity
-        main.showSearchMenu()
+        main.hiddenMenu()
+        userName=main.friendName
         val rootView = inflater.inflate(R.layout.my_info_fragment, container, false) as ViewGroup
         val profileUserRecyclerView = rootView.findViewById<RecyclerView>(R.id.profileRecyclerView)
         val profileUserNameText = rootView.findViewById<TextView>(R.id.profileNameText)
@@ -50,7 +50,8 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
         val profileButton = rootView.findViewById<Button>(R.id.profileEditButton)
         val profileImage = rootView.findViewById<ImageView>(R.id.profileUserImage)
 
-        profileUser = main.user
+        profileUser = main.friendEmail!!
+        println(profileUser)
         main.ImageTrueFalse = true
         main.FoodImageTrueFalse = true
         profileContentCollectionRef = db.collection("user")
@@ -63,18 +64,10 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
         adapter = MyInfoAdapter(profileViewModel, profileUser)
         profileUserRecyclerView.adapter = adapter
         //길게누르면 변경
-        adapter!!.setOnItemclickListner(object: MyInfoAdapter.OnItemClickListner{
-            override fun onItemClick(position: Int) {
-               // val foodPosition = profileViewModel.myFoods[position].id
-                main.rememberContent(position)
-                main.removeBottomNavigation()
-                findNavController().navigate(R.id.action_myInfoFragment_to_foodShowFragment)
-            }
-        })
+
         profileViewModel.myFoodData.observe(viewLifecycleOwner) {
             adapter!!.notifyDataSetChanged()
         }
-        println(profileViewModel)
         contentCollectionRef.get().addOnSuccessListener {
             profileViewModel.deleteAll()
             for (doc in it) {
@@ -100,10 +93,7 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
                 profileFriendNum.text = it.size().toString()
             }.addOnFailureListener {}
 
-        profileButton.setOnClickListener {
-            main.removeBottomNavigation()
-            findNavController().navigate(R.id.action_myInfoFragment_to_profileEditFragment)
-        }
+
         return rootView
     }
 
@@ -119,4 +109,3 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
 
 
 }
-
