@@ -20,7 +20,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import com.kbs.foodie.databinding.FoodEditFragmentBinding
 
 
 class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
@@ -69,8 +68,7 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
                // val foodPosition = profileViewModel.myFoods[position].id
                 main.rememberContent(position)
                 main.removeBottomNavigation()
-                val FoodShowFragment = FoodShowFragment()
-                main.onChangeFragment(FoodShowFragment)
+                findNavController().navigate(R.id.action_myInfoFragment_to_foodShowFragment)
             }
         })
         profileViewModel.myFoodData.observe(viewLifecycleOwner) {
