@@ -40,7 +40,7 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
     private lateinit var foodContentCollectionRef: CollectionReference
     private lateinit var user:String
 
-    var userPhoto: Uri? = null
+    var foodPhoto: Uri? = null
     var foodFileName : String? = null
 
     val storage = Firebase.storage
@@ -109,9 +109,9 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
         }
         setFragmentResultListener("requestKey2") { requestKey, bundle ->
             //결과 값을 받는곳입니다.
-            val userPP = bundle.getString("bundleKey")
-            userPhoto = Uri.parse(userPP)
-            editFoodImage.setImageURI(userPhoto)
+            val userPPT = bundle.getString("bundleKey")
+            foodPhoto = Uri.parse(userPPT)
+            editFoodImage.setImageURI(foodPhoto)
         }
 
         //food Content Update
@@ -162,8 +162,8 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
                                 FoodStorageRef.child(getPositionFood?.image.toString()).delete()
                                     .addOnSuccessListener {
 
-                                        val MyInfoFragment = MyInfoFragment()
-                                        main.onChangeFragment(MyInfoFragment)
+                                        val myInfoFragment = MyInfoFragment()
+                                        main.onChangeFragment(myInfoFragment)
                                          }
                             }
 
@@ -198,10 +198,10 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
             Log.d(ContentValues.TAG, "version's low")
         }
 
-        if(userPhoto!=null) {
+        if(foodPhoto!=null) {
             foodFileName = "Content_$timestamp.png"
-            val imageRef = storage.reference.child("${ProfileEditFragment.UPLOAD_FOLDER}${foodFileName}")
-            imageRef.putFile(userPhoto!!).addOnCompleteListener {
+            val imageRef = storage.reference.child("${UPLOAD_FOLDER}${foodFileName}")
+            imageRef.putFile(foodPhoto!!).addOnCompleteListener {
                 println(foodFileName.toString())
             }
         }

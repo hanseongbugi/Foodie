@@ -127,10 +127,13 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
                 .setPositiveButton("확인",
                     DialogInterface.OnClickListener { dialog, id ->
                         //사진삭제
-                        editProfileStorageRef.child("${profileUserImage}").delete()
-                            .addOnSuccessListener {
-                                Toast.makeText(requireContext(),"DELETE USER COMPLETE", Toast.LENGTH_SHORT).show()
-                            }
+                        profileContentCollectionRef.document(profileUser).get().addOnSuccessListener{
+                            profileUserImage = it["userimage"].toString()
+                            editProfileStorageRef.child("${profileUserImage}").delete()
+                                .addOnSuccessListener {
+                                    Toast.makeText(requireContext(),"DELETE USER COMPLETE", Toast.LENGTH_SHORT).show()
+                                }
+                        }
                         //음식사진 삭제
                         //유저삭제
                         deleteId()
@@ -183,6 +186,7 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
         }
     }
     fun deleteUnderCollection(underCollection: String){
+
         profileContentCollectionRef.document(profileUser)
             .collection(underCollection).get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {

@@ -1,117 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@color/back_color"
-    >
+    app:cardBackgroundColor="#787870">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_marginTop="10dp"
+        android:background="@drawable/fragment_round_label">
 
 
-    <Button
-        android:id="@+id/profileEditButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/login_button_border"
-        android:text="EDIT PROFILE"
-        android:textColor="#F7CE25"
-        android:textSize="16sp"
-        android:textStyle="bold|italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileUserImage" />
+        <Button
+            android:id="@+id/profileEditButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/login_button_border"
+            android:text="EDIT PROFILE"
+            android:textColor="#F7CE25"
+            android:textSize="16sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="95dp"
-        android:paddingStart="3dp"
-        android:text="POST"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePostostNumText" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/profileRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/content_item_border"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileEditButton" />
 
-    <TextView
-        android:id="@+id/profilePostostNumText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="7dp"
-        android:text="10"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileEditButton" />
+        <TextView
+            android:id="@+id/profileFriendNumText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="116dp"
+            android:text="10"
+            android:textColor="#EAC52D"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileEmailText" />
 
-    <TextView
-        android:id="@+id/profileFriendNumText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="110dp"
-        android:text="10"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileEditButton" />
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="72dp"
+            android:layout_height="29dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="76dp"
+            android:paddingStart="3dp"
+            android:text="FRIEND"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileFriendNumText" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="72dp"
-        android:layout_height="29dp"
-        android:layout_marginEnd="86dp"
-        android:paddingStart="3dp"
-        android:text="FRIEND"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileFriendNumText" />
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="96dp"
+            android:layout_marginTop="8dp"
+            android:paddingStart="3dp"
+            android:text="POST"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profilePostostNumText" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/profileRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        <TextView
+            android:id="@+id/profilePostostNumText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="107dp"
+            android:text="10"
+            android:textColor="#F6CC27"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileEmailText" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profileUserImage"
-        android:layout_width="113dp"
-        android:layout_height="112dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img"
-        app:cardCornerRadius="13dp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profileUserImage"
+            android:layout_width="113dp"
+            android:layout_height="112dp"
+            android:layout_marginStart="148dp"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="13dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/img" />
 
-    <TextView
-        android:id="@+id/profileNameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="29dp"
-        android:text="NAME"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/profileUserImage"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/profileNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="172dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="172dp"
+            android:text="NAME"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileUserImage" />
 
-    <TextView
-        android:id="@+id/profileEmailText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="22dp"
-        android:text="EMAIL@EMAIL.com"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/profileUserImage"
-        app:layout_constraintTop_toBottomOf="@+id/profileNameText" />
+        <TextView
+            android:id="@+id/profileEmailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="134dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="134dp"
+            android:text="EMAIL@EMAIL.com"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileNameText" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

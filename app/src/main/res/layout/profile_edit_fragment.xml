@@ -9,7 +9,7 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="-30dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/editProfileUserImage"
         android:layout_width="242dp"
         android:layout_height="218dp"

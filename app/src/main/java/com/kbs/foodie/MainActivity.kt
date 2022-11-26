@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
     var FoodImageTrueFalse :Boolean = true
     //이미지 관련
     var userPhoto : Uri? = null
+    var foodPhoto : Uri? = null
     private var userFileName : String?=null
     val storage = Firebase.storage
     lateinit var resultImage: String
@@ -179,12 +180,12 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         }
         else if (requestCode == FoodEditFragment.PICK_PROFILE_FROM_ALBUM && resultCode == RESULT_OK) {
 
-            userPhoto = data?.data
-            println(userPhoto)
+            foodPhoto = data?.data
+            println(foodPhoto)
             val fragment2 = FoodEditFragment()
 
             supportFragmentManager
-                .setFragmentResult("requestKey2", bundleOf("bundleKey" to userPhoto.toString()))
+                .setFragmentResult("requestKey2", bundleOf("bundleKey" to foodPhoto.toString()))
             onChangeFragment(fragment2)
         }
     }
