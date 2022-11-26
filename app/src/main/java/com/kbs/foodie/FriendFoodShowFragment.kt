@@ -7,25 +7,19 @@ import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import org.w3c.dom.Text
 
-
-class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
+class FriendFoodShowFragment: Fragment(R.layout.friend_food_show_fragment) {
     private val db: FirebaseFirestore = Firebase.firestore
     private lateinit var foodEditViewModel:MyInfoViewModel
     private lateinit var foodContentCollectionRef: CollectionReference
@@ -42,8 +36,10 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
     ): View {
         val main = activity as MainActivity
         main.hiddenMenu()
-        val rootView = inflater.inflate(R.layout.food_show_fragment, container, false) as ViewGroup
-        user=main.user
+        main.backMainMenu=false
+        main.removeBottomNavigation()
+        val rootView = inflater.inflate(R.layout.friend_food_show_fragment, container, false) as ViewGroup
+        user= main.friendEmail.toString()
         val foodPos = main.myInfoPos
         val showFoodNameText = rootView.findViewById<TextView>(R.id.list_tv_name)
         val showFoodLocationText = rootView.findViewById<TextView>(R.id.list_tv_address)
@@ -54,7 +50,6 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
         val showUserName = rootView.findViewById<TextView>(R.id.userName)
         val showUserImage = rootView.findViewById<ImageView>(R.id.userImage)
 
-        val updateFoodContentButton = rootView.findViewById<ImageButton>(R.id.updateFoodButton)
         foodEditViewModel= ViewModelProvider(requireActivity())[MyInfoViewModel::class.java]
         foodContentCollectionRef=db.collection("user").document(user)
             .collection("content")
@@ -62,7 +57,7 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
         println(foodEditViewModel)
         println("FOOOODODODODODO SHOWWWWWW 왔냐")
         foodEditViewModel.myFoodData.observe(viewLifecycleOwner) {
-           // main.onChangeFragment(this)
+            // main.onChangeFragment(this)
         }
         //화면 USER 정보
         UserContentCollectionRef.document(user).get()
@@ -72,11 +67,6 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
                 loadImage(profileImageRef, showUserImage)
             }.addOnFailureListener {}
 
-        //수정화면으로 전환
-        updateFoodContentButton.setOnClickListener {
-            val FoodEditFragment = FoodEditFragment()
-           println("updateFood")
-        }
         //화면 음식정보 SHOW
         showFood(foodPos,showFoodNameText,showFoodLocationText,showFoodScoreEditText,showFoodReviewEditText,showFoodImage)
 
@@ -90,7 +80,7 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
             view.setImageResource(R.drawable.img)
         }
     }
-    fun showFood(foodPos: Int,showFoodNameText:TextView,showFoodLocationText: TextView, showFoodScoreEditText: TextView, showFoodReviewEditText: TextView, showFoodImage:ImageView) {
+    fun showFood(foodPos: Int, showFoodNameText: TextView, showFoodLocationText: TextView, showFoodScoreEditText: TextView, showFoodReviewEditText: TextView, showFoodImage: ImageView) {
 
         foodContentCollectionRef.get().addOnCompleteListener { task ->
             val getPositionFood = foodEditViewModel.getContent(foodPos)

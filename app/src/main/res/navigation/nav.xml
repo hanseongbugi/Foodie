@@ -52,5 +52,13 @@
     </fragment>
     <fragment
         android:id="@+id/friendInfoFragment"
-        android:name="com.kbs.foodie.FriendInfoFragment" />
+        android:name="com.kbs.foodie.FriendInfoFragment" >
+        <action
+            android:id="@+id/action_friendInfoFragment_to_friendFoodShowFragment"
+            app:destination="@id/friendFoodShowFragment"
+            app:popUpTo="@id/friendInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/friendFoodShowFragment"
+        android:name="com.kbs.foodie.FriendFoodShowFragment" />
 </navigation>

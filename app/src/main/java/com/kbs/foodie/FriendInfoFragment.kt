@@ -39,7 +39,9 @@ class FriendInfoFragment : Fragment(R.layout.my_info_fragment) {
         savedInstanceState: Bundle?
     ): View {
         main = activity as MainActivity
+        main.backMainMenu=true
         main.hiddenMenu()
+        main.removeBottomNavigation()
         userName=main.friendName
         val rootView = inflater.inflate(R.layout.my_info_fragment, container, false) as ViewGroup
         val profileUserRecyclerView = rootView.findViewById<RecyclerView>(R.id.profileRecyclerView)
@@ -63,7 +65,15 @@ class FriendInfoFragment : Fragment(R.layout.my_info_fragment) {
         profileUserRecyclerView.layoutManager = GridLayoutManager(activity, 3)
         adapter = MyInfoAdapter(profileViewModel, profileUser)
         profileUserRecyclerView.adapter = adapter
-        //길게누르면 변경
+
+        adapter!!.setOnItemclickListner(object: MyInfoAdapter.OnItemClickListner{
+            override fun onItemClick(position: Int) {
+                // val foodPosition = profileViewModel.myFoods[position].id
+                main.rememberContent(position)
+                main.removeBottomNavigation()
+                findNavController().navigate(R.id.action_friendInfoFragment_to_friendFoodShowFragment)
+            }
+        })
 
         profileViewModel.myFoodData.observe(viewLifecycleOwner) {
             adapter!!.notifyDataSetChanged()
