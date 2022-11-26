@@ -72,7 +72,9 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
                 .replace(R.id.addLocation,MapFragment())
                 .addToBackStack(null)
                 .commit()
+
         }
+
 
 
 
@@ -127,7 +129,6 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
             android.R.id.home -> {         // Respond to the action bar's Up/Home button
                 onBackPressed()
                 binding.addLocation.visibility=View.INVISIBLE
-
                 binding.constraintLayout2.visibility=View.VISIBLE
 
                 return true
