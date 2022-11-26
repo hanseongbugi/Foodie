@@ -26,6 +26,7 @@ class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel,val cu
         val storage = Firebase.storage
         val storageRef = storage.reference
         val addFriendbutton = binding.friendAddButton
+        val deleteFriendButton=binding.friendDeleteButton
         val dbFriendEmail = db.collection("user").document(currentUser).collection("friend")
 
         fun setContents(pos: Int) {
@@ -44,8 +45,8 @@ class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel,val cu
                 task -> if(task.isSuccessful){
                     for(document in task.result!!){
                         if(document.id.equals(friendItems.email)){
-                            addFriendbutton.text = "Friend"
-                            addFriendbutton.isEnabled= false
+                            addFriendbutton.isVisible= false
+                            deleteFriendButton.isVisible=true
                         }
                     }
             }
@@ -68,6 +69,13 @@ class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel,val cu
 
                 }.addOnFailureListener {  }
         }
+        fun deleteFriendItem(pos:Int){
+            val friendItems = friendAddViewModel.userInfos[pos]
+            val mfriendemail = friendItems.email
+
+            dbFriendEmail.document(mfriendemail).delete()
+        }
+
         private fun loadImage(imageRef: StorageReference, view: ImageView) {
             imageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener {
                 val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
@@ -92,8 +100,13 @@ class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel,val cu
         holder.addFriendbutton.setOnClickListener{
             //친구 추가 DB
             holder.addFriendItem(position)
-            holder.addFriendbutton.text = "Friend"
-            holder.addFriendbutton.isEnabled= false
+            holder.addFriendbutton.isVisible= false
+            holder.deleteFriendButton.isVisible=true
+        }
+        holder.deleteFriendButton.setOnClickListener{
+            holder.deleteFriendItem(position)
+            holder.addFriendbutton.isVisible= true
+            holder.deleteFriendButton.isVisible=false
         }
 
     }
