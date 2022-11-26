@@ -11,7 +11,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -19,6 +18,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.kbs.foodie.databinding.ActivitySignupBinding
 import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -58,31 +59,43 @@ class SignUpActivity : AppCompatActivity() {
         binding.userImage1.setOnClickListener {
             content.launch("image/*")
         }
+        //검사조건 : 비밀번호 영어+숫자 Id: xxx@xxx.com
         binding.saveButton.setOnClickListener {
-            Log.w("aaa","1")
+//            Log.w("aaa","1")
             muserEmail = signUpEmailText.toString()
             muserPassword = signUpPassWord.toString()
             muserName = signUpNameText.toString()
-            if(checkEmail(muserEmail) && muserPassword.length >=6) {
+            if(checkEmail(muserEmail) && checkPassword(muserPassword)){//muserPassword.length >=6) {
                 uploadFile()
                 muserImage = "${UPLOAD_FOLDER}${userFileName}"
 
                 loginUserId(muserEmail, muserPassword)
 
-            }else{
-                if(!checkEmail(muserEmail)){
-                Toast.makeText(this, "Email error: 이메일 형식으로 입력해주세요", Toast.LENGTH_SHORT).show();
-                }
-                else if(muserPassword.length <6){
-                    Toast.makeText(this, "Password error: 6글자 이상 입력해주세요", Toast.LENGTH_SHORT).show();
-                }
-
-                }
             }
+        }
 
     }
+    private fun checkEmail(email: String?): Boolean { //이메일 형식 검사
+        var returnValue = false
+        val regex = "^[_A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+        val p: Pattern = Pattern.compile(regex)
+        val m: Matcher = p.matcher(email)
+        if (m.matches()) {
+            returnValue = true
+        }else{
+            Toast.makeText(this, "Email error: 이메일 형식으로 입력해주세요", Toast.LENGTH_SHORT).show();
 
-    fun checkEmail(email: String): Boolean = email.contains("@")
+        }
+        return returnValue
+    }
+    private fun checkPassword(password: String):Boolean {
+        return if (!Pattern.matches("^[a-zA-Z0-9].{8,20}$", password)) { //9자부터 20자
+            Toast.makeText(this, "비밀번호 형식을 지켜주세요.", Toast.LENGTH_SHORT).show()
+            false
+        } else{
+            true
+        }
+    }
     private fun loginUserId(email:String, password: String){
         
         Firebase.auth.createUserWithEmailAndPassword(email, password)
