@@ -81,25 +81,25 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
         binding.editFoodImage.setOnClickListener{
             content.launch("image/*")
         }
-        //addItem()
         binding.saveAndBackButton.setOnClickListener{
-            addItem()
-            finish()
+            mName = binding.nameEditText.text.toString()
+            mReview = binding.reviewEditText.text.toString()
+            mScore = binding.scoreEditText.text.toString()
+            mLocation = binding.locationEditText.text.toString()
+            mReview = binding.reviewEditText.text.toString()
+            if(mName==""||mReview==""||mScore==""||mLocation==""||mReview==""||foodPhoto==null){
+                Toast.makeText(this, "모든 내용을 입력해주세요", Toast.LENGTH_SHORT).show()
+
+            }
+            else {
+                addItem()
+                finish()
+            }
         }
     }
     private fun addItem(){
         uploadFile()
-        mName = if(binding.nameEditText.text.toString()==null){
-            ""
-        }else {
-            binding.nameEditText.text.toString()
-        }
-        mReview = binding.reviewEditText.text.toString()
-        mScore = binding.scoreEditText.text.toString()
-        mLocation = binding.locationEditText.text.toString()
-        mReview = binding.reviewEditText.text.toString()
         mFoodImage = foodFileName.toString()
-
         val itemMap = hashMapOf(
             "name" to mName,
             "address" to mLocation,
