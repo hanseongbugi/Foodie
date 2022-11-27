@@ -1,16 +1,23 @@
 package com.kbs.foodie
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.CalendarContract.EXTRA_EVENT_ID
 import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,7 +28,9 @@ import com.google.firebase.storage.ktx.storage
 import com.kbs.foodie.AddActivity.Companion.UPLOAD_FOLDER
 
 import java.util.*
-
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.NotificationCompat.WearableExtender
 
 class AddActivity: AppCompatActivity(), OnLocationSetListener {
     lateinit var binding:ActivityAddBinding
@@ -78,6 +87,9 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
 
 
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Android 8.0
+            createNotificationChannel()
+        }
 
         //갤러리 이미지 연동
         binding.editFoodImage.setOnClickListener{
@@ -96,9 +108,47 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
             else {
                 addItem()
                 finish()
+                showNotification()
             }
         }
     }
+
+
+    private val channelID = "default"
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel() {
+        val channel = NotificationChannel(
+            channelID, "default channel",
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
+        channel.description = "description text of this channel."
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+    private fun showNotification() {
+        val notificationId = 1
+//        val intent = Intent(this, LoginActivity::class.java)
+        // The channel ID of the notification.
+        val id = "my_channel_01"
+        // Build intent for notification content
+        val viewPendingIntent = Intent(this, LoginActivity::class.java).let { viewIntent ->
+            viewIntent.putExtra(EXTRA_EVENT_ID, channelID)
+            PendingIntent.getActivity(this, 0, viewIntent, PendingIntent.FLAG_IMMUTABLE)
+        }
+
+        // Notification channel ID is ignored for Android 7.1.1
+        // (API level 25) and lower.
+        val notificationBuilder = NotificationCompat.Builder(this, channelID)
+            .setSmallIcon(R.drawable.ic_baseline_map_24)
+            .setContentTitle("eventTitle")
+            .setContentText("eventLocation")
+            .setContentIntent(viewPendingIntent)
+        NotificationManagerCompat.from(this).apply {
+            notify(notificationId, notificationBuilder.build())
+        }
+
+    }
+
     private fun addItem(){
         uploadFile()
         mFoodImage = foodFileName.toString()
