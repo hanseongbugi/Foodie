@@ -42,7 +42,11 @@
         android:name="com.kbs.foodie.ProfileEditFragment" />
     <fragment
         android:id="@+id/foodEditFragment"
-        android:name="com.kbs.foodie.FoodEditFragment" />
+        android:name="com.kbs.foodie.FoodEditFragment" >
+        <action
+            android:id="@+id/action_foodEditFragment_to_myInfoFragment"
+            app:destination="@id/myInfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/foodShowFragment"
         android:name="com.kbs.foodie.FoodShowFragment">
