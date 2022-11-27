@@ -22,7 +22,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:paddingStart="8dp"
@@ -30,12 +29,9 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/userImage"
-                android:layout_width="60dp"
+                android:layout_width="65dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:paddingStart="8dp"
-                android:paddingTop="4dp"
-                android:paddingEnd="4dp"
                 tools:srcCompat="@tools:sample/avatars" />
 
 
@@ -43,20 +39,23 @@
                 android:id="@+id/userName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:layout_weight="5"
+                android:paddingStart="8dp"
                 android:text="user name"
                 android:textColor="@color/back_color"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout3"
+
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="9"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
             android:background="@drawable/content_item_border"
             app:circularflow_radiusInDP="50dp">
 
@@ -65,13 +64,15 @@
                 android:id="@+id/list_tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
                 android:includeFontPadding="false"
                 android:paddingStart="10dp"
                 android:text="StoreName"
                 android:textSize="24sp"
                 android:textStyle="bold|italic"
+                app:layout_constraintEnd_toStartOf="@+id/list_tv_number"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/real_image" />
 
@@ -80,8 +81,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
                 android:drawableStart="@drawable/img_6"
                 android:drawablePadding="10dp"
                 android:includeFontPadding="false"
@@ -98,10 +99,10 @@
                 android:id="@+id/list_tv_number"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="1dp"
                 android:drawablePadding="10dp"
                 android:includeFontPadding="false"
                 android:text="score"
+                android:textAlignment="textEnd"
                 android:textSize="20sp"
                 android:textStyle="bold|italic"
                 app:layout_constraintBottom_toBottomOf="@+id/textView2"
@@ -112,7 +113,9 @@
                 android:id="@+id/real_image"
                 android:layout_width="409dp"
                 android:layout_height="255dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +127,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
                 android:includeFontPadding="false"
                 android:paddingStart="8dp"
@@ -141,12 +144,12 @@
                 android:id="@+id/textView2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="25dp"
+                android:layout_marginEnd="16dp"
                 android:includeFontPadding="false"
                 android:text="/5.0"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/list_tv_address"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/real_image" />
 

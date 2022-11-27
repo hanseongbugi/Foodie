@@ -22,12 +22,13 @@
 
         <ImageView
             android:id="@+id/imageView10"
-            android:layout_width="225dp"
-            android:layout_height="199dp"
+            android:layout_width="200dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView2"
-            app:srcCompat="@drawable/img_4" />
+            app:srcCompat="@drawable/login_input_border" />
 
 
 
@@ -50,9 +51,9 @@
             app:layout_constraintEnd_toEndOf="@+id/imageView10"
             app:layout_constraintStart_toStartOf="@+id/imageView10"
             app:layout_constraintTop_toTopOf="@+id/imageView10"
-            app:srcCompat="@drawable/img_3" />
+            app:srcCompat="@drawable/login_input_border" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userImage1"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -66,7 +67,9 @@
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:orientation="vertical"
             android:paddingTop="30dp"
             android:paddingBottom="30dp"
@@ -79,16 +82,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:paddingBottom="20dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
-                    android:layout_weight="1"
+                    android:layout_weight="3"
                     android:text="EMAIL"
                     android:textColor="#81807A"
                     android:textSize="20sp"
@@ -96,10 +98,11 @@
 
                 <EditText
                     android:id="@+id/emailSignUpText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="20dp"
-                    android:layout_weight="5"
+                    android:layout_weight="1"
                     android:background="@drawable/login_input_border"
                     android:ems="10"
                     android:inputType="textEmailAddress"
@@ -112,16 +115,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:paddingBottom="20dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:text="PASSWORD"
                     android:textColor="@color/login_text"
                     android:textSize="20sp"
@@ -129,10 +131,11 @@
 
                 <EditText
                     android:id="@+id/passwdSignUpText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="20dp"
-                    android:layout_weight="5"
+                    android:layout_weight="1"
                     android:background="@drawable/login_input_border"
                     android:ems="10"
                     android:inputType="textPassword"
@@ -149,11 +152,11 @@
 
                 <TextView
                     android:id="@+id/textView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
-                    android:layout_weight="1"
+                    android:layout_weight="3"
                     android:text="NAME"
                     android:textColor="#81807A"
                     android:textSize="20sp"
@@ -161,10 +164,11 @@
 
                 <EditText
                     android:id="@+id/userNameEditText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="20dp"
-                    android:layout_weight="5"
+                    android:layout_weight="1"
                     android:background="@drawable/login_input_border"
                     android:ems="10"
                     android:inputType="textPersonName"
@@ -179,9 +183,9 @@
             android:id="@+id/linearLayout2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:orientation="horizontal"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

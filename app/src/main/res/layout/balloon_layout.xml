@@ -9,7 +9,7 @@
     app:cardCornerRadius="8px">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="200dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content">
 
         <TextView
@@ -20,7 +20,7 @@
             android:layout_marginTop="8dp"
             android:text="장소명"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="12sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

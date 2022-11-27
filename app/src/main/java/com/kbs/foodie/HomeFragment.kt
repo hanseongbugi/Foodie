@@ -66,7 +66,7 @@ class HomeFragment : Fragment() {
                      findNavController().navigate(R.id.action_homeFragment_to_friendInfoFragment)
                 }
                 else{
-                    Toast.makeText(activity, "내 게시물 입니다. 아래 버튼을 눌러주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "내 게시물 입니다. 내 정보를 이용하세요", Toast.LENGTH_SHORT).show();
                 }
             }
         })

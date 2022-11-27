@@ -16,10 +16,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -57,18 +54,19 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
         savedInstanceState: Bundle?
     ): View {
         val main = activity as MainActivity
+        main.backMainMenu=false
         main.hiddenMenu()
         val rootView = inflater.inflate(R.layout.food_edit_fragment, container, false) as ViewGroup
         user = main.user
 
         val foodPos = main.myInfoPos
-        val editFoodNameText = rootView.findViewById<EditText>(R.id.nameEditText)
-        val editFoodLocationText = rootView.findViewById<EditText>(R.id.locationEditText)
+        val editFoodNameText = rootView.findViewById<TextView>(R.id.nameEditText)
+        val editFoodLocationText = rootView.findViewById<TextView>(R.id.locationEditText)
         val editFoodScoreEditText = rootView.findViewById<EditText>(R.id.scoreEditText)
         val editFoodReviewEditText = rootView.findViewById<EditText>(R.id.reviewEditText)
         val editFoodImage = rootView.findViewById<ImageView>(R.id.editFoodImage)
         val editFoodUpdateButton = rootView.findViewById<Button>(R.id.saveAndBackButton)
-        val editFoodDeleteButton = rootView.findViewById<Button>(R.id.editFoodDeleteButton)
+        val editFoodDeleteButton = rootView.findViewById<Button>(R.id.delete_back_button)
 
         foodEditViewModel = ViewModelProvider(requireActivity())[MyInfoViewModel::class.java]
         foodContentCollectionRef = db.collection("user").document(user)

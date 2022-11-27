@@ -17,156 +17,189 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/fragment_round_label"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/saveAndBackButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
             android:background="@drawable/content_button_border"
-            android:text="UPDATE CONTENT"
-            android:textColor="#F9CF42"
+            android:text="SAVE CONTENT"
+            android:textColor="#FAD042"
+            android:textSize="20sp"
             android:textStyle="bold|italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reviewTextView" />
-
-        <Button
-            android:id="@+id/editFoodDeleteButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="19dp"
-            android:background="@drawable/content_button_border"
-            android:text="DELETE CONTENT"
-            android:textColor="#CC0000"
-            android:textStyle="bold|italic"
+            app:layout_constraintBottom_toTopOf="@+id/delete_back_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/saveAndBackButton" />
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/locationTextView"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/delete_back_button"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="LOCATION"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/content_button_border"
+            android:text="DELETE CONTENT"
+            android:textColor="#F40000"
+            android:textSize="20sp"
             android:textStyle="bold|italic"
-            app:layout_constraintEnd_toStartOf="@+id/locationEditText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/locationEditText" />
-
-        <TextView
-            android:id="@+id/reviewTextView"
-            android:layout_width="60dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="64dp"
-            android:text="REVIEW"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold|italic"
-            app:layout_constraintEnd_toStartOf="@+id/reviewEditText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/reviewEditText" />
-
-        <TextView
-            android:id="@+id/nameTextView"
-            android:layout_width="60dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="8dp"
-            android:text="NAME"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold|italic"
-            app:layout_constraintEnd_toStartOf="@+id/nameEditText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/nameEditText" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/editFoodImage"
-            android:layout_width="259dp"
-            android:layout_height="184dp"
-            android:layout_marginTop="30dp"
+            android:layout_width="200dp"
+            android:layout_height="160dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/ic_menu_report_image" />
 
-        <EditText
-            android:id="@+id/nameEditText"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="13dp"
-            android:background="@drawable/login_input_border"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:paddingStart="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/saveAndBackButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editFoodImage" />
-
-        <EditText
-            android:id="@+id/reviewEditText"
-            android:layout_width="265dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="13dp"
-            android:background="@drawable/login_input_border"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:paddingStart="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scoreEditText" />
-
-        <EditText
-            android:id="@+id/scoreEditText"
-            android:layout_width="265dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="13dp"
-            android:background="@drawable/login_input_border"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:paddingStart="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/locationEditText" />
-
-        <EditText
-            android:id="@+id/locationEditText"
-            android:layout_width="265dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="12dp"
-            android:background="@drawable/login_input_border"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:paddingStart="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
-
-        <TextView
-            android:id="@+id/scoreTextView"
-            android:layout_width="60dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="12dp"
-            android:text="SCORE"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold|italic"
-            app:layout_constraintEnd_toStartOf="@+id/scoreEditText"
-            app:layout_constraintHorizontal_bias="0.736"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/scoreEditText" />
+            app:layout_constraintTop_toBottomOf="@+id/editFoodImage">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/nameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="3"
+                    android:text="NAME"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:id="@+id/nameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/login_input_border"
+                    android:padding="10dp"
+                    android:textColor="@color/black"
+                    android:paddingTop="16dp"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/locationTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="3"
+                    android:text="LOCATION"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:id="@+id/locationEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:background="@drawable/login_input_border"
+                    android:padding="10dp"
+                    android:paddingTop="16dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/scoreTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="3"
+                    android:text="SCORE"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold|italic" />
+
+                <EditText
+                    android:id="@+id/scoreEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/login_input_border"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:padding="10dp"
+                    android:paddingStart="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/reviewTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="3"
+                    android:text="REVIEW"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold|italic" />
+
+                <EditText
+                    android:id="@+id/reviewEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/login_input_border"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:minLines="2"
+                    android:padding="32dp"
+                    android:paddingStart="24dp"
+                    android:scrollHorizontally="false" />
+            </LinearLayout>
+
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

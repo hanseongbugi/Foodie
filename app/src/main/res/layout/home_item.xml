@@ -110,6 +110,7 @@
                 android:drawablePadding="15dp"
                 android:includeFontPadding="false"
                 android:text="score"
+                android:textAlignment="textEnd"
                 android:textSize="20sp"
                 android:textStyle="bold|italic"
                 app:layout_constraintBottom_toBottomOf="@+id/textView2"
