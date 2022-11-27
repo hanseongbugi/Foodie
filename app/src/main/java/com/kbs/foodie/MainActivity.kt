@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
     private var toolBarkey=ToolBarKey.Home
     var friendName:String?=null
     var friendEmail:String?=null
-    var backMainMenu=true
+    var backMainMenu=true //bottom navigation을 위한 flag변수
     var myInfoPos=0
     var ImageTrueFalse :Boolean = true
     var FoodImageTrueFalse :Boolean = true

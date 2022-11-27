@@ -41,6 +41,7 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
         savedInstanceState: Bundle?
     ): View {
         val main = activity as MainActivity
+        main.backMainMenu=true
         main.hiddenMenu()
         val rootView = inflater.inflate(R.layout.food_show_fragment, container, false) as ViewGroup
         user=main.user
@@ -74,8 +75,7 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
 
         //수정화면으로 전환
         updateFoodContentButton.setOnClickListener {
-            val FoodEditFragment = FoodEditFragment()
-           println("updateFood")
+            findNavController().navigate(R.id.action_foodShowFragment_to_foodEditFragment)
         }
         //화면 음식정보 SHOW
         showFood(foodPos,showFoodNameText,showFoodLocationText,showFoodScoreEditText,showFoodReviewEditText,showFoodImage)

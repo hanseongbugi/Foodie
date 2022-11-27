@@ -57,6 +57,7 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
         savedInstanceState: Bundle?
     ): View {
         val main = activity as MainActivity
+        main.backMainMenu=false
         main.hiddenMenu()
         val rootView = inflater.inflate(R.layout.food_edit_fragment, container, false) as ViewGroup
         user = main.user

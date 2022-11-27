@@ -48,7 +48,9 @@
         android:name="com.kbs.foodie.FoodShowFragment">
         <action
             android:id="@+id/action_foodShowFragment_to_foodEditFragment"
-            app:destination="@id/foodEditFragment" />
+            app:destination="@id/foodEditFragment"
+            app:popUpTo="@id/foodShowFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/friendInfoFragment"
@@ -56,7 +58,8 @@
         <action
             android:id="@+id/action_friendInfoFragment_to_friendFoodShowFragment"
             app:destination="@id/friendFoodShowFragment"
-            app:popUpTo="@id/friendInfoFragment" />
+            app:popUpTo="@id/friendInfoFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/friendFoodShowFragment"
