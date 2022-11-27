@@ -140,8 +140,9 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
         // (API level 25) and lower.
         val notificationBuilder = NotificationCompat.Builder(this, channelID)
             .setSmallIcon(R.drawable.ic_baseline_map_24)
-            .setContentTitle("eventTitle")
-            .setContentText("eventLocation")
+            .setContentTitle("FOODIE NOTIFICATION")
+            .setContentText("${mName.toString()}")
+            .setContentText("${mScore.toString()}")
             .setContentIntent(viewPendingIntent)
         NotificationManagerCompat.from(this).apply {
             notify(notificationId, notificationBuilder.build())

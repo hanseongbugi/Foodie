@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -37,16 +38,23 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
     private lateinit var foodContentCollectionRef: CollectionReference
     private lateinit var user:String
 
+    lateinit var rootView:ViewGroup
+
     var foodPhoto: Uri? = null
     var foodFileName : String? = null
 
     val storage = Firebase.storage
     val FoodStorageRef = storage.reference
-
+    val content=registerForActivityResult(ActivityResultContracts.GetContent()){
+        foodPhoto=it
+        rootView.findViewById<ImageView>(R.id.editFoodImage).setImageURI(foodPhoto)
+    }
     companion object {
         var PICK_PROFILE_FROM_ALBUM = 11
         const val UPLOAD_FOLDER = "contentImage/"
     }
+    var defaultImage:String?=null
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,7 +64,7 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
         val main = activity as MainActivity
         main.backMainMenu=false
         main.hiddenMenu()
-        val rootView = inflater.inflate(R.layout.food_edit_fragment, container, false) as ViewGroup
+        rootView = inflater.inflate(R.layout.food_edit_fragment, container, false) as ViewGroup
         user = main.user
 
         val foodPos = main.myInfoPos
@@ -71,7 +79,6 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
         foodEditViewModel = ViewModelProvider(requireActivity())[MyInfoViewModel::class.java]
         foodContentCollectionRef = db.collection("user").document(user)
             .collection("content")
-        println(foodEditViewModel)
 
         //기존 foodContent SHOW
         if (main.FoodImageTrueFalse) {
@@ -98,13 +105,10 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
                     SpannableStringBuilder(getPositionFood?.review)
             }
         }
-        editFoodImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = MediaStore.Images.Media.CONTENT_TYPE
-            main.startActivityForResult(intent, FoodEditFragment.PICK_PROFILE_FROM_ALBUM)
-
-            //이미지 띄우기
+        editFoodImage.setOnClickListener{
+            content.launch("image/*")
         }
+
         setFragmentResultListener("requestKey2") { requestKey, bundle ->
             //결과 값을 받는곳입니다.
             val userPPT = bundle.getString("bundleKey")
@@ -134,8 +138,7 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
                                     "UPDATE FOOD CONTENT COMPLETE!",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                val foodShowFragment = FoodShowFragment()
-                               // main.onChangeFragment(foodShowFragment)
+                                main.onSupportNavigateUp()
                             }
                         }
 
@@ -147,8 +150,8 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
 
             val builder= AlertDialog.Builder(requireActivity())
             builder.setTitle("삭제하시겠습니까?")
-                .setMessage("삭제하면 끝!")
-                .setPositiveButton("확인",
+                .setMessage("삭제하면 되돌릴 수 없습니다.")
+                .setPositiveButton("OK",
                     DialogInterface.OnClickListener { dialog, id ->
                         foodContentCollectionRef.get().addOnCompleteListener { task ->
                             val getPositionFood = foodEditViewModel.getContent(foodPos)
@@ -157,20 +160,16 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
                                 foodContentCollectionRef.document(getPositionId.toString()).delete().addOnSuccessListener {
 
                                 }
-                                FoodStorageRef.child(getPositionFood?.image.toString()).delete()
+                                FoodStorageRef.child("${getPositionFood?.image.toString()}").delete()
                                     .addOnSuccessListener {
 
-                                        val myInfoFragment = MyInfoFragment()
-                                      //  main.onChangeFragment(myInfoFragment)
                                          }
                             }
-
-                        //navigation 이동
-                            //findNavController().navigate(R.id.action_foodEditFragment_to_foodShowFragment)
+                            findNavController().navigate(R.id.action_foodEditFragment_to_myInfoFragment)
                         }.addOnFailureListener {}
 
                     })
-                .setNegativeButton("취소",
+                .setNegativeButton("CANCEL",
                     DialogInterface.OnClickListener { dialog, id ->
                         Toast.makeText(requireContext(),"CANCEL", Toast.LENGTH_SHORT).show()
 

@@ -1,20 +1,16 @@
 package com.kbs.foodie
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.CollectionReference
@@ -23,7 +19,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import org.w3c.dom.Text
 
 
 class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
@@ -69,9 +64,15 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
         foodContentCollectionRef=db.collection("user").document(user)
             .collection("content")
         UserContentCollectionRef = db.collection("user")
-        println(foodEditViewModel)
-        foodEditViewModel.myFoodData.observe(viewLifecycleOwner) {
 
+
+        foodContentCollectionRef.addSnapshotListener {  snapshot, error ->
+                    for (doc in snapshot!!.documentChanges) {
+                        foodEditViewModel.updateContent(foodPos,foodContent(doc))
+                    }
+        }
+        foodEditViewModel.myFoodData.observe(viewLifecycleOwner) {
+            showFood(foodPos,showFoodNameText,showFoodLocationText,showFoodScoreEditText,showFoodReviewEditText,showFoodImage)
         }
         //화면 USER 정보
         UserContentCollectionRef.document(user).get()
@@ -81,7 +82,6 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
                 loadImage(profileImageRef, showUserImage)
             }.addOnFailureListener {}
 
-        showFood(foodPos,showFoodNameText,showFoodLocationText,showFoodScoreEditText,showFoodReviewEditText,showFoodImage)
         //수정화면으로 전환
         updateFoodContentButton.setOnClickListener {
             findNavController().navigate(R.id.action_foodShowFragment_to_foodEditFragment)
@@ -100,26 +100,26 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
     }
     fun showFood(foodPos: Int,showFoodNameText:TextView,showFoodLocationText: TextView, showFoodScoreEditText: TextView, showFoodReviewEditText: TextView, showFoodImage:ImageView) {
 
-        foodContentCollectionRef.get().addOnCompleteListener { task ->
+        foodContentCollectionRef.get().addOnCompleteListener {
             val getPositionFood = foodEditViewModel.getContent(foodPos)
-            if (task.isSuccessful) {
-            storeId = SpannableStringBuilder(getPositionFood?.id).toString()
-            storeName = SpannableStringBuilder(getPositionFood?.name).toString()
-            storeLocation =
-                SpannableStringBuilder(getPositionFood?.address).toString()
-            storeScore =
-                SpannableStringBuilder(getPositionFood?.score.toString()).toString()
-            storeReview =
-                SpannableStringBuilder(getPositionFood?.review).toString()
-            storeImage = getPositionFood?.image.toString()
-            showFoodNameText.text =storeName
-            showFoodLocationText.text =storeLocation
-            showFoodScoreEditText.text =storeScore
-            showFoodReviewEditText.text =storeReview
-            val profileImageRef = FoodStorageRef.child("/${storeImage}")
-            loadImage(profileImageRef, showFoodImage)
+                storeId = SpannableStringBuilder(getPositionFood?.id).toString()
+                storeName = SpannableStringBuilder(getPositionFood?.name).toString()
+                storeLocation =
+                    SpannableStringBuilder(getPositionFood?.address).toString()
+                storeScore =
+                    SpannableStringBuilder(getPositionFood?.score.toString()).toString()
+                storeReview =
+                    SpannableStringBuilder(getPositionFood?.review).toString()
+                storeImage = getPositionFood?.image.toString()
+                showFoodNameText.text =storeName
+                showFoodLocationText.text =storeLocation
+                showFoodScoreEditText.text =storeScore
+                showFoodReviewEditText.text =storeReview
+                val profileImageRef = FoodStorageRef.child("/${storeImage}")
+                loadImage(profileImageRef, showFoodImage)
+
+
         }
 
-    }
     }
 }

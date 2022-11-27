@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.wearable.Wearable
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -39,6 +40,8 @@ class HomeFragment : Fragment() {
         main.showHomeMenu()
         val rootView = inflater.inflate(R.layout.home_fragment,container,false) as ViewGroup
         val recyclerView=rootView.findViewById<RecyclerView>(R.id.recyclerview)
+
+
         user=main.user
         db.runTransaction {
             val docRef=db.collection("user").document(user)

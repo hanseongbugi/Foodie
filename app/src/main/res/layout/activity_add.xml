@@ -100,7 +100,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_weight="3"
                     android:text="NAME"
-                    android:textColor="@color/black"
+                    android:textColor="#787870"
                     android:textSize="18sp"
                     android:textStyle="bold|italic" />
 
@@ -154,7 +154,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_weight="3"
                     android:text="LOCATION"
-                    android:textColor="@color/black"
+                    android:textColor="@color/login_text"
                     android:textSize="16sp"
                     android:textStyle="bold|italic" />
 
@@ -183,7 +183,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_weight="3"
                     android:text="SCORE"
-                    android:textColor="@color/black"
+                    android:textColor="@color/login_text"
                     android:textSize="18sp"
                     android:textStyle="bold|italic" />
 
@@ -212,7 +212,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_weight="3"
                     android:text="REVIEW"
-                    android:textColor="@color/black"
+                    android:textColor="#787870"
                     android:textSize="18sp"
                     android:textStyle="bold|italic" />
 
