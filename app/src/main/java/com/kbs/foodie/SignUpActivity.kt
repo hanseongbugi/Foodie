@@ -65,7 +65,7 @@ class SignUpActivity : AppCompatActivity() {
             muserEmail = signUpEmailText.toString()
             muserPassword = signUpPassWord.toString()
             muserName = signUpNameText.toString()
-            if(checkEmail(muserEmail) && checkPassword(muserPassword)){//muserPassword.length >=6) {
+            if(checkEmail(muserEmail) && checkPassword(muserPassword)&& checkName(muserName)){//muserPassword.length >=6) {
                 uploadFile()
                 muserImage = "${UPLOAD_FOLDER}${userFileName}"
 
@@ -75,9 +75,19 @@ class SignUpActivity : AppCompatActivity() {
         }
 
     }
+    private fun checkName(name: String?): Boolean {
+        val trimmedNickname = name?.trim().toString()
+        val exp = Regex("^[가-힣ㄱ-ㅎa-zA-Z]{2,}\$")
+        if(!trimmedNickname.isNullOrEmpty() && exp.matches(trimmedNickname))
+            return true
+        else{
+            Toast.makeText(this, "이름은 한글, 영문 2글자 이상입니다.", Toast.LENGTH_SHORT).show();
+            return false
+        }
+    }
     private fun checkEmail(email: String?): Boolean { //이메일 형식 검사
         var returnValue = false
-        val regex = "^[_A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+        val regex = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
         val p: Pattern = Pattern.compile(regex)
         val m: Matcher = p.matcher(email)
         if (m.matches()) {

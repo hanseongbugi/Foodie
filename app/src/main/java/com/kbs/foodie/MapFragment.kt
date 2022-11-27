@@ -210,7 +210,7 @@ class MapFragment : Fragment(R.layout.map_fragment)  {
 
                 }
                 else{
-
+                    (activity as AddActivity).binding.constraintLayout2.visibility = View.VISIBLE
                     activity!!.supportFragmentManager.beginTransaction().remove(this@MapFragment).commit()
 
                 }
