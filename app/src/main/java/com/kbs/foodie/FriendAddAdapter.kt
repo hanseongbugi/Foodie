@@ -35,6 +35,7 @@ class FriendAddAdapter (private val friendAddViewModel:FriendAddViewModel,val cu
                     val userimageRef = storageRef.child("/$userImage")
                     loadImage(userimageRef, binding.friendImage)
             }
+
             checkFriendCheck(pos)
 
         }

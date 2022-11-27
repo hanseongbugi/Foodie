@@ -102,8 +102,7 @@ class MyInfoFragment : Fragment(R.layout.my_info_fragment) {
 
         profileButton.setOnClickListener {
             main.removeBottomNavigation()
-            val ProfileEditFragment = ProfileEditFragment()
-            main.onChangeFragment(ProfileEditFragment)
+            findNavController().navigate(R.id.action_myInfoFragment_to_profileEditFragment)
         }
         return rootView
     }

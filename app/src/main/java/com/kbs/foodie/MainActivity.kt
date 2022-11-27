@@ -162,41 +162,6 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
             super.onBackPressed()
         }
     }
-    //이미지 띄우기
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        super.onActivityResult(requestCode, resultCode, data)
-
-        // 앨범에서 Profile Image 사진 선택시 호출 되는 부분
-        if (requestCode == ProfileEditFragment.PICK_PROFILE_FROM_ALBUM && resultCode == RESULT_OK) {
-
-            userPhoto = data?.data
-            println(userPhoto)
-            val fragment1 = ProfileEditFragment()
-
-            supportFragmentManager
-                .setFragmentResult("requestKey1", bundleOf("bundleKey" to userPhoto.toString()))
-            onChangeFragment(fragment1)
-        }
-        else if (requestCode == FoodEditFragment.PICK_PROFILE_FROM_ALBUM && resultCode == RESULT_OK) {
-
-            foodPhoto = data?.data
-            println(foodPhoto)
-            val fragment2 = FoodEditFragment()
-
-            supportFragmentManager
-                .setFragmentResult("requestKey2", bundleOf("bundleKey" to foodPhoto.toString()))
-            onChangeFragment(fragment2)
-        }
-    }
-
-
-    fun onChangeFragment(fragment: Fragment){
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragmentView,fragment)
-            .commit()
-    }
 
 
     private fun permissionCheck() {
