@@ -194,7 +194,7 @@
                     android:inputType="textMultiLine"
                     android:maxLines="3"
                     android:minLines="2"
-                    android:padding="24dp"
+                    android:padding="32dp"
                     android:paddingStart="24dp"
                     android:scrollHorizontally="false" />
             </LinearLayout>
