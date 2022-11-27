@@ -19,8 +19,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -86,20 +84,20 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
             //이미지 UPDATE -> activity로 넘어가서 값 받아오기??
             val intent= Intent(Intent.ACTION_PICK)
             intent.type= MediaStore.Images.Media.CONTENT_TYPE
-            main.startActivityForResult(intent, PICK_PROFILE_FROM_ALBUM)
+            //main.startActivityForResult(intent, PICK_PROFILE_FROM_ALBUM)
 
 
             }
             //이미지 띄우기
             //editProfileUpdateImage.setImageURI()
 
-        println("왔어? !?@#?#@?$!@#$?!#@?$?!!!!!")
-        setFragmentResultListener("requestKey1") { requestKey, bundle ->
+
+        /*setFragmentResultListener("requestKey1") { requestKey, bundle ->
             //결과 값을 받는곳입니다.
             val userPP = bundle.getString("bundleKey")
             userPhoto = Uri.parse(userPP)
             editProfileUpdateImage.setImageURI(userPhoto)
-        }
+        }*/
         editProfileUpdateButton.setOnClickListener {
             //DB UPDATE
 
