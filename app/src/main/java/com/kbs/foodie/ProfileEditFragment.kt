@@ -123,8 +123,8 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
         editProfileDeleteButton.setOnClickListener{
             val builder= AlertDialog.Builder(requireActivity())
             builder.setTitle("${profileUser}를 삭제하시겠습니까?")
-                .setMessage("삭제하면 끝!")
-                .setPositiveButton("확인",
+                .setMessage("삭제하면 되돌릴 수 없습니다.")
+                .setPositiveButton("OK",
                     DialogInterface.OnClickListener { dialog, id ->
                         //사진삭제
                         profileContentCollectionRef.document(profileUser).get().addOnSuccessListener{
@@ -154,7 +154,7 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
                             }.addOnFailureListener {}
 
                     })
-                .setNegativeButton("취소",
+                .setNegativeButton("CANCEL",
                     DialogInterface.OnClickListener { dialog, id ->
                         Toast.makeText(requireContext(),"CANCEL", Toast.LENGTH_SHORT).show()
 

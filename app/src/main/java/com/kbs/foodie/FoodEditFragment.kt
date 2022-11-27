@@ -150,8 +150,8 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
 
             val builder= AlertDialog.Builder(requireActivity())
             builder.setTitle("삭제하시겠습니까?")
-                .setMessage("삭제하면 끝!")
-                .setPositiveButton("확인",
+                .setMessage("삭제하면 되돌릴 수 없습니다.")
+                .setPositiveButton("OK",
                     DialogInterface.OnClickListener { dialog, id ->
                         foodContentCollectionRef.get().addOnCompleteListener { task ->
                             val getPositionFood = foodEditViewModel.getContent(foodPos)
@@ -169,7 +169,7 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
                         }.addOnFailureListener {}
 
                     })
-                .setNegativeButton("취소",
+                .setNegativeButton("CANCEL",
                     DialogInterface.OnClickListener { dialog, id ->
                         Toast.makeText(requireContext(),"CANCEL", Toast.LENGTH_SHORT).show()
 
