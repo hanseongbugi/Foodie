@@ -16,7 +16,7 @@ class LoginWear : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-/*
+
         binding.login.setOnClickListener {
 
             val userEmail = binding.username.text.toString()
@@ -40,7 +40,7 @@ class LoginWear : AppCompatActivity(){
                     Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
                 }
             }
-            */
+
 
     }
 }
