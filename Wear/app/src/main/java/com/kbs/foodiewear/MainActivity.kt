@@ -2,18 +2,29 @@ package com.kbs.foodiewear
 
 import android.app.Activity
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.kbs.foodiewear.databinding.ActivityMainBinding
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     lateinit var user:String
+    private val db: FirebaseFirestore = Firebase.firestore
+    private lateinit var adapter: HomeAdapter
+    private val homeViewModel by viewModels<HomeViewModel>()
+    private lateinit var contentCollectionRef: CollectionReference
+    private lateinit var friendCollectionRef: CollectionReference
+    private var userName:String?=null
+    private lateinit var myName:String
 
     val fragmentManager: FragmentManager = supportFragmentManager
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,16 +33,64 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         user=intent.getStringExtra("user")?:""
-        val homeFragment = HomeFragment()
-        fragmentManager.beginTransaction().add(R.id.fragmentView,homeFragment).commit()
         //ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),1)
+        val recyclerView=binding.homeRecyclerview
+
+        db.runTransaction {
+            val docRef=db.collection("user").document(user)
+            val snapshot=it.get(docRef)
+            myName=snapshot.getString("username")?:""
+        }
+        contentCollectionRef=db.collection("user").document(user)
+            .collection("content")
+        friendCollectionRef=db.collection("user").document(user)
+            .collection("friend")
+        db.runTransaction{
+            val docRef=db.collection("user").document(user)
+            val snapshot=it.get(docRef)
+            userName=snapshot.getString("username")?:""
+        }
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager= LinearLayoutManager(this)
+        adapter= HomeAdapter(homeViewModel)
+        recyclerView.adapter=adapter
 
 
-        /*override fun onBackPressed() {
-        startActivity(
-            Intent(this, WearMenu::class.java)
-        )
-        finish()
-    }*/
+        homeViewModel.contentData.observe(this) {
+            // 데이터에 변화가 있을 때 어댑터에게 변경을 알림
+            adapter.notifyDataSetChanged() // 어댑터가 리사이클러뷰에게 알려 내용을 갱신함
+        }
+        homeViewModel.emailData.observe(this){
+            homeViewModel.deleteContentAll()
+            for(email in it){
+                db.collection("user").document(email).
+                collection("content").get().addOnSuccessListener {
+                    for(doc in it){
+                        homeViewModel.addContent(Content(email,doc))
+                    }
+                }
+            }
+            contentCollectionRef.get().addOnSuccessListener {
+                for(doc in it){
+                    homeViewModel.addContent(Content(user,doc))
+                }
+            }
+        }
+
+        contentCollectionRef.addSnapshotListener{snapshot,error->
+            for(doc in snapshot!!.documentChanges){
+                homeViewModel.addContent(Content(user,doc))
+            }
+
+        }
+        friendCollectionRef.addSnapshotListener{snapshot,error->
+            homeViewModel.deleteEmailAll()
+            friendCollectionRef.get().addOnSuccessListener {
+                for(doc in it){
+                    homeViewModel.addFriendEmail(doc["friendEmail"].toString(),doc["friendName"].toString())
+                }
+            }
+        }
+
     }
 }

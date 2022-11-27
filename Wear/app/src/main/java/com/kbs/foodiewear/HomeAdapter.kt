@@ -20,15 +20,6 @@ import com.kbs.foodiewear.databinding.HomeItemBinding
 
 class HomeAdapter(private val homeViewModel:HomeViewModel) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
-    interface OnItemClickListener {
-        fun onClick(v: View)
-    }
-
-    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
-        this.itemClickListener = onItemClickListener
-    }
-
-    private lateinit var itemClickListener : OnItemClickListener
 
 
     inner class ViewHolder(private val binding: HomeItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -41,10 +32,11 @@ class HomeAdapter(private val homeViewModel:HomeViewModel) :
                     val docRef=db.collection("user").document(email)
                     val snapshot=it.get(docRef)
                     val userName=snapshot.getString("username")?:""
-                    val userImage=snapshot.getString("userimage")?:""
+//                    val userImage=snapshot.getString("userimage")?:""
                     binding.userName.text=userName
-                    val userImageRef=storageRef.child(userImage)
-                    loadImage(userImageRef,binding.userImage)
+//                    println(userImage)
+//                    val userImageRef=storageRef.child(userImage)
+//                    loadImage(userImageRef,binding.userImage)
                 }
                 binding.listTvName.text=name
                 binding.listTvAddress.text=address
@@ -52,9 +44,6 @@ class HomeAdapter(private val homeViewModel:HomeViewModel) :
                 //binding.listTvReview.text=review
                 val imageRef=storageRef.child("/$image")
                 loadImage(imageRef,binding.realImage)
-                binding.userInfo.setOnClickListener{
-                    itemClickListener.onClick(it)
-                }
             }
         }
         private fun loadImage(imageRef:StorageReference,view:ImageView){
