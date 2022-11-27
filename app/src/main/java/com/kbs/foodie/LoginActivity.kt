@@ -18,7 +18,12 @@ class LoginActivity : AppCompatActivity() {
         binding.signInButton.setOnClickListener {
             val userEmail = binding.emailLogin.text.toString()
             val password = binding.passwdLogin.text.toString()
-            doLogin(userEmail, password)
+            if(userEmail!="" && password!=""||userEmail!=""||password!="") {
+
+                doLogin(userEmail, password)
+            }else{
+                Toast.makeText(this, "Authentication failed - 미입력", Toast.LENGTH_SHORT).show()
+            }
         }
         binding.signUpButton.setOnClickListener {
             startActivity(
