@@ -135,7 +135,7 @@
                     android:background="@drawable/login_input_border"
                     android:padding="10dp"
                     android:paddingTop="16dp"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
