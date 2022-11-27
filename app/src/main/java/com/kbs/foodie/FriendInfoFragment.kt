@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -52,8 +53,8 @@ class FriendInfoFragment : Fragment(R.layout.my_info_fragment) {
         val profileButton = rootView.findViewById<Button>(R.id.profileEditButton)
         val profileImage = rootView.findViewById<ImageView>(R.id.profileUserImage)
 
+        profileButton.isVisible=false
         profileUser = main.friendEmail!!
-        println(profileUser)
         main.ImageTrueFalse = true
         main.FoodImageTrueFalse = true
         profileContentCollectionRef = db.collection("user")

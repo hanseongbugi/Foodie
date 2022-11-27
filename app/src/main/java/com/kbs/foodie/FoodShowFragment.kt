@@ -84,20 +84,7 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
         showFood(foodPos,showFoodNameText,showFoodLocationText,showFoodScoreEditText,showFoodReviewEditText,showFoodImage)
         //수정화면으로 전환
         updateFoodContentButton.setOnClickListener {
-
             findNavController().navigate(R.id.action_foodShowFragment_to_foodEditFragment)
-
-            /*val intent=Intent(activity,FoodEditActivity::class.java)
-                .putExtra("name",storeName)
-                .putExtra("location", storeLocation)
-                .putExtra("score", storeScore)
-                .putExtra("review", storeReview)
-                .putExtra("image", storeImage)
-                .putExtra("storeId",storeId)
-                .putExtra("user",main.user)
-            main.finishAffinity()
-            startActivity(intent)
-*/
         }
         //화면 음식정보 SHOW
 
@@ -116,23 +103,23 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
         foodContentCollectionRef.get().addOnCompleteListener { task ->
             val getPositionFood = foodEditViewModel.getContent(foodPos)
             if (task.isSuccessful) {
-                storeId = SpannableStringBuilder(getPositionFood?.id).toString()
-                storeName = SpannableStringBuilder(getPositionFood?.name).toString()
-                storeLocation =
-                    SpannableStringBuilder(getPositionFood?.address).toString()
-                storeScore =
-                    SpannableStringBuilder(getPositionFood?.score.toString()).toString()
-                storeReview =
-                    SpannableStringBuilder(getPositionFood?.review).toString()
-                storeImage = getPositionFood?.image.toString()
-                showFoodNameText.text =storeName
-                showFoodLocationText.text =storeLocation
-                showFoodScoreEditText.text =storeScore
-                showFoodReviewEditText.text =storeReview
-                val profileImageRef = FoodStorageRef.child("/${storeImage}")
-                loadImage(profileImageRef, showFoodImage)
-            }
-
+            storeId = SpannableStringBuilder(getPositionFood?.id).toString()
+            storeName = SpannableStringBuilder(getPositionFood?.name).toString()
+            storeLocation =
+                SpannableStringBuilder(getPositionFood?.address).toString()
+            storeScore =
+                SpannableStringBuilder(getPositionFood?.score.toString()).toString()
+            storeReview =
+                SpannableStringBuilder(getPositionFood?.review).toString()
+            storeImage = getPositionFood?.image.toString()
+            showFoodNameText.text =storeName
+            showFoodLocationText.text =storeLocation
+            showFoodScoreEditText.text =storeScore
+            showFoodReviewEditText.text =storeReview
+            val profileImageRef = FoodStorageRef.child("/${storeImage}")
+            loadImage(profileImageRef, showFoodImage)
         }
+
+    }
     }
 }
