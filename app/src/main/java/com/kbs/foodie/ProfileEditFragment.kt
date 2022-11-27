@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -89,10 +88,17 @@ class ProfileEditFragment: Fragment(R.layout.profile_edit_fragment) {
         }
         editProfileUpdateImage.setOnClickListener{
             //이미지 UPDATE -> activity로 넘어가서 값 받아오기??
+
             content.launch("image/*")
         }
             //이미지 띄우기
 
+            /*val intent= Intent(Intent.ACTION_PICK)
+            intent.type= MediaStore.Images.Media.CONTENT_TYPE
+            //main.startActivityForResult(intent, PICK_PROFILE_FROM_ALBUM)
+
+
+            }*/
 
         editProfileUpdateButton.setOnClickListener {
             //DB UPDATE

@@ -1,6 +1,7 @@
 package com.kbs.foodie
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -31,6 +32,14 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
     private lateinit var foodContentCollectionRef: CollectionReference
     private lateinit var UserContentCollectionRef: CollectionReference
     private lateinit var user:String
+
+    lateinit var storeName: String
+    lateinit var storeLocation : String
+    lateinit var storeScore: String
+    lateinit var storeImage : String
+    lateinit var storeReview : String
+    lateinit var storeId : String
+
     val storage = Firebase.storage
     private val FoodStorageRef = storage.reference
 
@@ -61,9 +70,8 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
             .collection("content")
         UserContentCollectionRef = db.collection("user")
         println(foodEditViewModel)
-        println("FOOOODODODODODO SHOWWWWWW 왔냐")
         foodEditViewModel.myFoodData.observe(viewLifecycleOwner) {
-           // main.onChangeFragment(this)
+
         }
         //화면 USER 정보
         UserContentCollectionRef.document(user).get()
@@ -73,12 +81,25 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
                 loadImage(profileImageRef, showUserImage)
             }.addOnFailureListener {}
 
+        showFood(foodPos,showFoodNameText,showFoodLocationText,showFoodScoreEditText,showFoodReviewEditText,showFoodImage)
         //수정화면으로 전환
         updateFoodContentButton.setOnClickListener {
+
             findNavController().navigate(R.id.action_foodShowFragment_to_foodEditFragment)
+
+            /*val intent=Intent(activity,FoodEditActivity::class.java)
+                .putExtra("name",storeName)
+                .putExtra("location", storeLocation)
+                .putExtra("score", storeScore)
+                .putExtra("review", storeReview)
+                .putExtra("image", storeImage)
+                .putExtra("storeId",storeId)
+                .putExtra("user",main.user)
+            main.finishAffinity()
+            startActivity(intent)
+*/
         }
         //화면 음식정보 SHOW
-        showFood(foodPos,showFoodNameText,showFoodLocationText,showFoodScoreEditText,showFoodReviewEditText,showFoodImage)
 
         return rootView
     }
@@ -95,15 +116,20 @@ class FoodShowFragment: Fragment(R.layout.food_show_fragment) {
         foodContentCollectionRef.get().addOnCompleteListener { task ->
             val getPositionFood = foodEditViewModel.getContent(foodPos)
             if (task.isSuccessful) {
-                showFoodNameText.text =
-                    SpannableStringBuilder(getPositionFood?.name)
-                showFoodLocationText.text =
-                    SpannableStringBuilder(getPositionFood?.address)
-                showFoodScoreEditText.text =
-                    SpannableStringBuilder(getPositionFood?.score.toString())
-                showFoodReviewEditText.text =
-                    SpannableStringBuilder(getPositionFood?.review)
-                val profileImageRef = FoodStorageRef.child("/${getPositionFood?.image}")
+                storeId = SpannableStringBuilder(getPositionFood?.id).toString()
+                storeName = SpannableStringBuilder(getPositionFood?.name).toString()
+                storeLocation =
+                    SpannableStringBuilder(getPositionFood?.address).toString()
+                storeScore =
+                    SpannableStringBuilder(getPositionFood?.score.toString()).toString()
+                storeReview =
+                    SpannableStringBuilder(getPositionFood?.review).toString()
+                storeImage = getPositionFood?.image.toString()
+                showFoodNameText.text =storeName
+                showFoodLocationText.text =storeLocation
+                showFoodScoreEditText.text =storeScore
+                showFoodReviewEditText.text =storeReview
+                val profileImageRef = FoodStorageRef.child("/${storeImage}")
                 loadImage(profileImageRef, showFoodImage)
             }
 

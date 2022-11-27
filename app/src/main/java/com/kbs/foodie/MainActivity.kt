@@ -168,8 +168,7 @@ class MainActivity : AppCompatActivity(),OnLocationSetListener {
         }
     }
 
-
-    // 권한 요청
+//권한요청
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode==Manifest.permission.ACCESS_FINE_LOCATION.toInt()) { //bug
