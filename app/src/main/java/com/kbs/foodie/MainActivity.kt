@@ -33,7 +33,7 @@ import java.util.*
 class MainActivity : AppCompatActivity(),OnLocationSetListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val ACCESS_FINE_LOCATION = 1000
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     lateinit var navController:NavController
     lateinit var user:String
     private var toolBarkey=ToolBarKey.Home

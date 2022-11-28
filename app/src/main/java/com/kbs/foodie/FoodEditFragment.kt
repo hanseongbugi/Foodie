@@ -19,6 +19,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
@@ -165,6 +166,8 @@ class FoodEditFragment: Fragment(R.layout.food_edit_fragment) {
 
                                          }
                             }
+                            main.backMainMenu=true
+                            main.binding.bottomNav.isVisible=true
                             findNavController().navigate(R.id.action_foodEditFragment_to_myInfoFragment)
                         }.addOnFailureListener {}
 
