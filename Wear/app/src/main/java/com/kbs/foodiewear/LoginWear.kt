@@ -1,15 +1,14 @@
 package com.kbs.foodiewear
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kbs.foodiewear.databinding.ActivityLoginBinding
 
-
-class LoginWear : AppCompatActivity(){
+class LoginWear : Activity() {
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +31,7 @@ class LoginWear : AppCompatActivity(){
         Firebase.auth.signInWithEmailAndPassword(userEmail, password)
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
-                    val intent=Intent(this,MainActivity::class.java)
+                    val intent= Intent(this,MainActivity::class.java)
                     intent.putExtra("user",userEmail)
                     startActivity(intent)
                     finish()
@@ -43,4 +42,5 @@ class LoginWear : AppCompatActivity(){
 
 
     }
+    
 }
