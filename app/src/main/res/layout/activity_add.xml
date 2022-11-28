@@ -92,7 +92,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold|italic" />
 
-                <EditText
+                <TextView
                     android:id="@+id/nameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold|italic" />
 
-                <EditText
+                <TextView
                     android:id="@+id/locationEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
