@@ -31,6 +31,7 @@ import java.util.*
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.NotificationCompat.WearableExtender
+import java.util.regex.Pattern
 
 class AddActivity: AppCompatActivity(), OnLocationSetListener {
     lateinit var binding:ActivityAddBinding
@@ -87,9 +88,9 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
 
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Android 8.0
-            createNotificationChannel()
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Android 8.0
+//            createNotificationChannel()
+//        }
 
         //갤러리 이미지 연동
         binding.editFoodImage.setOnClickListener{
@@ -99,56 +100,76 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
             mName = binding.nameEditText.text.toString()
             mReview = binding.reviewEditText.text.toString()
             mScore = binding.scoreEditText.text.toString()
+
             mLocation = binding.locationEditText.text.toString()
             mReview = binding.reviewEditText.text.toString()
+
             if(mName==""||mReview==""||mScore==""||mLocation==""||mReview==""||foodPhoto==null){
                 Toast.makeText(this, "모든 내용을 입력해주세요", Toast.LENGTH_SHORT).show()
 
+            }else if(!checkScore(mScore)){
+                Toast.makeText(this, "평점은 0-5사이로 입력해주세요", Toast.LENGTH_SHORT).show()
             }
             else {
                 addItem()
+//                showNotification()
                 finish()
-                showNotification()
+
             }
         }
     }
-
-
-    private val channelID = "default"
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel() {
-        val channel = NotificationChannel(
-            channelID, "default channel",
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        channel.description = "description text of this channel."
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
-    }
-    private fun showNotification() {
-        val notificationId = 1
-//        val intent = Intent(this, LoginActivity::class.java)
-        // The channel ID of the notification.
-        val id = "my_channel_01"
-        // Build intent for notification content
-        val viewPendingIntent = Intent(this, LoginActivity::class.java).let { viewIntent ->
-            viewIntent.putExtra(EXTRA_EVENT_ID, channelID)
-            PendingIntent.getActivity(this, 0, viewIntent, PendingIntent.FLAG_IMMUTABLE)
+    private fun checkScore(mScore: String):Boolean {
+        val temp: Float
+        try {
+            val num: Float = mScore.toFloat()
+            temp=num
+//            print("num : $num")
+            return true
+        } catch (e: NumberFormatException) {
+//            println("Not number: $mScore")
+            return false
         }
-
-        // Notification channel ID is ignored for Android 7.1.1
-        // (API level 25) and lower.
-        val notificationBuilder = NotificationCompat.Builder(this, channelID)
-            .setSmallIcon(R.drawable.ic_baseline_map_24)
-            .setContentTitle("FOODIE NOTIFICATION")
-            .setContentText("${mName.toString()}")
-            .setContentText("${mScore.toString()}")
-            .setContentIntent(viewPendingIntent)
-        NotificationManagerCompat.from(this).apply {
-            notify(notificationId, notificationBuilder.build())
+        if(temp<0&&temp>5){
+            return false
         }
-
+        else return true
     }
+
+//    private val channelID = "default"
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    private fun createNotificationChannel() {
+//        val channel = NotificationChannel(
+//            channelID, "default channel",
+//            NotificationManager.IMPORTANCE_DEFAULT
+//        )
+//        channel.description = "description text of this channel."
+//        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//        notificationManager.createNotificationChannel(channel)
+//    }
+//    private fun showNotification() {
+//        val notificationId = 1
+////        val intent = Intent(this, LoginActivity::class.java)
+//        // The channel ID of the notification.
+//        val id = "my_channel_01"
+//        // Build intent for notification content
+//        val viewPendingIntent = Intent(this, LoginActivity::class.java).let { viewIntent ->
+//            viewIntent.putExtra(EXTRA_EVENT_ID, channelID)
+//            PendingIntent.getActivity(this, 0, viewIntent, PendingIntent.FLAG_IMMUTABLE)
+//        }
+//
+//        // Notification channel ID is ignored for Android 7.1.1
+//        // (API level 25) and lower.
+//        val notificationBuilder = NotificationCompat.Builder(this, channelID)
+//            .setSmallIcon(R.drawable.ic_baseline_map_24)
+//            .setContentTitle("FOODIE NOTIFICATION")
+//            .setContentText("${mName.toString()}")
+//            .setContentText("${mScore.toString()}")
+//            .setContentIntent(viewPendingIntent)
+//        NotificationManagerCompat.from(this).apply {
+//            notify(notificationId, notificationBuilder.build())
+//        }
+//
+//    }
 
     private fun addItem(){
         uploadFile()
