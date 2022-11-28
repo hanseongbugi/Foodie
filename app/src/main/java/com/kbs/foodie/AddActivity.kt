@@ -214,8 +214,8 @@ class AddActivity: AppCompatActivity(), OnLocationSetListener {
         mName=name
         markedY= y.toString()
         markedX= x.toString()
-        binding.locationEditText.setText(mLocation)
-        binding.nameEditText.setText(mName)
+        binding.locationEditText.text = mLocation
+        binding.nameEditText.text = mName
        // Log.w("2",location)
     }
 
