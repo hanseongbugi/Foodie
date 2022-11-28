@@ -83,23 +83,88 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <View
-                    android:id="@+id/view"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <Button
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/nameTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="2"
+                            android:text="NAME"
+                            android:textColor="#787870"
+                            android:textSize="18sp"
+                            android:textStyle="bold|italic" />
+
+                        <TextView
+                            android:id="@+id/nameEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/login_input_border"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            android:padding="10dp"
+                            android:paddingTop="16dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/locationTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="2"
+                            android:text="LOCATION"
+                            android:textColor="@color/login_text"
+                            android:textSize="16sp"
+                            android:textStyle="bold|italic" />
+
+                        <TextView
+                            android:id="@+id/locationEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/login_input_border"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            android:padding="10dp"
+                            android:paddingTop="16dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ImageButton
                     android:id="@+id/locationSearchButton"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="16dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/login_input_border"
+                    android:layout_weight="4"
+                    android:background="@drawable/search_button_label"
                     android:text="search"
                     android:textColor="#FAD042"
-                    android:textSize="20dp"
-                    android:textStyle="bold|italic" />
+                    android:textSize="14sp"
+                    android:textStyle="bold|italic"
+                    app:srcCompat="@drawable/ic_baseline_location_searching_24" />
+
 
             </LinearLayout>
 
@@ -108,57 +173,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/nameTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="3"
-                    android:text="NAME"
-                    android:textColor="#787870"
-                    android:textSize="18sp"
-                    android:textStyle="bold|italic" />
-
-                <TextView
-                    android:id="@+id/nameEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/login_input_border"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:padding="10dp"
-                    android:paddingTop="16dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/locationTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="3"
-                    android:text="LOCATION"
-                    android:textColor="@color/login_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold|italic" />
-
-                <TextView
-                    android:id="@+id/locationEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/login_input_border"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:padding="10dp"
-                    android:paddingTop="16dp" />
             </LinearLayout>
 
             <LinearLayout
