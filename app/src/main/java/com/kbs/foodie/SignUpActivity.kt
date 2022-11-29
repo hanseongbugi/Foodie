@@ -100,7 +100,7 @@ class SignUpActivity : AppCompatActivity() {
     }
     private fun checkPassword(password: String):Boolean {
         return if (!Pattern.matches("^[a-zA-Z0-9].{8,20}$", password)) { //9자부터 20자
-            Toast.makeText(this, "비밀번호 형식을 지켜주세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "비밀번호는 9-20자리 영어+숫자입니다.", Toast.LENGTH_SHORT).show()
             false
         } else{
             true
