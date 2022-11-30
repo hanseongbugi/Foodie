@@ -63,21 +63,25 @@ class MainActivity : Activity(), LifecycleOwner {
             adapter.notifyDataSetChanged() // 어댑터가 리사이클러뷰에게 알려 내용을 갱신함
         }
         homeViewModel.emailData.observe(this) {
-            homeViewModel.deleteContentAll()
             for (email in it) {
-                db.collection("user").document(email).collection("content").get()
-                    .addOnSuccessListener {
-                        for (doc in it) {
-                            homeViewModel.addContent(Content(email, doc))
-                        }
+            db.collection("user").document(email).collection("content")
+                .addSnapshotListener { snapshot, error ->
+                        db.collection("user").document(email).collection("content").get()
+                            .addOnSuccessListener {
+                                for(doc in it){
+                                    homeViewModel.addContent(Content(email, doc))
+                                }
+                            }
                     }
+                }
             }
+
             contentCollectionRef.get().addOnSuccessListener {
                 for (doc in it) {
                     homeViewModel.addContent(Content(user, doc))
                 }
             }
-        }
+
 
         contentCollectionRef.addSnapshotListener { snapshot, error ->
             for (doc in snapshot!!.documentChanges) {
